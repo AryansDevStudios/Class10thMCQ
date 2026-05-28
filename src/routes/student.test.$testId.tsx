@@ -179,21 +179,32 @@ function TakeTest() {
   }, [test, now, synced, submitted, finalize]);
 
   // Page visibility / tab-switch detection
+  const lastPenaltyTime = useRef(0);
+  
   useEffect(() => {
     if (!student || !test || submitted || !testStarted) return;
-    const onHide = async () => {
-      if (document.visibilityState === "hidden") {
-        setTabSwitches((c) => c + 1);
-        setWarnOpen(true);
-        try {
-          await updateDoc(doc(db(), "tests", testId, "submissions", student.srNo), {
-            tabSwitches: increment(1),
-          });
-        } catch {}
-      }
+    const onLeave = async (e?: Event) => {
+      if (e?.type === "visibilitychange" && document.visibilityState === "visible") return;
+      
+      const nowMs = Date.now();
+      if (nowMs - lastPenaltyTime.current < 2000) return; // Prevent double trigger
+      lastPenaltyTime.current = nowMs;
+
+      setTabSwitches((c) => c + 1);
+      setWarnOpen(true);
+      try {
+        await updateDoc(doc(db(), "tests", testId, "submissions", student.srNo), {
+          tabSwitches: increment(1),
+        });
+      } catch {}
     };
-    document.addEventListener("visibilitychange", onHide);
-    return () => document.removeEventListener("visibilitychange", onHide);
+    
+    document.addEventListener("visibilitychange", onLeave);
+    window.addEventListener("blur", onLeave);
+    return () => {
+      document.removeEventListener("visibilitychange", onLeave);
+      window.removeEventListener("blur", onLeave);
+    };
   }, [student, test, submitted, testId, testStarted]);
 
   // Screen Wake Lock
