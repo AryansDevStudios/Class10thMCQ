@@ -1,0 +1,30 @@
+// Paste this into Firebase Console > Firestore Database > Rules.
+// These rules match the app's data model. Trade-off: student docs include
+// plaintext passwords and are readable by anyone with the Firebase config,
+// because the spec requires admin-recoverable passwords.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /students/{srNo} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+
+    match /tests/{testId} {
+      allow read: if true;
+      allow create, update, delete: if true; // gate via admin code in app
+    }
+
+    match /tests/{testId}/submissions/{srNo} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if false;
+    }
+
+    match /_meta/{doc} {
+      allow read, write: if true;
+    }
+  }
+}
