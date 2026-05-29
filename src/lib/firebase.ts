@@ -43,4 +43,4 @@ export function db() {
 }
 
 // Shared admin code — change this to whatever your school uses.
-export const ADMIN_CODE = "mpps1234mcq";
+export const ADMIN_CODE = "mpps@summermcq2026";
