@@ -180,6 +180,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 const SAMPLE_JSON = JSON.stringify({
+  "_ai_generation_instructions": "INSTRUCTIONS FOR AI QUESTION GENERATOR: 1. Output questions as objects within the 'questions' array. 2. Required fields for each object: 'question' (string), 'options' (array of strings), and 'correctAnswer' (integer representing the 0-based index of the correct option in the array). 3. LaTeX formatting is fully supported in the 'question', 'options', and 'explanation' fields. 4. TOKEN OPTIMIZATION RULE: The 'explanation' field is optional. OMIT the 'explanation' key entirely from the objects unless the user explicitly requests explanations in their prompt.",
   "questions": [
     {
       "question": "True or False: The value of $\\pi$ is exactly equal to $\\frac{22}{7}$.",
@@ -207,8 +208,7 @@ const SAMPLE_JSON = JSON.stringify({
         "120",
         "240"
       ],
-      "correctAnswer": 3,
-      "explanation": "The factorial of a number is the product of all positive integers less than or equal to it: $5! = 5 \\times 4 \\times 3 \\times 2 \\times 1 = 120$."
+      "correctAnswer": 3
     },
     {
       "question": "What is the chemical symbol for Gold?",
@@ -229,8 +229,7 @@ const SAMPLE_JSON = JSON.stringify({
         "6",
         "7"
       ],
-      "correctAnswer": 2,
-      "explanation": "Adding 7 to both sides gives $3x = 18$. Dividing both sides by 3 yields $x = 6$."
+      "correctAnswer": 2
     }
   ]
 }, null, 2);
