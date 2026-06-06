@@ -1,6 +1,13 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { e as getDocs, q as query, h as orderBy, c as collection, d as deleteDoc, b as doc } from "../_libs/firebase__firestore.mjs";
+import {
+  e as getDocs,
+  q as query,
+  h as orderBy,
+  c as collection,
+  d as deleteDoc,
+  b as doc,
+} from "../_libs/firebase__firestore.mjs";
 import { F as FIREBASE_CONFIGURED, d as db } from "./firebase-BOBCTMcs.mjs";
 import "../_libs/firebase.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -58,10 +65,12 @@ function TestsList() {
       return;
     }
     const snap = await getDocs(query(collection(db(), "tests"), orderBy("startAt", "desc")));
-    setTests(snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    })));
+    setTests(
+      snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      })),
+    );
     setLoading(false);
   };
   reactExports.useEffect(() => {
@@ -74,52 +83,111 @@ function TestsList() {
   };
   const now = Date.now();
   const statusLabel = (t) => {
-    if (now < t.startAt) return {
-      text: "Upcoming",
-      cls: "bg-slate-200 text-slate-700"
-    };
-    if (now < t.endAt) return {
-      text: "Active",
-      cls: "bg-emerald-100 text-emerald-700"
-    };
+    if (now < t.startAt)
+      return {
+        text: "Upcoming",
+        cls: "bg-slate-200 text-slate-700",
+      };
+    if (now < t.endAt)
+      return {
+        text: "Active",
+        cls: "bg-emerald-100 text-emerald-700",
+      };
     return {
       text: "Ended",
-      cls: "bg-slate-100 text-slate-500"
+      cls: "bg-slate-100 text-slate-500",
     };
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-slate-900", children: "Tests" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/admin/tests/new", className: "btn-primary", children: "+ New test" })
-    ] }),
-    loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-6 text-sm text-slate-500", children: "Loading…" }) : tests.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-6 text-sm text-slate-500", children: "No tests yet. Create one to get started." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "mt-6 space-y-3", children: tests.map((t) => {
-      const s = statusLabel(t);
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-medium text-slate-900", children: t.title }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "rounded-full px-2 py-0.5 text-xs font-medium " + s.cls, children: s.text })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-slate-500", children: [
-            new Date(t.startAt).toLocaleString(),
-            " → ",
-            new Date(t.endAt).toLocaleString(),
-            " ·",
-            " ",
-            t.questions?.length ?? 0,
-            " questions"
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/admin/tests/$testId/results", params: {
-            testId: t.id
-          }, className: "btn-secondary", children: "Results" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => onDelete(t.id), className: "btn-danger", children: "Delete" })
-        ] })
-      ] }, t.id);
-    }) })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+    children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+        className: "flex items-center justify-between",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", {
+            className: "text-2xl font-bold text-slate-900",
+            children: "Tests",
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+            to: "/admin/tests/new",
+            className: "btn-primary",
+            children: "+ New test",
+          }),
+        ],
+      }),
+      loading
+        ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+            className: "mt-6 text-sm text-slate-500",
+            children: "Loading…",
+          })
+        : tests.length === 0
+          ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+              className: "mt-6 text-sm text-slate-500",
+              children: "No tests yet. Create one to get started.",
+            })
+          : /* @__PURE__ */ jsxRuntimeExports.jsx("ul", {
+              className: "mt-6 space-y-3",
+              children: tests.map((t) => {
+                const s = statusLabel(t);
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "li",
+                  {
+                    className:
+                      "flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+                            className: "flex items-center gap-2",
+                            children: [
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                                className: "font-medium text-slate-900",
+                                children: t.title,
+                              }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", {
+                                className: "rounded-full px-2 py-0.5 text-xs font-medium " + s.cls,
+                                children: s.text,
+                              }),
+                            ],
+                          }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", {
+                            className: "text-xs text-slate-500",
+                            children: [
+                              new Date(t.startAt).toLocaleString(),
+                              " → ",
+                              new Date(t.endAt).toLocaleString(),
+                              " ·",
+                              " ",
+                              t.questions?.length ?? 0,
+                              " questions",
+                            ],
+                          }),
+                        ],
+                      }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+                        className: "flex gap-2",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+                            to: "/admin/tests/$testId/results",
+                            params: {
+                              testId: t.id,
+                            },
+                            className: "btn-secondary",
+                            children: "Results",
+                          }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+                            onClick: () => onDelete(t.id),
+                            className: "btn-danger",
+                            children: "Delete",
+                          }),
+                        ],
+                      }),
+                    ],
+                  },
+                  t.id,
+                );
+              }),
+            }),
+    ],
+  });
 }
-export {
-  TestsList as component
-};
+export { TestsList as component };

@@ -8,12 +8,10 @@ function requireFs() {
   try {
     fs = require(
       /* webpackIgnore: true */
-      "fs"
+      "fs",
     );
-    if (!fs || !fs.readFile || !fs.readFileSync)
-      fs = null;
-  } catch (e) {
-  }
+    if (!fs || !fs.readFile || !fs.readFileSync) fs = null;
+  } catch (e) {}
   fs_1 = fs;
   return fs_1;
 }
@@ -23,28 +21,29 @@ function requireFetch() {
   if (hasRequiredFetch) return fetch_1;
   hasRequiredFetch = 1;
   fetch_1 = fetch;
-  var asPromise = requireAspromise(), fs = requireFs();
+  var asPromise = requireAspromise(),
+    fs = requireFs();
   function fetch(filename, options, callback) {
     if (typeof options === "function") {
       callback = options;
       options = {};
-    } else if (!options)
-      options = {};
-    if (!callback)
-      return asPromise(fetch, this, filename, options);
+    } else if (!options) options = {};
+    if (!callback) return asPromise(fetch, this, filename, options);
     if (!options.xhr && fs && fs.readFile)
       return fs.readFile(filename, function fetchReadFileCallback(err, contents) {
-        return err && typeof XMLHttpRequest !== "undefined" ? fetch.xhr(filename, options, callback) : err ? callback(err) : callback(null, options.binary ? contents : contents.toString("utf8"));
+        return err && typeof XMLHttpRequest !== "undefined"
+          ? fetch.xhr(filename, options, callback)
+          : err
+            ? callback(err)
+            : callback(null, options.binary ? contents : contents.toString("utf8"));
       });
     return fetch.xhr(filename, options, callback);
   }
   fetch.xhr = function fetch_xhr(filename, options, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function fetchOnReadyStateChange() {
-      if (xhr.readyState !== 4)
-        return void 0;
-      if (xhr.status !== 0 && xhr.status !== 200)
-        return callback(Error("status " + xhr.status));
+      if (xhr.readyState !== 4) return void 0;
+      if (xhr.status !== 0 && xhr.status !== 200) return callback(Error("status " + xhr.status));
       if (options.binary) {
         var buffer = xhr.response;
         if (!buffer) {
@@ -57,8 +56,7 @@ function requireFetch() {
       return callback(null, xhr.responseText);
     };
     if (options.binary) {
-      if ("overrideMimeType" in xhr)
-        xhr.overrideMimeType("text/plain; charset=x-user-defined");
+      if ("overrideMimeType" in xhr) xhr.overrideMimeType("text/plain; charset=x-user-defined");
       xhr.responseType = "arraybuffer";
     }
     xhr.open("GET", filename);
@@ -66,6 +64,4 @@ function requireFetch() {
   };
   return fetch_1;
 }
-export {
-  requireFetch as r
-};
+export { requireFetch as r };

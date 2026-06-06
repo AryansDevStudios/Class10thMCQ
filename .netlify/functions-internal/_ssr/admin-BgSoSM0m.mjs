@@ -53,49 +53,109 @@ import "../_libs/protobufjs__codegen.mjs";
 import "../_libs/protobufjs__fetch.mjs";
 import "../_libs/protobufjs__path.mjs";
 function AdminShell() {
-  const {
-    isAdmin,
-    setAdmin
-  } = useAuth();
+  const { isAdmin, setAdmin } = useAuth();
   const navigate = useNavigate();
   const [code, setCode] = reactExports.useState("");
   const [error, setError] = reactExports.useState("");
   if (!isAdmin) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen bg-slate-50 px-6 py-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-md", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "text-sm text-slate-600 hover:text-slate-900", children: "← Back to home" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "mt-3 text-2xl font-bold text-slate-900", children: "Admin Access" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-slate-600", children: "Enter the shared management code." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: (e) => {
-        e.preventDefault();
-        if (code === ADMIN_CODE) {
-          setAdmin(true);
-        } else {
-          setError("Incorrect code.");
-        }
-      }, className: "mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "password", autoFocus: true, value: code, onChange: (e) => setCode(e.target.value), className: "input", placeholder: "Admin code" }),
-        error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-red-600", children: error }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn-primary w-full", children: "Enter" })
-      ] })
-    ] }) });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+      className: "min-h-screen bg-slate-50 px-6 py-16",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+        className: "mx-auto max-w-md",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+            to: "/",
+            className: "text-sm text-slate-600 hover:text-slate-900",
+            children: "← Back to home",
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", {
+            className: "mt-3 text-2xl font-bold text-slate-900",
+            children: "Admin Access",
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+            className: "mt-1 text-sm text-slate-600",
+            children: "Enter the shared management code.",
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("form", {
+            onSubmit: (e) => {
+              e.preventDefault();
+              if (code === ADMIN_CODE) {
+                setAdmin(true);
+              } else {
+                setError("Incorrect code.");
+              }
+            },
+            className: "mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("input", {
+                type: "password",
+                autoFocus: true,
+                value: code,
+                onChange: (e) => setCode(e.target.value),
+                className: "input",
+                placeholder: "Admin code",
+              }),
+              error &&
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                  className: "text-sm text-red-600",
+                  children: error,
+                }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+                className: "btn-primary w-full",
+                children: "Enter",
+              }),
+            ],
+          }),
+        ],
+      }),
+    });
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-slate-50", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "border-b border-slate-200 bg-white", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto flex max-w-5xl items-center justify-between px-6 py-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "flex items-center gap-5 text-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/admin", className: "font-semibold text-slate-900", children: "Admin" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/admin/tests", className: "text-slate-600 hover:text-slate-900", children: "Tests" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/admin/students", className: "text-slate-600 hover:text-slate-900", children: "Students" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-        setAdmin(false);
-        navigate({
-          to: "/"
-        });
-      }, className: "btn-ghost", children: "Log out" })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "mx-auto max-w-5xl px-6 py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+    className: "min-h-screen bg-slate-50",
+    children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("header", {
+        className: "border-b border-slate-200 bg-white",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+          className: "mx-auto flex max-w-5xl items-center justify-between px-6 py-3",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", {
+              className: "flex items-center gap-5 text-sm",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+                  to: "/admin",
+                  className: "font-semibold text-slate-900",
+                  children: "Admin",
+                }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+                  to: "/admin/tests",
+                  className: "text-slate-600 hover:text-slate-900",
+                  children: "Tests",
+                }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+                  to: "/admin/students",
+                  className: "text-slate-600 hover:text-slate-900",
+                  children: "Students",
+                }),
+              ],
+            }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+              onClick: () => {
+                setAdmin(false);
+                navigate({
+                  to: "/",
+                });
+              },
+              className: "btn-ghost",
+              children: "Log out",
+            }),
+          ],
+        }),
+      }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("main", {
+        className: "mx-auto max-w-5xl px-6 py-8",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}),
+      }),
+    ],
+  });
 }
-export {
-  AdminShell as component
-};
+export { AdminShell as component };

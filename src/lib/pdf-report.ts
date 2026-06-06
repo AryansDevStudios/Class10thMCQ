@@ -33,14 +33,26 @@ export function regradeSubmission(s: Submission, test: TestDoc): Graded {
       unansweredCount: s.unansweredCount!,
     };
   }
-  let correct = 0, wrong = 0, unanswered = 0;
+  let correct = 0,
+    wrong = 0,
+    unanswered = 0;
   for (const q of test.questions) {
     const chosen = s.answers?.[q.id];
-    if (chosen === undefined || chosen === null) { unanswered++; continue; }
+    if (chosen === undefined || chosen === null) {
+      unanswered++;
+      continue;
+    }
     const orig = s.optionOrder?.[q.id]?.[chosen];
-    if (orig === q.correctIndex) correct++; else wrong++;
+    if (orig === q.correctIndex) correct++;
+    else wrong++;
   }
-  return { ...s, score: correct, correctCount: correct, wrongCount: wrong, unansweredCount: unanswered };
+  return {
+    ...s,
+    score: correct,
+    correctCount: correct,
+    wrongCount: wrong,
+    unansweredCount: unanswered,
+  };
 }
 
 export { statusText, safeFile };
@@ -48,14 +60,14 @@ export { statusText, safeFile };
 export async function exportClassReportPdf(test: TestDoc, graded: Graded[]) {
   // Sort descending by score
   const sorted = [...graded].sort((a, b) => b.score - a.score || a.wrongCount - b.wrongCount);
-  
+
   const doc = new jsPDF();
-  
+
   // Title
   doc.setFontSize(18);
   doc.setTextColor(40, 40, 40);
   doc.text(`${test.title} - Class Results`, 14, 22);
-  
+
   // Subtitle
   doc.setFontSize(11);
   doc.setTextColor(100, 100, 100);
@@ -71,16 +83,16 @@ export async function exportClassReportPdf(test: TestDoc, graded: Graded[]) {
     `${s.score} / ${test.questions.length}`,
     s.correctCount,
     s.wrongCount,
-    s.unansweredCount
+    s.unansweredCount,
   ]);
 
   autoTable(doc, {
     startY: 45,
     head: [["Rank", "Sr. No.", "Name", "Section", "Score", "Correct", "Wrong", "Unattempted"]],
     body: tableData,
-    theme: 'grid',
+    theme: "grid",
     styles: {
-      font: 'helvetica',
+      font: "helvetica",
       fontSize: 10,
       textColor: [40, 40, 40],
       lineColor: [226, 232, 240],
@@ -89,27 +101,27 @@ export async function exportClassReportPdf(test: TestDoc, graded: Graded[]) {
     headStyles: {
       fillColor: [241, 245, 249],
       textColor: [15, 23, 42],
-      fontStyle: 'bold',
+      fontStyle: "bold",
     },
     alternateRowStyles: {
-      fillColor: [250, 250, 250]
-    }
+      fillColor: [250, 250, 250],
+    },
   });
 
   doc.save(`${safeFile(test.title)}-class-results.pdf`);
 }
 
 export async function exportSectionReportPdf(test: TestDoc, graded: Graded[]) {
-  const sections = Array.from(new Set(graded.map(g => g.section))).sort();
+  const sections = Array.from(new Set(graded.map((g) => g.section))).sort();
   const doc = new jsPDF();
-  
+
   let startY = 22;
-  
+
   doc.setFontSize(18);
   doc.setTextColor(40, 40, 40);
   doc.text(`${test.title} - Section-wise Results`, 14, startY);
   startY += 8;
-  
+
   doc.setFontSize(11);
   doc.setTextColor(100, 100, 100);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, startY);
@@ -120,14 +132,16 @@ export async function exportSectionReportPdf(test: TestDoc, graded: Graded[]) {
       doc.addPage();
       startY = 22;
     }
-    
+
     doc.setFontSize(14);
     doc.setTextColor(40, 40, 40);
     doc.text(`Section ${section}`, 14, startY);
-    
-    const sectionGraded = graded.filter(g => g.section === section);
-    const sorted = [...sectionGraded].sort((a, b) => b.score - a.score || a.wrongCount - b.wrongCount);
-    
+
+    const sectionGraded = graded.filter((g) => g.section === section);
+    const sorted = [...sectionGraded].sort(
+      (a, b) => b.score - a.score || a.wrongCount - b.wrongCount,
+    );
+
     const tableData = sorted.map((s, i) => [
       i + 1,
       s.srNo,
@@ -135,16 +149,16 @@ export async function exportSectionReportPdf(test: TestDoc, graded: Graded[]) {
       `${s.score} / ${test.questions.length}`,
       s.correctCount,
       s.wrongCount,
-      s.unansweredCount
+      s.unansweredCount,
     ]);
 
     autoTable(doc, {
       startY: startY + 5,
       head: [["Rank", "Sr. No.", "Name", "Score", "Correct", "Wrong", "Unattempted"]],
       body: tableData,
-      theme: 'grid',
+      theme: "grid",
       styles: {
-        font: 'helvetica',
+        font: "helvetica",
         fontSize: 10,
         textColor: [40, 40, 40],
         lineColor: [226, 232, 240],
@@ -153,11 +167,11 @@ export async function exportSectionReportPdf(test: TestDoc, graded: Graded[]) {
       headStyles: {
         fillColor: [241, 245, 249],
         textColor: [15, 23, 42],
-        fontStyle: 'bold',
+        fontStyle: "bold",
       },
       alternateRowStyles: {
-        fillColor: [250, 250, 250]
-      }
+        fillColor: [250, 250, 250],
+      },
     });
   });
 

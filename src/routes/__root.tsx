@@ -106,12 +106,17 @@ function RootShell({ children }: { children: React.ReactNode }) {
           <img src="/schoollogo.jpg" alt="School Logo" className="h-12 w-auto object-contain" />
           <div>
             <h2 className="text-xl font-bold tracking-tight text-slate-900">Class 10th MCQ Test</h2>
-            <p className="text-sm font-medium text-slate-500">MP Public School, Anandnagar Maharajganj</p>
+            <p className="text-sm font-medium text-slate-500">
+              MP Public School, Anandnagar Maharajganj
+            </p>
           </div>
         </header>
         <main className="flex-1">{children}</main>
         <footer className="bg-slate-900 py-6 text-center text-sm text-slate-400">
-          <p>© {new Date().getFullYear()} MP Public School, Anandnagar Maharajganj. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} MP Public School, Anandnagar Maharajganj. All rights
+            reserved.
+          </p>
         </footer>
         <Scripts />
       </body>

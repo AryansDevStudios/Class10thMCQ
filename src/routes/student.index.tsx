@@ -1,7 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
-import { db, FIREBASE_CONFIGURED } from "@/lib/firebase";
+import { getTestsFn } from "@/server.functions/tests.functions";
+import {
+  getMultipleStudentSubmissionsFn,
+  getStudentSubmissionFn,
+} from "@/server.functions/submissions.functions";
 import { useAuth } from "@/lib/auth";
 import { useServerNow } from "@/lib/server-time";
 import type { Submission, TestDoc } from "@/lib/types";
@@ -30,24 +33,19 @@ function StudentHome() {
       navigate({ to: "/student/login" });
       return;
     }
-    if (!FIREBASE_CONFIGURED) {
-      setLoading(false);
-      return;
-    }
     (async () => {
-      const snap = await getDocs(query(collection(db(), "tests"), orderBy("startAt", "desc")));
-      const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as TestDoc) }));
-      setTests(list);
-      const results = await Promise.all(
-        list.map(async (t) => {
-          try {
-            const sub = await getDoc(doc(db(), "tests", t.id!, "submissions", student.srNo));
-            return sub.exists() && (sub.data() as any).submittedAt ? t.id! : null;
-          } catch { return null; }
-        })
-      );
-      setSubmittedIds(new Set(results.filter((x): x is string => !!x)));
-      setLoading(false);
+      try {
+        const list = await getTestsFn();
+        setTests(list);
+        const results = await getMultipleStudentSubmissionsFn({
+          data: { srNo: student.srNo, testIds: list.map((t) => t.id!) },
+        });
+        setSubmittedIds(new Set(results));
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [student, navigate]);
 
@@ -55,9 +53,9 @@ function StudentHome() {
     if (!student) return;
     setViewLoading(true);
     try {
-      const sub = await getDoc(doc(db(), "tests", t.id!, "submissions", student.srNo));
-      if (!sub.exists()) return;
-      const graded = regradeSubmission(sub.data() as Submission, t);
+      const sub = await getStudentSubmissionFn({ data: { testId: t.id!, srNo: student.srNo } });
+      if (!sub) return;
+      const graded = regradeSubmission(sub, t);
       setViewing({ test: t, graded });
     } finally {
       setViewLoading(false);
@@ -71,8 +69,16 @@ function StudentHome() {
   const past = tests.filter((t) => now >= t.endAt);
 
   const groups: Record<TabKey, { label: string; items: TestDoc[]; empty: string }> = {
-    live: { label: `Live now (${live.length})`, items: live, empty: "No tests are live right now. Check back at the scheduled start time." },
-    upcoming: { label: `Upcoming (${upcoming.length})`, items: upcoming, empty: "No upcoming tests scheduled." },
+    live: {
+      label: `Live now (${live.length})`,
+      items: live,
+      empty: "No tests are live right now. Check back at the scheduled start time.",
+    },
+    upcoming: {
+      label: `Upcoming (${upcoming.length})`,
+      items: upcoming,
+      empty: "No upcoming tests scheduled.",
+    },
     past: { label: `Past (${past.length})`, items: past, empty: "You have no past tests yet." },
   };
   const current = groups[tab];
@@ -82,11 +88,21 @@ function StudentHome() {
       <div className="mx-auto max-w-3xl">
         <header className="flex items-center justify-between">
           <div>
-            <Link to="/" className="text-xs text-slate-500 hover:text-slate-800">← Home</Link>
+            <Link to="/" className="text-xs text-slate-500 hover:text-slate-800">
+              ← Home
+            </Link>
             <h1 className="mt-1 text-2xl font-bold text-slate-900">Welcome, {student.name}</h1>
-            <p className="text-sm text-slate-600">Sr. No. {student.srNo} · Class 10-{student.section}</p>
+            <p className="text-sm text-slate-600">
+              Sr. No. {student.srNo} · Class 10-{student.section}
+            </p>
           </div>
-          <button onClick={() => { logoutStudent(); navigate({ to: "/" }); }} className="btn-ghost">
+          <button
+            onClick={() => {
+              logoutStudent();
+              navigate({ to: "/" });
+            }}
+            className="btn-ghost"
+          >
             Log out
           </button>
         </header>
@@ -118,7 +134,10 @@ function StudentHome() {
           ) : (
             <ul className="space-y-3">
               {current.items.map((t) => (
-                <li key={t.id} className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <li
+                  key={t.id}
+                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                >
                   <div>
                     <p className="font-medium text-slate-900">{t.title}</p>
                     <p className="text-xs text-slate-500">
@@ -126,7 +145,11 @@ function StudentHome() {
                     </p>
                   </div>
                   {tab === "live" && !submittedIds.has(t.id!) && (
-                    <Link to="/student/test/$testId" params={{ testId: t.id! }} className="btn-primary">
+                    <Link
+                      to="/student/test/$testId"
+                      params={{ testId: t.id! }}
+                      className="btn-primary"
+                    >
                       Start test · {fmtRemaining(t.endAt - now)}
                     </Link>
                   )}
@@ -139,7 +162,11 @@ function StudentHome() {
                     <span className="text-sm text-slate-500">Not yet open</span>
                   )}
                   {tab === "past" && submittedIds.has(t.id!) && (
-                    <button onClick={() => openResult(t)} className="btn-primary" disabled={viewLoading}>
+                    <button
+                      onClick={() => openResult(t)}
+                      className="btn-primary"
+                      disabled={viewLoading}
+                    >
                       {viewLoading ? "Loading…" : "View result"}
                     </button>
                   )}
@@ -165,7 +192,9 @@ function StudentHome() {
 }
 
 function StudentResultModal({
-  test, graded, onClose,
+  test,
+  graded,
+  onClose,
 }: {
   test: TestDoc;
   graded: Graded;
@@ -179,7 +208,12 @@ function StudentResultModal({
             <h2 className="text-lg font-bold text-slate-900">{test.title}</h2>
             <p className="text-xs text-slate-500">Your result</p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-900 text-2xl leading-none">×</button>
+          <button
+            onClick={onClose}
+            className="text-slate-500 hover:text-slate-900 text-2xl leading-none"
+          >
+            ×
+          </button>
         </div>
         <div className="p-5">
           <StudentResultView test={test} s={graded} />

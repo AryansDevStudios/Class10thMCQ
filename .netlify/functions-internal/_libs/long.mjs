@@ -4,8 +4,8 @@ var hasRequiredUmd;
 function requireUmd() {
   if (hasRequiredUmd) return umd$1.exports;
   hasRequiredUmd = 1;
-  (function(module, exports) {
-    (function(global, factory) {
+  (function (module, exports) {
+    (function (global, factory) {
       function preferDefault(exports2) {
         return exports2.default || exports2;
       }
@@ -15,9 +15,9 @@ function requireUmd() {
       }
     })(
       typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : umd,
-      function(_exports) {
+      function (_exports) {
         Object.defineProperty(_exports, "__esModule", {
-          value: true
+          value: true,
         });
         _exports.default = void 0;
         var wasm = null;
@@ -26,37 +26,17 @@ function requireUmd() {
             new WebAssembly.Module(
               new Uint8Array([
                 // \0asm
-                0,
-                97,
-                115,
-                109,
+                0, 97, 115, 109,
                 // version 1
-                1,
-                0,
-                0,
-                0,
+                1, 0, 0, 0,
                 // section "type"
-                1,
-                13,
-                2,
+                1, 13, 2,
                 // 0, () => i32
-                96,
-                0,
-                1,
-                127,
+                96, 0, 1, 127,
                 // 1, (i32, i32, i32, i32) => i32
-                96,
-                4,
-                127,
-                127,
-                127,
-                127,
-                1,
-                127,
+                96, 4, 127, 127, 127, 127, 1, 127,
                 // section "function"
-                3,
-                7,
-                6,
+                3, 7, 6,
                 // 0, type 0
                 0,
                 // 1, type 1
@@ -70,281 +50,47 @@ function requireUmd() {
                 // 5, type 1
                 1,
                 // section "global"
-                6,
-                6,
-                1,
+                6, 6, 1,
                 // 0, "high", mutable i32
-                127,
-                1,
-                65,
-                0,
-                11,
+                127, 1, 65, 0, 11,
                 // section "export"
-                7,
-                50,
-                6,
+                7, 50, 6,
                 // 0, "mul"
-                3,
-                109,
-                117,
-                108,
-                0,
-                1,
+                3, 109, 117, 108, 0, 1,
                 // 1, "div_s"
-                5,
-                100,
-                105,
-                118,
-                95,
-                115,
-                0,
-                2,
+                5, 100, 105, 118, 95, 115, 0, 2,
                 // 2, "div_u"
-                5,
-                100,
-                105,
-                118,
-                95,
-                117,
-                0,
-                3,
+                5, 100, 105, 118, 95, 117, 0, 3,
                 // 3, "rem_s"
-                5,
-                114,
-                101,
-                109,
-                95,
-                115,
-                0,
-                4,
+                5, 114, 101, 109, 95, 115, 0, 4,
                 // 4, "rem_u"
-                5,
-                114,
-                101,
-                109,
-                95,
-                117,
-                0,
-                5,
+                5, 114, 101, 109, 95, 117, 0, 5,
                 // 5, "get_high"
-                8,
-                103,
-                101,
-                116,
-                95,
-                104,
-                105,
-                103,
-                104,
-                0,
-                0,
+                8, 103, 101, 116, 95, 104, 105, 103, 104, 0, 0,
                 // section "code"
-                10,
-                191,
-                1,
-                6,
+                10, 191, 1, 6,
                 // 0, "get_high"
-                4,
-                0,
-                35,
-                0,
-                11,
+                4, 0, 35, 0, 11,
                 // 1, "mul"
-                36,
-                1,
-                1,
-                126,
-                32,
-                0,
-                173,
-                32,
-                1,
-                173,
-                66,
-                32,
-                134,
-                132,
-                32,
-                2,
-                173,
-                32,
-                3,
-                173,
-                66,
-                32,
-                134,
-                132,
-                126,
-                34,
-                4,
-                66,
-                32,
-                135,
-                167,
-                36,
-                0,
-                32,
-                4,
-                167,
-                11,
+                36, 1, 1, 126, 32, 0, 173, 32, 1, 173, 66, 32, 134, 132, 32, 2, 173, 32, 3, 173, 66,
+                32, 134, 132, 126, 34, 4, 66, 32, 135, 167, 36, 0, 32, 4, 167, 11,
                 // 2, "div_s"
-                36,
-                1,
-                1,
-                126,
-                32,
-                0,
-                173,
-                32,
-                1,
-                173,
-                66,
-                32,
-                134,
-                132,
-                32,
-                2,
-                173,
-                32,
-                3,
-                173,
-                66,
-                32,
-                134,
-                132,
-                127,
-                34,
-                4,
-                66,
-                32,
-                135,
-                167,
-                36,
-                0,
-                32,
-                4,
-                167,
-                11,
+                36, 1, 1, 126, 32, 0, 173, 32, 1, 173, 66, 32, 134, 132, 32, 2, 173, 32, 3, 173, 66,
+                32, 134, 132, 127, 34, 4, 66, 32, 135, 167, 36, 0, 32, 4, 167, 11,
                 // 3, "div_u"
-                36,
-                1,
-                1,
-                126,
-                32,
-                0,
-                173,
-                32,
-                1,
-                173,
-                66,
-                32,
-                134,
-                132,
-                32,
-                2,
-                173,
-                32,
-                3,
-                173,
-                66,
-                32,
-                134,
-                132,
-                128,
-                34,
-                4,
-                66,
-                32,
-                135,
-                167,
-                36,
-                0,
-                32,
-                4,
-                167,
-                11,
+                36, 1, 1, 126, 32, 0, 173, 32, 1, 173, 66, 32, 134, 132, 32, 2, 173, 32, 3, 173, 66,
+                32, 134, 132, 128, 34, 4, 66, 32, 135, 167, 36, 0, 32, 4, 167, 11,
                 // 4, "rem_s"
-                36,
-                1,
-                1,
-                126,
-                32,
-                0,
-                173,
-                32,
-                1,
-                173,
-                66,
-                32,
-                134,
-                132,
-                32,
-                2,
-                173,
-                32,
-                3,
-                173,
-                66,
-                32,
-                134,
-                132,
-                129,
-                34,
-                4,
-                66,
-                32,
-                135,
-                167,
-                36,
-                0,
-                32,
-                4,
-                167,
-                11,
+                36, 1, 1, 126, 32, 0, 173, 32, 1, 173, 66, 32, 134, 132, 32, 2, 173, 32, 3, 173, 66,
+                32, 134, 132, 129, 34, 4, 66, 32, 135, 167, 36, 0, 32, 4, 167, 11,
                 // 5, "rem_u"
-                36,
-                1,
-                1,
-                126,
-                32,
-                0,
-                173,
-                32,
-                1,
-                173,
-                66,
-                32,
-                134,
-                132,
-                32,
-                2,
-                173,
-                32,
-                3,
-                173,
-                66,
-                32,
-                134,
-                132,
-                130,
-                34,
-                4,
-                66,
-                32,
-                135,
-                167,
-                36,
-                0,
-                32,
-                4,
-                167,
-                11
-              ])
+                36, 1, 1, 126, 32, 0, 173, 32, 1, 173, 66, 32, 134, 132, 32, 2, 173, 32, 3, 173, 66,
+                32, 134, 132, 130, 34, 4, 66, 32, 135, 167, 36, 0, 32, 4, 167, 11,
+              ]),
             ),
-            {}
+            {},
           ).exports;
-        } catch {
-        }
+        } catch {}
         function Long(low, high, unsigned) {
           this.low = low | 0;
           this.high = high | 0;
@@ -352,7 +98,7 @@ function requireUmd() {
         }
         Long.prototype.__isLong__;
         Object.defineProperty(Long.prototype, "__isLong__", {
-          value: true
+          value: true,
         });
         function isLong(obj) {
           return (obj && obj["__isLong__"]) === true;
@@ -368,7 +114,7 @@ function requireUmd() {
           var obj, cachedObj, cache;
           if (unsigned) {
             value >>>= 0;
-            if (cache = 0 <= value && value < 256) {
+            if ((cache = 0 <= value && value < 256)) {
               cachedObj = UINT_CACHE[value];
               if (cachedObj) return cachedObj;
             }
@@ -377,7 +123,7 @@ function requireUmd() {
             return obj;
           } else {
             value |= 0;
-            if (cache = -128 <= value && value < 128) {
+            if ((cache = -128 <= value && value < 128)) {
               cachedObj = INT_CACHE[value];
               if (cachedObj) return cachedObj;
             }
@@ -397,11 +143,7 @@ function requireUmd() {
             if (value + 1 >= TWO_PWR_63_DBL) return MAX_VALUE;
           }
           if (value < 0) return fromNumber(-value, unsigned).neg();
-          return fromBits(
-            value % TWO_PWR_32_DBL | 0,
-            value / TWO_PWR_32_DBL | 0,
-            unsigned
-          );
+          return fromBits((value % TWO_PWR_32_DBL) | 0, (value / TWO_PWR_32_DBL) | 0, unsigned);
         }
         Long.fromNumber = fromNumber;
         function fromBits(lowBits, highBits, unsigned) {
@@ -429,7 +171,8 @@ function requireUmd() {
           var radixToPower = fromNumber(pow_dbl(radix, 8));
           var result = ZERO;
           for (var i = 0; i < str.length; i += 8) {
-            var size = Math.min(8, str.length - i), value = parseInt(str.substring(i, i + size), radix);
+            var size = Math.min(8, str.length - i),
+              value = parseInt(str.substring(i, i + size), radix);
             if (size < 8) {
               var power = fromNumber(pow_dbl(radix, size));
               result = result.mul(power).add(fromNumber(value));
@@ -448,7 +191,7 @@ function requireUmd() {
           return fromBits(
             val.low,
             val.high,
-            typeof unsigned === "boolean" ? unsigned : val.unsigned
+            typeof unsigned === "boolean" ? unsigned : val.unsigned,
           );
         }
         Long.fromValue = fromValue;
@@ -479,8 +222,7 @@ function requireUmd() {
           return this.unsigned ? this.low >>> 0 : this.low;
         };
         LongPrototype.toNumber = function toNumber() {
-          if (this.unsigned)
-            return (this.high >>> 0) * TWO_PWR_32_DBL + (this.low >>> 0);
+          if (this.unsigned) return (this.high >>> 0) * TWO_PWR_32_DBL + (this.low >>> 0);
           return this.high * TWO_PWR_32_DBL + (this.low >>> 0);
         };
         LongPrototype.toString = function toString(radix) {
@@ -489,14 +231,19 @@ function requireUmd() {
           if (this.isZero()) return "0";
           if (this.isNegative()) {
             if (this.eq(MIN_VALUE)) {
-              var radixLong = fromNumber(radix), div = this.div(radixLong), rem1 = div.mul(radixLong).sub(this);
+              var radixLong = fromNumber(radix),
+                div = this.div(radixLong),
+                rem1 = div.mul(radixLong).sub(this);
               return div.toString(radix) + rem1.toInt().toString(radix);
             } else return "-" + this.neg().toString(radix);
           }
-          var radixToPower = fromNumber(pow_dbl(radix, 6), this.unsigned), rem = this;
+          var radixToPower = fromNumber(pow_dbl(radix, 6), this.unsigned),
+            rem = this;
           var result = "";
           while (true) {
-            var remDiv = rem.div(radixToPower), intval = rem.sub(remDiv.mul(radixToPower)).toInt() >>> 0, digits = intval.toString(radix);
+            var remDiv = rem.div(radixToPower),
+              intval = rem.sub(remDiv.mul(radixToPower)).toInt() >>> 0,
+              digits = intval.toString(radix);
             rem = remDiv;
             if (rem.isZero()) return digits + result;
             else {
@@ -518,10 +265,9 @@ function requireUmd() {
           return this.low >>> 0;
         };
         LongPrototype.getNumBitsAbs = function getNumBitsAbs() {
-          if (this.isNegative())
-            return this.eq(MIN_VALUE) ? 64 : this.neg().getNumBitsAbs();
+          if (this.isNegative()) return this.eq(MIN_VALUE) ? 64 : this.neg().getNumBitsAbs();
           var val = this.high != 0 ? this.high : this.low;
-          for (var bit = 31; bit > 0; bit--) if ((val & 1 << bit) != 0) break;
+          for (var bit = 31; bit > 0; bit--) if ((val & (1 << bit)) != 0) break;
           return this.high != 0 ? bit + 33 : bit + 1;
         };
         LongPrototype.isSafeInteger = function isSafeInteger() {
@@ -556,49 +302,61 @@ function requireUmd() {
         LongPrototype.notEquals = function notEquals(other) {
           return !this.eq(
             /* validates */
-            other
+            other,
           );
         };
         LongPrototype.neq = LongPrototype.notEquals;
         LongPrototype.ne = LongPrototype.notEquals;
         LongPrototype.lessThan = function lessThan(other) {
-          return this.comp(
-            /* validates */
-            other
-          ) < 0;
+          return (
+            this.comp(
+              /* validates */
+              other,
+            ) < 0
+          );
         };
         LongPrototype.lt = LongPrototype.lessThan;
         LongPrototype.lessThanOrEqual = function lessThanOrEqual(other) {
-          return this.comp(
-            /* validates */
-            other
-          ) <= 0;
+          return (
+            this.comp(
+              /* validates */
+              other,
+            ) <= 0
+          );
         };
         LongPrototype.lte = LongPrototype.lessThanOrEqual;
         LongPrototype.le = LongPrototype.lessThanOrEqual;
         LongPrototype.greaterThan = function greaterThan(other) {
-          return this.comp(
-            /* validates */
-            other
-          ) > 0;
+          return (
+            this.comp(
+              /* validates */
+              other,
+            ) > 0
+          );
         };
         LongPrototype.gt = LongPrototype.greaterThan;
         LongPrototype.greaterThanOrEqual = function greaterThanOrEqual(other) {
-          return this.comp(
-            /* validates */
-            other
-          ) >= 0;
+          return (
+            this.comp(
+              /* validates */
+              other,
+            ) >= 0
+          );
         };
         LongPrototype.gte = LongPrototype.greaterThanOrEqual;
         LongPrototype.ge = LongPrototype.greaterThanOrEqual;
         LongPrototype.compare = function compare(other) {
           if (!isLong(other)) other = fromValue(other);
           if (this.eq(other)) return 0;
-          var thisNeg = this.isNegative(), otherNeg = other.isNegative();
+          var thisNeg = this.isNegative(),
+            otherNeg = other.isNegative();
           if (thisNeg && !otherNeg) return -1;
           if (!thisNeg && otherNeg) return 1;
           if (!this.unsigned) return this.sub(other).isNegative() ? -1 : 1;
-          return other.high >>> 0 > this.high >>> 0 || other.high === this.high && other.low >>> 0 > this.low >>> 0 ? -1 : 1;
+          return other.high >>> 0 > this.high >>> 0 ||
+            (other.high === this.high && other.low >>> 0 > this.low >>> 0)
+            ? -1
+            : 1;
         };
         LongPrototype.comp = LongPrototype.compare;
         LongPrototype.negate = function negate() {
@@ -616,7 +374,10 @@ function requireUmd() {
           var b32 = addend.high & 65535;
           var b16 = addend.low >>> 16;
           var b00 = addend.low & 65535;
-          var c48 = 0, c32 = 0, c16 = 0, c00 = 0;
+          var c48 = 0,
+            c32 = 0,
+            c16 = 0,
+            c00 = 0;
           c00 += a00 + b00;
           c16 += c00 >>> 16;
           c00 &= 65535;
@@ -628,7 +389,7 @@ function requireUmd() {
           c32 &= 65535;
           c48 += a48 + b48;
           c48 &= 65535;
-          return fromBits(c16 << 16 | c00, c48 << 16 | c32, this.unsigned);
+          return fromBits((c16 << 16) | c00, (c48 << 16) | c32, this.unsigned);
         };
         LongPrototype.subtract = function subtract(subtrahend) {
           if (!isLong(subtrahend)) subtrahend = fromValue(subtrahend);
@@ -639,12 +400,7 @@ function requireUmd() {
           if (this.isZero()) return this;
           if (!isLong(multiplier)) multiplier = fromValue(multiplier);
           if (wasm) {
-            var low = wasm["mul"](
-              this.low,
-              this.high,
-              multiplier.low,
-              multiplier.high
-            );
+            var low = wasm["mul"](this.low, this.high, multiplier.low, multiplier.high);
             return fromBits(low, wasm["get_high"](), this.unsigned);
           }
           if (multiplier.isZero()) return this.unsigned ? UZERO : ZERO;
@@ -653,13 +409,9 @@ function requireUmd() {
           if (this.isNegative()) {
             if (multiplier.isNegative()) return this.neg().mul(multiplier.neg());
             else return this.neg().mul(multiplier).neg();
-          } else if (multiplier.isNegative())
-            return this.mul(multiplier.neg()).neg();
+          } else if (multiplier.isNegative()) return this.mul(multiplier.neg()).neg();
           if (this.lt(TWO_PWR_24) && multiplier.lt(TWO_PWR_24))
-            return fromNumber(
-              this.toNumber() * multiplier.toNumber(),
-              this.unsigned
-            );
+            return fromNumber(this.toNumber() * multiplier.toNumber(), this.unsigned);
           var a48 = this.high >>> 16;
           var a32 = this.high & 65535;
           var a16 = this.low >>> 16;
@@ -668,7 +420,10 @@ function requireUmd() {
           var b32 = multiplier.high & 65535;
           var b16 = multiplier.low >>> 16;
           var b00 = multiplier.low & 65535;
-          var c48 = 0, c32 = 0, c16 = 0, c00 = 0;
+          var c48 = 0,
+            c32 = 0,
+            c16 = 0,
+            c00 = 0;
           c00 += a00 * b00;
           c16 += c00 >>> 16;
           c00 &= 65535;
@@ -689,21 +444,26 @@ function requireUmd() {
           c32 &= 65535;
           c48 += a48 * b00 + a32 * b16 + a16 * b32 + a00 * b48;
           c48 &= 65535;
-          return fromBits(c16 << 16 | c00, c48 << 16 | c32, this.unsigned);
+          return fromBits((c16 << 16) | c00, (c48 << 16) | c32, this.unsigned);
         };
         LongPrototype.mul = LongPrototype.multiply;
         LongPrototype.divide = function divide(divisor) {
           if (!isLong(divisor)) divisor = fromValue(divisor);
           if (divisor.isZero()) throw Error("division by zero");
           if (wasm) {
-            if (!this.unsigned && this.high === -2147483648 && divisor.low === -1 && divisor.high === -1) {
+            if (
+              !this.unsigned &&
+              this.high === -2147483648 &&
+              divisor.low === -1 &&
+              divisor.high === -1
+            ) {
               return this;
             }
             var low = (this.unsigned ? wasm["div_u"] : wasm["div_s"])(
               this.low,
               this.high,
               divisor.low,
-              divisor.high
+              divisor.high,
             );
             return fromBits(low, wasm["get_high"](), this.unsigned);
           }
@@ -711,8 +471,7 @@ function requireUmd() {
           var approx, rem, res;
           if (!this.unsigned) {
             if (this.eq(MIN_VALUE)) {
-              if (divisor.eq(ONE) || divisor.eq(NEG_ONE))
-                return MIN_VALUE;
+              if (divisor.eq(ONE) || divisor.eq(NEG_ONE)) return MIN_VALUE;
               else if (divisor.eq(MIN_VALUE)) return ONE;
               else {
                 var halfThis = this.shr(1);
@@ -734,14 +493,16 @@ function requireUmd() {
           } else {
             if (!divisor.unsigned) divisor = divisor.toUnsigned();
             if (divisor.gt(this)) return UZERO;
-            if (divisor.gt(this.shru(1)))
-              return UONE;
+            if (divisor.gt(this.shru(1))) return UONE;
             res = UZERO;
           }
           rem = this;
           while (rem.gte(divisor)) {
             approx = Math.max(1, Math.floor(rem.toNumber() / divisor.toNumber()));
-            var log2 = Math.ceil(Math.log(approx) / Math.LN2), delta = log2 <= 48 ? 1 : pow_dbl(2, log2 - 48), approxRes = fromNumber(approx), approxRem = approxRes.mul(divisor);
+            var log2 = Math.ceil(Math.log(approx) / Math.LN2),
+              delta = log2 <= 48 ? 1 : pow_dbl(2, log2 - 48),
+              approxRes = fromNumber(approx),
+              approxRem = approxRes.mul(divisor);
             while (approxRem.isNegative() || approxRem.gt(rem)) {
               approx -= delta;
               approxRes = fromNumber(approx, this.unsigned);
@@ -761,7 +522,7 @@ function requireUmd() {
               this.low,
               this.high,
               divisor.low,
-              divisor.high
+              divisor.high,
             );
             return fromBits(low, wasm["get_high"](), this.unsigned);
           }
@@ -782,27 +543,15 @@ function requireUmd() {
         LongPrototype.ctz = LongPrototype.countTrailingZeros;
         LongPrototype.and = function and(other) {
           if (!isLong(other)) other = fromValue(other);
-          return fromBits(
-            this.low & other.low,
-            this.high & other.high,
-            this.unsigned
-          );
+          return fromBits(this.low & other.low, this.high & other.high, this.unsigned);
         };
         LongPrototype.or = function or(other) {
           if (!isLong(other)) other = fromValue(other);
-          return fromBits(
-            this.low | other.low,
-            this.high | other.high,
-            this.unsigned
-          );
+          return fromBits(this.low | other.low, this.high | other.high, this.unsigned);
         };
         LongPrototype.xor = function xor(other) {
           if (!isLong(other)) other = fromValue(other);
-          return fromBits(
-            this.low ^ other.low,
-            this.high ^ other.high,
-            this.unsigned
-          );
+          return fromBits(this.low ^ other.low, this.high ^ other.high, this.unsigned);
         };
         LongPrototype.shiftLeft = function shiftLeft(numBits) {
           if (isLong(numBits)) numBits = numBits.toInt();
@@ -810,10 +559,10 @@ function requireUmd() {
           else if (numBits < 32)
             return fromBits(
               this.low << numBits,
-              this.high << numBits | this.low >>> 32 - numBits,
-              this.unsigned
+              (this.high << numBits) | (this.low >>> (32 - numBits)),
+              this.unsigned,
             );
-          else return fromBits(0, this.low << numBits - 32, this.unsigned);
+          else return fromBits(0, this.low << (numBits - 32), this.unsigned);
         };
         LongPrototype.shl = LongPrototype.shiftLeft;
         LongPrototype.shiftRight = function shiftRight(numBits) {
@@ -821,16 +570,11 @@ function requireUmd() {
           if ((numBits &= 63) === 0) return this;
           else if (numBits < 32)
             return fromBits(
-              this.low >>> numBits | this.high << 32 - numBits,
+              (this.low >>> numBits) | (this.high << (32 - numBits)),
               this.high >> numBits,
-              this.unsigned
+              this.unsigned,
             );
-          else
-            return fromBits(
-              this.high >> numBits - 32,
-              this.high >= 0 ? 0 : -1,
-              this.unsigned
-            );
+          else return fromBits(this.high >> (numBits - 32), this.high >= 0 ? 0 : -1, this.unsigned);
         };
         LongPrototype.shr = LongPrototype.shiftRight;
         LongPrototype.shiftRightUnsigned = function shiftRightUnsigned(numBits) {
@@ -838,12 +582,12 @@ function requireUmd() {
           if ((numBits &= 63) === 0) return this;
           if (numBits < 32)
             return fromBits(
-              this.low >>> numBits | this.high << 32 - numBits,
+              (this.low >>> numBits) | (this.high << (32 - numBits)),
               this.high >>> numBits,
-              this.unsigned
+              this.unsigned,
             );
           if (numBits === 32) return fromBits(this.high, 0, this.unsigned);
-          return fromBits(this.high >>> numBits - 32, 0, this.unsigned);
+          return fromBits(this.high >>> (numBits - 32), 0, this.unsigned);
         };
         LongPrototype.shru = LongPrototype.shiftRightUnsigned;
         LongPrototype.shr_u = LongPrototype.shiftRightUnsigned;
@@ -855,17 +599,17 @@ function requireUmd() {
           if (numBits < 32) {
             b = 32 - numBits;
             return fromBits(
-              this.low << numBits | this.high >>> b,
-              this.high << numBits | this.low >>> b,
-              this.unsigned
+              (this.low << numBits) | (this.high >>> b),
+              (this.high << numBits) | (this.low >>> b),
+              this.unsigned,
             );
           }
           numBits -= 32;
           b = 32 - numBits;
           return fromBits(
-            this.high << numBits | this.low >>> b,
-            this.low << numBits | this.high >>> b,
-            this.unsigned
+            (this.high << numBits) | (this.low >>> b),
+            (this.low << numBits) | (this.high >>> b),
+            this.unsigned,
           );
         };
         LongPrototype.rotl = LongPrototype.rotateLeft;
@@ -877,17 +621,17 @@ function requireUmd() {
           if (numBits < 32) {
             b = 32 - numBits;
             return fromBits(
-              this.high << b | this.low >>> numBits,
-              this.low << b | this.high >>> numBits,
-              this.unsigned
+              (this.high << b) | (this.low >>> numBits),
+              (this.low << b) | (this.high >>> numBits),
+              this.unsigned,
             );
           }
           numBits -= 32;
           b = 32 - numBits;
           return fromBits(
-            this.low << b | this.high >>> numBits,
-            this.high << b | this.low >>> numBits,
-            this.unsigned
+            (this.low << b) | (this.high >>> numBits),
+            (this.high << b) | (this.low >>> numBits),
+            this.unsigned,
           );
         };
         LongPrototype.rotr = LongPrototype.rotateRight;
@@ -903,29 +647,31 @@ function requireUmd() {
           return le ? this.toBytesLE() : this.toBytesBE();
         };
         LongPrototype.toBytesLE = function toBytesLE() {
-          var hi = this.high, lo = this.low;
+          var hi = this.high,
+            lo = this.low;
           return [
             lo & 255,
-            lo >>> 8 & 255,
-            lo >>> 16 & 255,
+            (lo >>> 8) & 255,
+            (lo >>> 16) & 255,
             lo >>> 24,
             hi & 255,
-            hi >>> 8 & 255,
-            hi >>> 16 & 255,
-            hi >>> 24
+            (hi >>> 8) & 255,
+            (hi >>> 16) & 255,
+            hi >>> 24,
           ];
         };
         LongPrototype.toBytesBE = function toBytesBE() {
-          var hi = this.high, lo = this.low;
+          var hi = this.high,
+            lo = this.low;
           return [
             hi >>> 24,
-            hi >>> 16 & 255,
-            hi >>> 8 & 255,
+            (hi >>> 16) & 255,
+            (hi >>> 8) & 255,
             hi & 255,
             lo >>> 24,
-            lo >>> 16 & 255,
-            lo >>> 8 & 255,
-            lo & 255
+            (lo >>> 16) & 255,
+            (lo >>> 8) & 255,
+            lo & 255,
           ];
         };
         Long.fromBytes = function fromBytes(bytes, unsigned, le) {
@@ -933,16 +679,16 @@ function requireUmd() {
         };
         Long.fromBytesLE = function fromBytesLE(bytes, unsigned) {
           return new Long(
-            bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24,
-            bytes[4] | bytes[5] << 8 | bytes[6] << 16 | bytes[7] << 24,
-            unsigned
+            bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24),
+            bytes[4] | (bytes[5] << 8) | (bytes[6] << 16) | (bytes[7] << 24),
+            unsigned,
           );
         };
         Long.fromBytesBE = function fromBytesBE(bytes, unsigned) {
           return new Long(
-            bytes[4] << 24 | bytes[5] << 16 | bytes[6] << 8 | bytes[7],
-            bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3],
-            unsigned
+            (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7],
+            (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3],
+            unsigned,
           );
         };
         if (typeof BigInt === "function") {
@@ -958,15 +704,13 @@ function requireUmd() {
           LongPrototype.toBigInt = function toBigInt() {
             var lowBigInt = BigInt(this.low >>> 0);
             var highBigInt = BigInt(this.unsigned ? this.high >>> 0 : this.high);
-            return highBigInt << BigInt(32) | lowBigInt;
+            return (highBigInt << BigInt(32)) | lowBigInt;
           };
         }
         _exports.default = Long;
-      }
+      },
     );
   })(umd$1, umd$1.exports);
   return umd$1.exports;
 }
-export {
-  requireUmd as r
-};
+export { requireUmd as r };

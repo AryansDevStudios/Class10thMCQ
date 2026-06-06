@@ -1,6 +1,5 @@
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import { db, FIREBASE_CONFIGURED } from "./firebase";
+import { syncServerTimeFn } from "@/server.functions/time.functions";
 
 // Computes offset = serverNow - Date.now(). Use getServerNow() everywhere
 // instead of Date.now() for time-sensitive logic.
@@ -9,15 +8,13 @@ let cachedOffset = 0;
 let lastSync = 0;
 
 export async function syncServerTime(): Promise<number> {
-  if (!FIREBASE_CONFIGURED) return 0;
-  const ref = doc(db(), "_meta", "heartbeat");
-  await setDoc(ref, { t: serverTimestamp() }, { merge: true });
-  const snap = await getDoc(ref);
-  const t = snap.data()?.t;
-  if (t && typeof t.toMillis === "function") {
-    const serverNow = t.toMillis();
+  try {
+    const data = await syncServerTimeFn();
+    const serverNow = data.serverNow;
     cachedOffset = serverNow - Date.now();
     lastSync = Date.now();
+  } catch (e) {
+    console.error("Failed to sync time", e);
   }
   return cachedOffset;
 }

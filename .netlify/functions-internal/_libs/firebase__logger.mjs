@@ -1,19 +1,19 @@
 var LogLevel;
-(function(LogLevel2) {
-  LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
-  LogLevel2[LogLevel2["VERBOSE"] = 1] = "VERBOSE";
-  LogLevel2[LogLevel2["INFO"] = 2] = "INFO";
-  LogLevel2[LogLevel2["WARN"] = 3] = "WARN";
-  LogLevel2[LogLevel2["ERROR"] = 4] = "ERROR";
-  LogLevel2[LogLevel2["SILENT"] = 5] = "SILENT";
+(function (LogLevel2) {
+  LogLevel2[(LogLevel2["DEBUG"] = 0)] = "DEBUG";
+  LogLevel2[(LogLevel2["VERBOSE"] = 1)] = "VERBOSE";
+  LogLevel2[(LogLevel2["INFO"] = 2)] = "INFO";
+  LogLevel2[(LogLevel2["WARN"] = 3)] = "WARN";
+  LogLevel2[(LogLevel2["ERROR"] = 4)] = "ERROR";
+  LogLevel2[(LogLevel2["SILENT"] = 5)] = "SILENT";
 })(LogLevel || (LogLevel = {}));
 const levelStringToEnum = {
-  "debug": LogLevel.DEBUG,
-  "verbose": LogLevel.VERBOSE,
-  "info": LogLevel.INFO,
-  "warn": LogLevel.WARN,
-  "error": LogLevel.ERROR,
-  "silent": LogLevel.SILENT
+  debug: LogLevel.DEBUG,
+  verbose: LogLevel.VERBOSE,
+  info: LogLevel.INFO,
+  warn: LogLevel.WARN,
+  error: LogLevel.ERROR,
+  silent: LogLevel.SILENT,
 };
 const defaultLogLevel = LogLevel.INFO;
 const ConsoleMethod = {
@@ -21,13 +21,13 @@ const ConsoleMethod = {
   [LogLevel.VERBOSE]: "log",
   [LogLevel.INFO]: "info",
   [LogLevel.WARN]: "warn",
-  [LogLevel.ERROR]: "error"
+  [LogLevel.ERROR]: "error",
 };
 const defaultLogHandler = (instance, logType, ...args) => {
   if (logType < instance.logLevel) {
     return;
   }
-  const now = (/* @__PURE__ */ new Date()).toISOString();
+  const now = /* @__PURE__ */ new Date().toISOString();
   const method = ConsoleMethod[logType];
   if (method) {
     console[method](`[${now}]  ${instance.name}:`, ...args);
@@ -100,7 +100,4 @@ class Logger {
     this._logHandler(this, LogLevel.ERROR, ...args);
   }
 }
-export {
-  LogLevel as L,
-  Logger as a
-};
+export { LogLevel as L, Logger as a };

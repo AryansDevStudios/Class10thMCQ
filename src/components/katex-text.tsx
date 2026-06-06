@@ -1,5 +1,6 @@
 import "katex/dist/katex.min.css";
-import { BlockMath, InlineMath } from "react-katex";
+import pkg from "react-katex";
+const { BlockMath, InlineMath } = pkg;
 import { Fragment } from "react";
 
 // Renders a string that mixes plain text with $...$ inline math and $$...$$

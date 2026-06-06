@@ -14,20 +14,49 @@ import "util";
 import "crypto";
 import "../_libs/isbot.mjs";
 function AdminHome() {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-slate-900", children: "Management Dashboard" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid gap-4 sm:grid-cols-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/admin/tests", className: "rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-blue-400", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold", children: "Tests" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-600", children: "Create tests, schedule windows, view live results." })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/admin/students", className: "rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-blue-400", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold", children: "Students" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-600", children: "View registrations and reset passwords." })
-      ] })
-    ] })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+    className: "space-y-6",
+    children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", {
+        className: "text-2xl font-bold text-slate-900",
+        children: "Management Dashboard",
+      }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+        className: "grid gap-4 sm:grid-cols-2",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, {
+            to: "/admin/tests",
+            className:
+              "rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-blue-400",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", {
+                className: "text-lg font-semibold",
+                children: "Tests",
+              }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                className: "text-sm text-slate-600",
+                children: "Create tests, schedule windows, view live results.",
+              }),
+            ],
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, {
+            to: "/admin/students",
+            className:
+              "rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-blue-400",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", {
+                className: "text-lg font-semibold",
+                children: "Students",
+              }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                className: "text-sm text-slate-600",
+                children: "View registrations and reset passwords.",
+              }),
+            ],
+          }),
+        ],
+      }),
+    ],
+  });
 }
-export {
-  AdminHome as component
-};
+export { AdminHome as component };

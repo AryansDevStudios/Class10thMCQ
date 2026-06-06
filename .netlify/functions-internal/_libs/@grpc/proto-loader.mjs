@@ -1,6 +1,13 @@
 import require$$1 from "path";
 import { r as requireLodash_camelcase } from "../lodash.camelcase.mjs";
-import { e as requireProtobufjs, r as require$$3, a as require$$4, b as require$$5, c as require$$6, d as requireDescriptor } from "../protobufjs.mjs";
+import {
+  e as requireProtobufjs,
+  r as require$$3,
+  a as require$$4,
+  b as require$$5,
+  c as require$$6,
+  d as requireDescriptor,
+} from "../protobufjs.mjs";
 import require$$0 from "fs";
 import { r as requireUmd } from "../long.mjs";
 var src = {};
@@ -78,9 +85,17 @@ var hasRequiredSrc;
 function requireSrc() {
   if (hasRequiredSrc) return src;
   hasRequiredSrc = 1;
-  (function(exports) {
+  (function (exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.loadFileDescriptorSetFromObject = exports.loadFileDescriptorSetFromBuffer = exports.fromJSON = exports.loadSync = exports.load = exports.IdempotencyLevel = exports.isAnyExtension = exports.Long = void 0;
+    exports.loadFileDescriptorSetFromObject =
+      exports.loadFileDescriptorSetFromBuffer =
+      exports.fromJSON =
+      exports.loadSync =
+      exports.load =
+      exports.IdempotencyLevel =
+      exports.isAnyExtension =
+      exports.Long =
+        void 0;
     const camelCase = requireLodash_camelcase();
     const Protobuf = requireProtobufjs();
     const descriptor = requireDescriptor();
@@ -92,18 +107,18 @@ function requireSrc() {
     }
     exports.isAnyExtension = isAnyExtension;
     var IdempotencyLevel;
-    (function(IdempotencyLevel2) {
+    (function (IdempotencyLevel2) {
       IdempotencyLevel2["IDEMPOTENCY_UNKNOWN"] = "IDEMPOTENCY_UNKNOWN";
       IdempotencyLevel2["NO_SIDE_EFFECTS"] = "NO_SIDE_EFFECTS";
       IdempotencyLevel2["IDEMPOTENT"] = "IDEMPOTENT";
-    })(IdempotencyLevel = exports.IdempotencyLevel || (exports.IdempotencyLevel = {}));
+    })((IdempotencyLevel = exports.IdempotencyLevel || (exports.IdempotencyLevel = {})));
     const descriptorOptions = {
       longs: String,
       enums: String,
       bytes: String,
       defaults: true,
       oneofs: true,
-      json: true
+      json: true,
     };
     function joinName(baseName, name) {
       if (baseName === "") {
@@ -113,7 +128,11 @@ function requireSrc() {
       }
     }
     function isHandledReflectionObject(obj) {
-      return obj instanceof Protobuf.Service || obj instanceof Protobuf.Type || obj instanceof Protobuf.Enum;
+      return (
+        obj instanceof Protobuf.Service ||
+        obj instanceof Protobuf.Type ||
+        obj instanceof Protobuf.Enum
+      );
     }
     function isNamespaceBase(obj) {
       return obj instanceof Protobuf.Namespace || obj instanceof Protobuf.Root;
@@ -124,9 +143,11 @@ function requireSrc() {
         return [[objName, obj]];
       } else {
         if (isNamespaceBase(obj) && typeof obj.nested !== "undefined") {
-          return Object.keys(obj.nested).map((name) => {
-            return getAllHandledReflectionObjects(obj.nested[name], objName);
-          }).reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+          return Object.keys(obj.nested)
+            .map((name) => {
+              return getAllHandledReflectionObjects(obj.nested[name], objName);
+            })
+            .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
         }
       }
       return [];
@@ -139,29 +160,34 @@ function requireSrc() {
     function createSerializer(cls) {
       return function serialize(arg) {
         if (Array.isArray(arg)) {
-          throw new Error(`Failed to serialize message: expected object with ${cls.name} structure, got array instead`);
+          throw new Error(
+            `Failed to serialize message: expected object with ${cls.name} structure, got array instead`,
+          );
         }
         const message = cls.fromObject(arg);
         return cls.encode(message).finish();
       };
     }
     function mapMethodOptions(options) {
-      return (options || []).reduce((obj, item) => {
-        for (const [key, value] of Object.entries(item)) {
-          switch (key) {
-            case "uninterpreted_option":
-              obj.uninterpreted_option.push(item.uninterpreted_option);
-              break;
-            default:
-              obj[key] = value;
+      return (options || []).reduce(
+        (obj, item) => {
+          for (const [key, value] of Object.entries(item)) {
+            switch (key) {
+              case "uninterpreted_option":
+                obj.uninterpreted_option.push(item.uninterpreted_option);
+                break;
+              default:
+                obj[key] = value;
+            }
           }
-        }
-        return obj;
-      }, {
-        deprecated: false,
-        idempotency_level: IdempotencyLevel.IDEMPOTENCY_UNKNOWN,
-        uninterpreted_option: []
-      });
+          return obj;
+        },
+        {
+          deprecated: false,
+          idempotency_level: IdempotencyLevel.IDEMPOTENCY_UNKNOWN,
+          uninterpreted_option: [],
+        },
+      );
     }
     function createMethodDefinition(method, serviceName, options, fileDescriptors) {
       const requestType = method.resolvedRequestType;
@@ -178,7 +204,7 @@ function requireSrc() {
         originalName: camelCase(method.name),
         requestType: createMessageDefinition(requestType, fileDescriptors),
         responseType: createMessageDefinition(responseType, fileDescriptors),
-        options: mapMethodOptions(method.parsedOptions)
+        options: mapMethodOptions(method.parsedOptions),
       };
     }
     function createServiceDefinition(service, name, options, fileDescriptors) {
@@ -193,7 +219,7 @@ function requireSrc() {
       return {
         format: "Protocol Buffer 3 DescriptorProto",
         type: messageDescriptor.$type.toObject(messageDescriptor, descriptorOptions),
-        fileDescriptorProtos: fileDescriptors
+        fileDescriptorProtos: fileDescriptors,
       };
     }
     function createEnumDefinition(enumType, fileDescriptors) {
@@ -201,7 +227,7 @@ function requireSrc() {
       return {
         format: "Protocol Buffer 3 EnumDescriptorProto",
         type: enumDescriptor.$type.toObject(enumDescriptor, descriptorOptions),
-        fileDescriptorProtos: fileDescriptors
+        fileDescriptorProtos: fileDescriptors,
       };
     }
     function createDefinition(obj, name, options, fileDescriptors) {
@@ -219,7 +245,9 @@ function requireSrc() {
       const def = {};
       root.resolveAll();
       const descriptorList = root.toDescriptor("proto3").file;
-      const bufferList = descriptorList.map((value) => Buffer.from(descriptor.FileDescriptorProto.encode(value).finish()));
+      const bufferList = descriptorList.map((value) =>
+        Buffer.from(descriptor.FileDescriptorProto.encode(value).finish()),
+      );
       for (const [name, obj] of getAllHandledReflectionObjects(root, "")) {
         def[name] = createDefinition(obj, name, options, bufferList);
       }
@@ -264,7 +292,4 @@ function requireSrc() {
   return src;
 }
 var srcExports = requireSrc();
-export {
-  requireSrc as r,
-  srcExports as s
-};
+export { requireSrc as r, srcExports as s };

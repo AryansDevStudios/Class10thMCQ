@@ -1,15 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  doc,
-  getDoc,
-  increment,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { db, FIREBASE_CONFIGURED } from "@/lib/firebase";
+import { getTestByIdFn } from "@/server.functions/tests.functions";
+import { getStudentSubmissionFn, submitTestFn } from "@/server.functions/submissions.functions";
 import { useAuth } from "@/lib/auth";
 import { useServerNow, getServerNow } from "@/lib/server-time";
 import { shuffledOrder } from "@/lib/shuffle";
@@ -44,47 +36,52 @@ function TakeTest() {
       navigate({ to: "/student/login" });
       return;
     }
-    if (!FIREBASE_CONFIGURED) return;
     (async () => {
       try {
-        const tSnap = await getDoc(doc(db(), "tests", testId));
-        if (!tSnap.exists()) {
+        const t = await getTestByIdFn({ data: { testId } });
+        if (!t) {
           setLoadError("Test not found.");
           return;
         }
-        const t = { id: tSnap.id, ...(tSnap.data() as TestDoc) };
         setTest(t);
 
         // Build / restore option order
-        const subRef = doc(db(), "tests", testId, "submissions", student.srNo);
-        const subSnap = await getDoc(subRef);
+        const s = await getStudentSubmissionFn({ data: { testId, srNo: student.srNo } });
         let order: Record<string, number[]> = {};
         let existingAnswers: Record<string, number> = {};
         let existingTabSwitches = 0;
-        
-        if (subSnap.exists()) {
-          const s = subSnap.data() as Submission;
+
+        if (s) {
           order = s.optionOrder ?? {};
           existingAnswers = s.answers ?? {};
           existingTabSwitches = s.tabSwitches ?? 0;
-          
+
           if (!s.submittedAt) {
-            let correct = 0, wrong = 0, unanswered = 0;
+            let correct = 0,
+              wrong = 0,
+              unanswered = 0;
             for (const q of t.questions) {
               const chosen = existingAnswers[q.id];
               if (chosen === undefined || chosen === null) unanswered++;
               else {
                 const orig = order[q.id]?.[chosen];
-                if (orig === q.correctIndex) correct++; else wrong++;
+                if (orig === q.correctIndex) correct++;
+                else wrong++;
               }
             }
-            await updateDoc(subRef, {
-              submittedAt: serverTimestamp(),
-              autoSubmitted: true,
-              score: correct,
-              correctCount: correct,
-              wrongCount: wrong,
-              unansweredCount: unanswered,
+            await submitTestFn({
+              data: {
+                testId,
+                srNo: student.srNo,
+                updateData: {
+                  submittedAt: Date.now() as unknown as any, // Firebase timestamp workaround
+                  autoSubmitted: true,
+                  score: correct,
+                  correctCount: correct,
+                  wrongCount: wrong,
+                  unansweredCount: unanswered,
+                },
+              },
             });
             setSubmitted(true);
           } else {
@@ -95,7 +92,7 @@ function TakeTest() {
             order[q.id] = shuffledOrder(q.options.length, `${student.srNo}:${testId}:${q.id}`);
           }
         }
-        
+
         setOptionOrder(order);
         setAnswers(existingAnswers);
         setTabSwitches(existingTabSwitches);
@@ -126,14 +123,20 @@ function TakeTest() {
       }
       const score = correct;
       try {
-        await updateDoc(doc(db(), "tests", testId, "submissions", student.srNo), {
-          answers,
-          submittedAt: serverTimestamp(),
-          autoSubmitted: auto,
-          score,
-          correctCount: correct,
-          wrongCount: wrong,
-          unansweredCount: unanswered,
+        await submitTestFn({
+          data: {
+            testId,
+            srNo: student.srNo,
+            updateData: {
+              answers,
+              submittedAt: Date.now() as unknown as any,
+              autoSubmitted: auto,
+              score,
+              correctCount: correct,
+              wrongCount: wrong,
+              unansweredCount: unanswered,
+            },
+          },
         });
         setSubmitted(true);
       } catch (e) {
@@ -141,24 +144,29 @@ function TakeTest() {
         submittingRef.current = false;
       }
     },
-    [student, test, answers, optionOrder, testId, submitted]
+    [student, test, answers, optionOrder, testId, submitted],
   );
 
   const startTest = async () => {
     if (!student || !test) return;
     try {
-      const subRef = doc(db(), "tests", testId, "submissions", student.srNo);
-      await setDoc(subRef, {
-        srNo: student.srNo,
-        name: student.name,
-        section: student.section,
-        whatsapp: student.whatsapp || "",
-        optionOrder,
-        answers: {},
-        tabSwitches: 0,
-        startedAt: serverTimestamp(),
-        submittedAt: null,
-        autoSubmitted: false,
+      await submitTestFn({
+        data: {
+          testId,
+          srNo: student.srNo,
+          updateData: {
+            srNo: student.srNo,
+            name: student.name,
+            section: student.section,
+            whatsapp: student.whatsapp || "",
+            optionOrder,
+            answers: {},
+            tabSwitches: 0,
+            startedAt: Date.now() as unknown as any,
+            submittedAt: null,
+            autoSubmitted: false,
+          },
+        },
       });
       setTestStarted(true);
     } catch (e) {
@@ -180,12 +188,12 @@ function TakeTest() {
 
   // Page visibility / tab-switch detection
   const lastPenaltyTime = useRef(0);
-  
+
   useEffect(() => {
     if (!student || !test || submitted || !testStarted) return;
     const onLeave = async (e?: Event) => {
       if (e?.type === "visibilitychange" && document.visibilityState === "visible") return;
-      
+
       const nowMs = Date.now();
       if (nowMs - lastPenaltyTime.current < 2000) return; // Prevent double trigger
       lastPenaltyTime.current = nowMs;
@@ -193,19 +201,26 @@ function TakeTest() {
       setTabSwitches((c) => c + 1);
       setWarnOpen(true);
       try {
-        await updateDoc(doc(db(), "tests", testId, "submissions", student.srNo), {
-          tabSwitches: increment(1),
+        // Just send the updated count instead of increment to avoid server function complexities
+        await submitTestFn({
+          data: {
+            testId,
+            srNo: student.srNo,
+            updateData: {
+              tabSwitches: tabSwitches + 1,
+            },
+          },
         });
       } catch {}
     };
-    
+
     document.addEventListener("visibilitychange", onLeave);
     window.addEventListener("blur", onLeave);
     return () => {
       document.removeEventListener("visibilitychange", onLeave);
       window.removeEventListener("blur", onLeave);
     };
-  }, [student, test, submitted, testId, testStarted]);
+  }, [student, test, submitted, testId, testStarted, tabSwitches]);
 
   // Screen Wake Lock
   useEffect(() => {
@@ -213,18 +228,18 @@ function TakeTest() {
     let wakeLock: any = null;
     const requestWakeLock = async () => {
       try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await (navigator as any).wakeLock.request('screen');
+        if ("wakeLock" in navigator) {
+          wakeLock = await (navigator as any).wakeLock.request("screen");
         }
       } catch (err) {}
     };
     requestWakeLock();
     const handleVisibility = () => {
-      if (document.visibilityState === 'visible') requestWakeLock();
+      if (document.visibilityState === "visible") requestWakeLock();
     };
-    document.addEventListener('visibilitychange', handleVisibility);
+    document.addEventListener("visibilitychange", handleVisibility);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibility);
+      document.removeEventListener("visibilitychange", handleVisibility);
       if (wakeLock) wakeLock.release().catch(() => {});
     };
   }, [testStarted, submitted]);
@@ -232,9 +247,10 @@ function TakeTest() {
   // Live sync teacher-side answers updates (so we save incrementally)
   useEffect(() => {
     if (!student || !test || submitted || !testStarted) return;
-    const ref = doc(db(), "tests", testId, "submissions", student.srNo);
     const t = setTimeout(() => {
-      updateDoc(ref, { answers }).catch(() => {});
+      submitTestFn({
+        data: { testId, srNo: student.srNo, updateData: { answers } },
+      }).catch(() => {});
     }, 400);
     return () => clearTimeout(t);
   }, [answers, student, test, submitted, testId]);
@@ -279,8 +295,14 @@ function TakeTest() {
           <h2 className="mb-4 text-2xl font-bold text-slate-900">Test Rules & Guidelines</h2>
           <ul className="mb-8 space-y-3 pl-5 text-slate-700 list-disc">
             <li>The timer will start exactly when you click the agree button below.</li>
-            <li><strong>Do not refresh or close the page!</strong> If you do, your test will be instantly auto-submitted and you cannot re-enter.</li>
-            <li><strong>Do not switch tabs.</strong> Every time you switch to another tab or application, it is recorded and reported to your teacher as cheating.</li>
+            <li>
+              <strong>Do not refresh or close the page!</strong> If you do, your test will be
+              instantly auto-submitted and you cannot re-enter.
+            </li>
+            <li>
+              <strong>Do not switch tabs.</strong> Every time you switch to another tab or
+              application, it is recorded and reported to your teacher as cheating.
+            </li>
             <li>Your screen will stay awake automatically during the test.</li>
           </ul>
           <button onClick={startTest} className="btn-primary w-full py-3 text-lg">
@@ -305,7 +327,7 @@ function TakeTest() {
         </div>
       </header>
 
-      <main 
+      <main
         className="mx-auto max-w-3xl px-4 py-6 select-none"
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
@@ -324,19 +346,13 @@ function TakeTest() {
               q={q}
               order={order}
               selected={answers[q.id]}
-              onSelect={(shuffledIdx) =>
-                setAnswers((a) => ({ ...a, [q.id]: shuffledIdx }))
-              }
+              onSelect={(shuffledIdx) => setAnswers((a) => ({ ...a, [q.id]: shuffledIdx }))}
             />
           ))}
         </ol>
 
         <div className="mt-8 flex justify-end">
-          <button
-            onClick={() => finalize(false)}
-            disabled={ended}
-            className="btn-primary"
-          >
+          <button onClick={() => finalize(false)} disabled={ended} className="btn-primary">
             Submit now
           </button>
         </div>
@@ -347,8 +363,9 @@ function TakeTest() {
           <div className="max-w-sm rounded-xl bg-white p-6 shadow-lg">
             <h3 className="text-lg font-semibold text-red-600">Tab switch detected</h3>
             <p className="mt-2 text-sm text-slate-700">
-              Leaving the test window has been recorded ({tabSwitches} time{tabSwitches === 1 ? "" : "s"}).
-              Your teacher will see this. Please stay on this page until you submit.
+              Leaving the test window has been recorded ({tabSwitches} time
+              {tabSwitches === 1 ? "" : "s"}). Your teacher will see this. Please stay on this page
+              until you submit.
             </p>
             <button onClick={() => setWarnOpen(false)} className="btn-primary mt-4 w-full">
               I understand

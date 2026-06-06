@@ -1,5 +1,5 @@
 const getDefaultsFromPostinstall = () => void 0;
-const stringToByteArray$1 = function(str) {
+const stringToByteArray$1 = function (str) {
   const out = [];
   let p = 0;
   for (let i = 0; i < str.length; i++) {
@@ -7,43 +7,48 @@ const stringToByteArray$1 = function(str) {
     if (c < 128) {
       out[p++] = c;
     } else if (c < 2048) {
-      out[p++] = c >> 6 | 192;
-      out[p++] = c & 63 | 128;
-    } else if ((c & 64512) === 55296 && i + 1 < str.length && (str.charCodeAt(i + 1) & 64512) === 56320) {
+      out[p++] = (c >> 6) | 192;
+      out[p++] = (c & 63) | 128;
+    } else if (
+      (c & 64512) === 55296 &&
+      i + 1 < str.length &&
+      (str.charCodeAt(i + 1) & 64512) === 56320
+    ) {
       c = 65536 + ((c & 1023) << 10) + (str.charCodeAt(++i) & 1023);
-      out[p++] = c >> 18 | 240;
-      out[p++] = c >> 12 & 63 | 128;
-      out[p++] = c >> 6 & 63 | 128;
-      out[p++] = c & 63 | 128;
+      out[p++] = (c >> 18) | 240;
+      out[p++] = ((c >> 12) & 63) | 128;
+      out[p++] = ((c >> 6) & 63) | 128;
+      out[p++] = (c & 63) | 128;
     } else {
-      out[p++] = c >> 12 | 224;
-      out[p++] = c >> 6 & 63 | 128;
-      out[p++] = c & 63 | 128;
+      out[p++] = (c >> 12) | 224;
+      out[p++] = ((c >> 6) & 63) | 128;
+      out[p++] = (c & 63) | 128;
     }
   }
   return out;
 };
-const byteArrayToString = function(bytes) {
+const byteArrayToString = function (bytes) {
   const out = [];
-  let pos = 0, c = 0;
+  let pos = 0,
+    c = 0;
   while (pos < bytes.length) {
     const c1 = bytes[pos++];
     if (c1 < 128) {
       out[c++] = String.fromCharCode(c1);
     } else if (c1 > 191 && c1 < 224) {
       const c2 = bytes[pos++];
-      out[c++] = String.fromCharCode((c1 & 31) << 6 | c2 & 63);
+      out[c++] = String.fromCharCode(((c1 & 31) << 6) | (c2 & 63));
     } else if (c1 > 239 && c1 < 365) {
       const c2 = bytes[pos++];
       const c3 = bytes[pos++];
       const c4 = bytes[pos++];
-      const u = ((c1 & 7) << 18 | (c2 & 63) << 12 | (c3 & 63) << 6 | c4 & 63) - 65536;
+      const u = (((c1 & 7) << 18) | ((c2 & 63) << 12) | ((c3 & 63) << 6) | (c4 & 63)) - 65536;
       out[c++] = String.fromCharCode(55296 + (u >> 10));
       out[c++] = String.fromCharCode(56320 + (u & 1023));
     } else {
       const c2 = bytes[pos++];
       const c3 = bytes[pos++];
-      out[c++] = String.fromCharCode((c1 & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
+      out[c++] = String.fromCharCode(((c1 & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
     }
   }
   return out.join("");
@@ -115,8 +120,8 @@ const base64 = {
       const haveByte3 = i + 2 < input.length;
       const byte3 = haveByte3 ? input[i + 2] : 0;
       const outByte1 = byte1 >> 2;
-      const outByte2 = (byte1 & 3) << 4 | byte2 >> 4;
-      let outByte3 = (byte2 & 15) << 2 | byte3 >> 6;
+      const outByte2 = ((byte1 & 3) << 4) | (byte2 >> 4);
+      let outByte3 = ((byte2 & 15) << 2) | (byte3 >> 6);
       let outByte4 = byte3 & 63;
       if (!haveByte3) {
         outByte4 = 64;
@@ -124,7 +129,12 @@ const base64 = {
           outByte3 = 64;
         }
       }
-      output.push(byteToCharMap[outByte1], byteToCharMap[outByte2], byteToCharMap[outByte3], byteToCharMap[outByte4]);
+      output.push(
+        byteToCharMap[outByte1],
+        byteToCharMap[outByte2],
+        byteToCharMap[outByte3],
+        byteToCharMap[outByte4],
+      );
     }
     return output.join("");
   },
@@ -189,13 +199,13 @@ const base64 = {
       if (byte1 == null || byte2 == null || byte3 == null || byte4 == null) {
         throw new DecodeBase64StringError();
       }
-      const outByte1 = byte1 << 2 | byte2 >> 4;
+      const outByte1 = (byte1 << 2) | (byte2 >> 4);
       output.push(outByte1);
       if (byte3 !== 64) {
-        const outByte2 = byte2 << 4 & 240 | byte3 >> 2;
+        const outByte2 = ((byte2 << 4) & 240) | (byte3 >> 2);
         output.push(outByte2);
         if (byte4 !== 64) {
-          const outByte3 = byte3 << 6 & 192 | byte4;
+          const outByte3 = ((byte3 << 6) & 192) | byte4;
           output.push(outByte3);
         }
       }
@@ -224,7 +234,7 @@ const base64 = {
         }
       }
     }
-  }
+  },
 };
 class DecodeBase64StringError extends Error {
   constructor() {
@@ -232,14 +242,14 @@ class DecodeBase64StringError extends Error {
     this.name = "DecodeBase64StringError";
   }
 }
-const base64Encode = function(str) {
+const base64Encode = function (str) {
   const utf8Bytes = stringToByteArray$1(str);
   return base64.encodeByteArray(utf8Bytes, true);
 };
-const base64urlEncodeWithoutPadding = function(str) {
+const base64urlEncodeWithoutPadding = function (str) {
   return base64Encode(str).replace(/\./g, "");
 };
-const base64Decode = function(str) {
+const base64Decode = function (str) {
   try {
     return base64.decodeString(str, true);
   } catch (e) {
@@ -284,7 +294,12 @@ const getDefaultsFromCookie = () => {
 };
 const getDefaults = () => {
   try {
-    return getDefaultsFromPostinstall() || getDefaultsFromGlobal() || getDefaultsFromEnvVariable() || getDefaultsFromCookie();
+    return (
+      getDefaultsFromPostinstall() ||
+      getDefaultsFromGlobal() ||
+      getDefaultsFromEnvVariable() ||
+      getDefaultsFromCookie()
+    );
   } catch (e) {
     console.info(`Unable to get __FIREBASE_DEFAULTS__ due to: ${e}`);
     return;
@@ -310,10 +325,8 @@ const getDefaultEmulatorHostnameAndPort = (productName) => {
 const getDefaultAppConfig = () => getDefaults()?.config;
 class Deferred {
   constructor() {
-    this.reject = () => {
-    };
-    this.resolve = () => {
-    };
+    this.reject = () => {};
+    this.resolve = () => {};
     this.promise = new Promise((resolve, reject) => {
       this.resolve = resolve;
       this.reject = reject;
@@ -332,8 +345,7 @@ class Deferred {
         this.resolve(value);
       }
       if (typeof callback === "function") {
-        this.promise.catch(() => {
-        });
+        this.promise.catch(() => {});
         if (callback.length === 1) {
           callback(error);
         } else {
@@ -345,11 +357,13 @@ class Deferred {
 }
 function createMockUserToken(token, projectId) {
   if (token.uid) {
-    throw new Error('The "uid" field is no longer supported by mockUserToken. Please use "sub" instead for Firebase Auth User ID.');
+    throw new Error(
+      'The "uid" field is no longer supported by mockUserToken. Please use "sub" instead for Firebase Auth User ID.',
+    );
   }
   const header = {
     alg: "none",
-    type: "JWT"
+    type: "JWT",
   };
   const project = projectId || "demo-project";
   const iat = token.iat || 0;
@@ -368,16 +382,16 @@ function createMockUserToken(token, projectId) {
     user_id: sub,
     firebase: {
       sign_in_provider: "custom",
-      identities: {}
+      identities: {},
     },
     // Override with user options
-    ...token
+    ...token,
   };
   const signature = "";
   return [
     base64urlEncodeWithoutPadding(JSON.stringify(header)),
     base64urlEncodeWithoutPadding(JSON.stringify(payload)),
-    signature
+    signature,
   ].join(".");
 }
 function getUA() {
@@ -401,7 +415,12 @@ function isNode() {
   }
 }
 function isSafari() {
-  return !isNode() && !!navigator.userAgent && navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome");
+  return (
+    !isNode() &&
+    !!navigator.userAgent &&
+    navigator.userAgent.includes("Safari") &&
+    !navigator.userAgent.includes("Chrome")
+  );
 }
 function isIndexedDBAvailable() {
   try {
@@ -509,7 +528,8 @@ function getModularInstance(service) {
 }
 function isCloudWorkstation(url) {
   try {
-    const host = url.startsWith("http://") || url.startsWith("https://") ? new URL(url).hostname : url;
+    const host =
+      url.startsWith("http://") || url.startsWith("https://") ? new URL(url).hostname : url;
     return host.endsWith(".cloudworkstations.dev");
   } catch {
     return false;
@@ -517,7 +537,7 @@ function isCloudWorkstation(url) {
 }
 async function pingServer(endpoint) {
   const result = await fetch(endpoint, {
-    credentials: "include"
+    credentials: "include",
   });
   return result.ok;
 }
@@ -536,5 +556,5 @@ export {
   isCloudWorkstation as i,
   isSafari as j,
   pingServer as p,
-  validateIndexedDBOpenable as v
+  validateIndexedDBOpenable as v,
 };

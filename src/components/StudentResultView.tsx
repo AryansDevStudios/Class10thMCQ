@@ -13,7 +13,11 @@ export function StudentResultView({ test, s }: { test: TestDoc; s: Graded }) {
         </p>
         <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
           <Stat label="Total score" value={`${s.score} / ${test.questions.length}`} />
-          <Stat label="Correct answers" value={String(s.correctCount)} valueClass="text-emerald-700" />
+          <Stat
+            label="Correct answers"
+            value={String(s.correctCount)}
+            valueClass="text-emerald-700"
+          />
           <Stat label="Wrong answers" value={String(s.wrongCount)} valueClass="text-red-600" />
           <Stat label="Unattempted" value={String(s.unansweredCount)} />
           <Stat label="Tab switches" value={String(s.tabSwitches ?? 0)} />
@@ -32,7 +36,9 @@ export function StudentResultView({ test, s }: { test: TestDoc; s: Graded }) {
             <li key={q.id} className="rounded-lg border border-slate-200 p-4">
               <div className="flex items-start gap-2">
                 <span className="font-semibold text-slate-500">{i + 1}.</span>
-                <div className="flex-1"><KatexText text={q.text} /></div>
+                <div className="flex-1">
+                  <KatexText text={q.text} />
+                </div>
                 <span
                   className={
                     "rounded-full px-2 py-0.5 text-xs font-semibold " +
@@ -62,9 +68,17 @@ export function StudentResultView({ test, s }: { test: TestDoc; s: Graded }) {
                             : "border-slate-200")
                       }
                     >
-                      <span className="font-mono text-xs text-slate-500">{String.fromCharCode(65 + idx)}.</span>
-                      <div className="flex-1"><KatexText text={opt} /></div>
-                      {isAnswer && <span className="text-xs font-semibold text-emerald-700">correct answer</span>}
+                      <span className="font-mono text-xs text-slate-500">
+                        {String.fromCharCode(65 + idx)}.
+                      </span>
+                      <div className="flex-1">
+                        <KatexText text={opt} />
+                      </div>
+                      {isAnswer && (
+                        <span className="text-xs font-semibold text-emerald-700">
+                          correct answer
+                        </span>
+                      )}
                       {isStudent && !isAnswer && (
                         <span className="text-xs font-semibold text-red-700">student chose</span>
                       )}
@@ -77,7 +91,9 @@ export function StudentResultView({ test, s }: { test: TestDoc; s: Graded }) {
                   <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                     Explanation
                   </span>
-                  <div className="mt-1"><KatexText text={q.explanation} /></div>
+                  <div className="mt-1">
+                    <KatexText text={q.explanation} />
+                  </div>
                 </div>
               )}
             </li>
@@ -88,7 +104,15 @@ export function StudentResultView({ test, s }: { test: TestDoc; s: Graded }) {
   );
 }
 
-function Stat({ label, value, valueClass = "" }: { label: string; value: string; valueClass?: string }) {
+function Stat({
+  label,
+  value,
+  valueClass = "",
+}: {
+  label: string;
+  value: string;
+  valueClass?: string;
+}) {
   return (
     <div className="rounded bg-white px-3 py-2">
       <div className="text-[11px] uppercase tracking-wide text-slate-500">{label}</div>

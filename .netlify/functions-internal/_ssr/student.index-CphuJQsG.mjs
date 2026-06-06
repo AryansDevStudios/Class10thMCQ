@@ -1,6 +1,13 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { u as useNavigate, L as Link } from "../_libs/tanstack__react-router.mjs";
-import { e as getDocs, q as query, h as orderBy, c as collection, g as getDoc, b as doc } from "../_libs/firebase__firestore.mjs";
+import {
+  e as getDocs,
+  q as query,
+  h as orderBy,
+  c as collection,
+  g as getDoc,
+  b as doc,
+} from "../_libs/firebase__firestore.mjs";
 import { F as FIREBASE_CONFIGURED, d as db } from "./firebase-BOBCTMcs.mjs";
 import { u as useAuth } from "./router-QEy6FD-2.mjs";
 import { u as useServerNow } from "./katex-text-B3-KgC-6.mjs";
@@ -74,14 +81,9 @@ import "../_libs/rgbcolor.mjs";
 import "../_libs/svg-pathdata.mjs";
 import "../_libs/stackblur-canvas.mjs";
 function StudentHome() {
-  const {
-    student,
-    logoutStudent
-  } = useAuth();
+  const { student, logoutStudent } = useAuth();
   const navigate = useNavigate();
-  const {
-    now
-  } = useServerNow(1e3);
+  const { now } = useServerNow(1e3);
   const [tests, setTests] = reactExports.useState([]);
   const [submittedIds, setSubmittedIds] = reactExports.useState(/* @__PURE__ */ new Set());
   const [loading, setLoading] = reactExports.useState(true);
@@ -91,7 +93,7 @@ function StudentHome() {
   reactExports.useEffect(() => {
     if (!student) {
       navigate({
-        to: "/student/login"
+        to: "/student/login",
       });
       return;
     }
@@ -103,17 +105,19 @@ function StudentHome() {
       const snap = await getDocs(query(collection(db(), "tests"), orderBy("startAt", "desc")));
       const list = snap.docs.map((d) => ({
         id: d.id,
-        ...d.data()
+        ...d.data(),
       }));
       setTests(list);
-      const results = await Promise.all(list.map(async (t) => {
-        try {
-          const sub = await getDoc(doc(db(), "tests", t.id, "submissions", student.srNo));
-          return sub.exists() && sub.data().submittedAt ? t.id : null;
-        } catch {
-          return null;
-        }
-      }));
+      const results = await Promise.all(
+        list.map(async (t) => {
+          try {
+            const sub = await getDoc(doc(db(), "tests", t.id, "submissions", student.srNo));
+            return sub.exists() && sub.data().submittedAt ? t.id : null;
+          } catch {
+            return null;
+          }
+        }),
+      );
       setSubmittedIds(new Set(results.filter((x) => !!x)));
       setLoading(false);
     })();
@@ -127,7 +131,7 @@ function StudentHome() {
       const graded = regradeSubmission(sub.data(), t);
       setViewing({
         test: t,
-        graded
+        graded,
       });
     } finally {
       setViewLoading(false);
@@ -141,83 +145,207 @@ function StudentHome() {
     live: {
       label: `Live now (${live.length})`,
       items: live,
-      empty: "No tests are live right now. Check back at the scheduled start time."
+      empty: "No tests are live right now. Check back at the scheduled start time.",
     },
     upcoming: {
       label: `Upcoming (${upcoming.length})`,
       items: upcoming,
-      empty: "No upcoming tests scheduled."
+      empty: "No upcoming tests scheduled.",
     },
     past: {
       label: `Past (${past.length})`,
       items: past,
-      empty: "You have no past tests yet."
-    }
+      empty: "You have no past tests yet.",
+    },
   };
   const current = groups[tab];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-slate-50 px-6 py-10", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-3xl", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "text-xs text-slate-500 hover:text-slate-800", children: "← Home" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "mt-1 text-2xl font-bold text-slate-900", children: [
-            "Welcome, ",
-            student.name
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-600", children: [
-            "Sr. No. ",
-            student.srNo,
-            " · Class 10-",
-            student.section
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-          logoutStudent();
-          navigate({
-            to: "/"
-          });
-        }, className: "btn-ghost", children: "Log out" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-8 flex gap-2 border-b border-slate-200", children: ["live", "upcoming", "past"].map((k) => /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setTab(k), className: "px-4 py-2 text-sm font-medium transition border-b-2 -mb-px " + (tab === k ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-800"), children: groups[k].label }, k)) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6", children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-500", children: "Loading…" }) : current.items.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-600", children: current.empty }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-3", children: current.items.map((t) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-medium text-slate-900", children: t.title }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-slate-500", children: [
-            new Date(t.startAt).toLocaleString(),
-            " → ",
-            new Date(t.endAt).toLocaleString()
-          ] })
-        ] }),
-        tab === "live" && !submittedIds.has(t.id) && /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/student/test/$testId", params: {
-          testId: t.id
-        }, className: "btn-primary", children: [
-          "Start test · ",
-          fmtRemaining(t.endAt - now)
-        ] }),
-        tab === "live" && submittedIds.has(t.id) && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700", children: "✓ Already submitted" }),
-        tab === "upcoming" && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-slate-500", children: "Not yet open" }),
-        tab === "past" && submittedIds.has(t.id) && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => openResult(t), className: "btn-primary", disabled: viewLoading, children: viewLoading ? "Loading…" : "View result" }),
-        tab === "past" && !submittedIds.has(t.id) && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-slate-500", children: "Not attempted" })
-      ] }, t.id)) }) })
-    ] }),
-    viewing && /* @__PURE__ */ jsxRuntimeExports.jsx(StudentResultModal, { test: viewing.test, graded: viewing.graded, onClose: () => setViewing(null) })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+    className: "min-h-screen bg-slate-50 px-6 py-10",
+    children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+        className: "mx-auto max-w-3xl",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("header", {
+            className: "flex items-center justify-between",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+                    to: "/",
+                    className: "text-xs text-slate-500 hover:text-slate-800",
+                    children: "← Home",
+                  }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", {
+                    className: "mt-1 text-2xl font-bold text-slate-900",
+                    children: ["Welcome, ", student.name],
+                  }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", {
+                    className: "text-sm text-slate-600",
+                    children: ["Sr. No. ", student.srNo, " · Class 10-", student.section],
+                  }),
+                ],
+              }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+                onClick: () => {
+                  logoutStudent();
+                  navigate({
+                    to: "/",
+                  });
+                },
+                className: "btn-ghost",
+                children: "Log out",
+              }),
+            ],
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+            className: "mt-8 flex gap-2 border-b border-slate-200",
+            children: ["live", "upcoming", "past"].map((k) =>
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => setTab(k),
+                  className:
+                    "px-4 py-2 text-sm font-medium transition border-b-2 -mb-px " +
+                    (tab === k
+                      ? "border-blue-600 text-blue-700"
+                      : "border-transparent text-slate-500 hover:text-slate-800"),
+                  children: groups[k].label,
+                },
+                k,
+              ),
+            ),
+          }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+            className: "mt-6",
+            children: loading
+              ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                  className: "text-sm text-slate-500",
+                  children: "Loading…",
+                })
+              : current.items.length === 0
+                ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+                    className:
+                      "rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                      className: "text-sm text-slate-600",
+                      children: current.empty,
+                    }),
+                  })
+                : /* @__PURE__ */ jsxRuntimeExports.jsx("ul", {
+                    className: "space-y-3",
+                    children: current.items.map((t) =>
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "li",
+                        {
+                          className:
+                            "flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm",
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+                              children: [
+                                /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                                  className: "font-medium text-slate-900",
+                                  children: t.title,
+                                }),
+                                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", {
+                                  className: "text-xs text-slate-500",
+                                  children: [
+                                    new Date(t.startAt).toLocaleString(),
+                                    " → ",
+                                    new Date(t.endAt).toLocaleString(),
+                                  ],
+                                }),
+                              ],
+                            }),
+                            tab === "live" &&
+                              !submittedIds.has(t.id) &&
+                              /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, {
+                                to: "/student/test/$testId",
+                                params: {
+                                  testId: t.id,
+                                },
+                                className: "btn-primary",
+                                children: ["Start test · ", fmtRemaining(t.endAt - now)],
+                              }),
+                            tab === "live" &&
+                              submittedIds.has(t.id) &&
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", {
+                                className:
+                                  "rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700",
+                                children: "✓ Already submitted",
+                              }),
+                            tab === "upcoming" &&
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", {
+                                className: "text-sm text-slate-500",
+                                children: "Not yet open",
+                              }),
+                            tab === "past" &&
+                              submittedIds.has(t.id) &&
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+                                onClick: () => openResult(t),
+                                className: "btn-primary",
+                                disabled: viewLoading,
+                                children: viewLoading ? "Loading…" : "View result",
+                              }),
+                            tab === "past" &&
+                              !submittedIds.has(t.id) &&
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", {
+                                className: "text-sm text-slate-500",
+                                children: "Not attempted",
+                              }),
+                          ],
+                        },
+                        t.id,
+                      ),
+                    ),
+                  }),
+          }),
+        ],
+      }),
+      viewing &&
+        /* @__PURE__ */ jsxRuntimeExports.jsx(StudentResultModal, {
+          test: viewing.test,
+          graded: viewing.graded,
+          onClose: () => setViewing(null),
+        }),
+    ],
+  });
 }
-function StudentResultModal({
-  test,
-  graded,
-  onClose
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 sm:p-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "my-6 w-full max-w-3xl rounded-xl bg-white shadow-xl", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between border-b border-slate-200 p-5", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-slate-900", children: test.title }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Your result" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: onClose, className: "text-slate-500 hover:text-slate-900 text-2xl leading-none", children: "×" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(StudentResultView, { test, s: graded }) })
-  ] }) });
+function StudentResultModal({ test, graded, onClose }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+    className:
+      "fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 sm:p-6",
+    children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+      className: "my-6 w-full max-w-3xl rounded-xl bg-white shadow-xl",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+          className: "flex items-start justify-between border-b border-slate-200 p-5",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", {
+                  className: "text-lg font-bold text-slate-900",
+                  children: test.title,
+                }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                  className: "text-xs text-slate-500",
+                  children: "Your result",
+                }),
+              ],
+            }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+              onClick: onClose,
+              className: "text-slate-500 hover:text-slate-900 text-2xl leading-none",
+              children: "×",
+            }),
+          ],
+        }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+          className: "p-5",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(StudentResultView, { test, s: graded }),
+        }),
+      ],
+    }),
+  });
 }
 function fmtRemaining(ms) {
   if (ms <= 0) return "—";
@@ -227,6 +355,4 @@ function fmtRemaining(ms) {
   if (h) return `${h}h ${m % 60}m left`;
   return `${m}m ${s % 60}s left`;
 }
-export {
-  StudentHome as component
-};
+export { StudentHome as component };

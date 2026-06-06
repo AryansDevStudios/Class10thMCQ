@@ -10,25 +10,20 @@ function requireEventemitter() {
   EventEmitter.prototype.on = function on(evt, fn, ctx) {
     (this._listeners[evt] || (this._listeners[evt] = [])).push({
       fn,
-      ctx: ctx || this
+      ctx: ctx || this,
     });
     return this;
   };
   EventEmitter.prototype.off = function off(evt, fn) {
-    if (evt === void 0)
-      this._listeners = /* @__PURE__ */ Object.create(null);
+    if (evt === void 0) this._listeners = /* @__PURE__ */ Object.create(null);
     else {
-      if (fn === void 0)
-        this._listeners[evt] = [];
+      if (fn === void 0) this._listeners[evt] = [];
       else {
         var listeners = this._listeners[evt];
-        if (!listeners)
-          return this;
+        if (!listeners) return this;
         for (var i = 0; i < listeners.length; )
-          if (listeners[i].fn === fn)
-            listeners.splice(i, 1);
-          else
-            ++i;
+          if (listeners[i].fn === fn) listeners.splice(i, 1);
+          else ++i;
       }
     }
     return this;
@@ -36,16 +31,13 @@ function requireEventemitter() {
   EventEmitter.prototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
-      var args = [], i = 1;
-      for (; i < arguments.length; )
-        args.push(arguments[i++]);
-      for (i = 0; i < listeners.length; )
-        listeners[i].fn.apply(listeners[i++].ctx, args);
+      var args = [],
+        i = 1;
+      for (; i < arguments.length; ) args.push(arguments[i++]);
+      for (i = 0; i < listeners.length; ) listeners[i].fn.apply(listeners[i++].ctx, args);
     }
     return this;
   };
   return eventemitter;
 }
-export {
-  requireEventemitter as r
-};
+export { requireEventemitter as r };

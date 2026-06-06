@@ -54,9 +54,7 @@ import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
 function StudentLogin() {
   const navigate = useNavigate();
-  const {
-    loginStudent
-  } = useAuth();
+  const { loginStudent } = useAuth();
   const [srNo, setSrNo] = reactExports.useState("");
   const [password, setPassword] = reactExports.useState("");
   const [error, setError] = reactExports.useState("");
@@ -81,10 +79,10 @@ function StudentLogin() {
           loginStudent({
             srNo: srNo.trim(),
             name: data.name,
-            section: data.section
+            section: data.section,
           });
           navigate({
-            to: "/student"
+            to: "/student",
           });
         }
       }
@@ -94,31 +92,82 @@ function StudentLogin() {
       setLoading(false);
     }
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen bg-slate-50 px-6 py-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-md", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "text-sm text-slate-600 hover:text-slate-900", children: "← Back to home" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "mt-3 text-2xl font-bold text-slate-900", children: "Student Login" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit, className: "mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Field, { label: "Sr. No.", children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { value: srNo, onChange: (e) => setSrNo(e.target.value), required: true, className: "input", autoFocus: true }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Field, { label: "Password", children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "password", value: password, onChange: (e) => setPassword(e.target.value), required: true, className: "input" }) }),
-      error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-red-600", children: error }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { disabled: loading, className: "btn-primary w-full", children: loading ? "Signing in…" : "Sign In" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-center text-sm text-slate-600", children: [
-        "New student?",
-        " ",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/student/register", className: "text-blue-600 hover:underline", children: "Register" })
-      ] })
-    ] })
-  ] }) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", {
+    className: "min-h-screen bg-slate-50 px-6 py-16",
+    children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", {
+      className: "mx-auto max-w-md",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+          to: "/",
+          className: "text-sm text-slate-600 hover:text-slate-900",
+          children: "← Back to home",
+        }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", {
+          className: "mt-3 text-2xl font-bold text-slate-900",
+          children: "Student Login",
+        }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", {
+          onSubmit,
+          className: "mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Field, {
+              label: "Sr. No.",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", {
+                value: srNo,
+                onChange: (e) => setSrNo(e.target.value),
+                required: true,
+                className: "input",
+                autoFocus: true,
+              }),
+            }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Field, {
+              label: "Password",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx("input", {
+                type: "password",
+                value: password,
+                onChange: (e) => setPassword(e.target.value),
+                required: true,
+                className: "input",
+              }),
+            }),
+            error &&
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", {
+                className: "text-sm text-red-600",
+                children: error,
+              }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("button", {
+              disabled: loading,
+              className: "btn-primary w-full",
+              children: loading ? "Signing in…" : "Sign In",
+            }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", {
+              className: "text-center text-sm text-slate-600",
+              children: [
+                "New student?",
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Link, {
+                  to: "/student/register",
+                  className: "text-blue-600 hover:underline",
+                  children: "Register",
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    }),
+  });
 }
-function Field({
-  label,
-  children
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "block", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-slate-700", children: label }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-1", children })
-  ] });
+function Field({ label, children }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("label", {
+    className: "block",
+    children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", {
+        className: "text-sm font-medium text-slate-700",
+        children: label,
+      }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-1", children }),
+    ],
+  });
 }
-export {
-  StudentLogin as component
-};
+export { StudentLogin as component };

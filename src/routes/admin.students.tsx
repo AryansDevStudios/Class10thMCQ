@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db, FIREBASE_CONFIGURED } from "@/lib/firebase";
+import {
+  getAllStudentsFn,
+  updateStudentPasswordFn,
+  deleteStudentFn,
+} from "@/server.functions/students.functions";
 
 type StudentRow = {
   srNo: string;
@@ -21,36 +24,35 @@ function StudentsPage() {
   const [filter, setFilter] = useState("");
 
   const load = async () => {
-    if (!FIREBASE_CONFIGURED) {
+    try {
+      const data = await getAllStudentsFn();
+      setRows(data.sort((a, b) => (a.section + a.srNo).localeCompare(b.section + b.srNo)));
+    } catch (e) {
+      console.error(e);
+    } finally {
       setLoading(false);
-      return;
     }
-    const snap = await getDocs(collection(db(), "students"));
-    setRows(
-      snap.docs
-        .map((d) => d.data() as StudentRow)
-        .sort((a, b) => (a.section + a.srNo).localeCompare(b.section + b.srNo))
-    );
-    setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const resetPwd = async (srNo: string) => {
     const next = prompt("New password for " + srNo + ":");
     if (!next) return;
-    await updateDoc(doc(db(), "students", srNo), { password: next });
+    await updateStudentPasswordFn({ data: { srNo, password: next } });
     load();
   };
 
   const remove = async (srNo: string) => {
     if (!confirm("Delete student " + srNo + "?")) return;
-    await deleteDoc(doc(db(), "students", srNo));
+    await deleteStudentFn({ data: { srNo } });
     load();
   };
 
   const filtered = rows.filter((r) =>
-    [r.srNo, r.name, r.section].some((v) => v.toLowerCase().includes(filter.toLowerCase()))
+    [r.srNo, r.name, r.section].some((v) => v.toLowerCase().includes(filter.toLowerCase())),
   );
 
   return (
@@ -93,17 +95,27 @@ function StudentsPage() {
                   <td className="px-3 py-2 font-mono">{r.password}</td>
                   <td className="px-3 py-2 font-mono">{r.whatsapp || "-"}</td>
                   <td className="px-3 py-2 text-right">
-                    <button onClick={() => resetPwd(r.srNo)} className="text-blue-600 hover:underline text-xs mr-3">
+                    <button
+                      onClick={() => resetPwd(r.srNo)}
+                      className="text-blue-600 hover:underline text-xs mr-3"
+                    >
                       Reset password
                     </button>
-                    <button onClick={() => remove(r.srNo)} className="text-red-600 hover:underline text-xs">
+                    <button
+                      onClick={() => remove(r.srNo)}
+                      className="text-red-600 hover:underline text-xs"
+                    >
                       Delete
                     </button>
                   </td>
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={5} className="px-3 py-8 text-center text-slate-500">No students.</td></tr>
+                <tr>
+                  <td colSpan={5} className="px-3 py-8 text-center text-slate-500">
+                    No students.
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>

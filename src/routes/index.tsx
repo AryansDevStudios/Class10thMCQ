@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { GraduationCap, ShieldCheck } from "lucide-react";
-import { FIREBASE_CONFIGURED } from "@/lib/firebase";
+
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
@@ -32,14 +32,6 @@ function Home() {
             Secure, real-time MCQ tests for MP Public School, Anandnagar Maharajganj.
           </p>
         </div>
-
-        {!FIREBASE_CONFIGURED && (
-          <div className="mt-8 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-            <strong>Setup required:</strong> Edit <code>src/lib/firebase.ts</code> and paste your
-            Firebase Web App config. Then enable Firestore in the Firebase console and apply the
-            rules from <code>src/lib/firestore.rules.txt</code>.
-          </div>
-        )}
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           <Link

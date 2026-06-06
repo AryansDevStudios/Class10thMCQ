@@ -1,6 +1,14 @@
 import { a as ComponentContainer, C as Component } from "./firebase__component.mjs";
 import { a as Logger } from "./firebase__logger.mjs";
-import { E as ErrorFactory, g as getDefaultAppConfig, d as deepEqual, b as base64urlEncodeWithoutPadding, h as isIndexedDBAvailable, v as validateIndexedDBOpenable, F as FirebaseError } from "./firebase__util.mjs";
+import {
+  E as ErrorFactory,
+  g as getDefaultAppConfig,
+  d as deepEqual,
+  b as base64urlEncodeWithoutPadding,
+  h as isIndexedDBAvailable,
+  v as validateIndexedDBOpenable,
+  F as FirebaseError,
+} from "./firebase__util.mjs";
 import { o as openDB } from "./idb.mjs";
 class PlatformLoggerServiceImpl {
   constructor(container) {
@@ -10,14 +18,17 @@ class PlatformLoggerServiceImpl {
   // auth token refresh, and installations will send this string.
   getPlatformInfoString() {
     const providers = this.container.getProviders();
-    return providers.map((provider) => {
-      if (isVersionServiceProvider(provider)) {
-        const service = provider.getImmediate();
-        return `${service.library}/${service.version}`;
-      } else {
-        return null;
-      }
-    }).filter((logString) => logString).join(" ");
+    return providers
+      .map((provider) => {
+        if (isVersionServiceProvider(provider)) {
+          const service = provider.getImmediate();
+          return `${service.library}/${service.version}`;
+        } else {
+          return null;
+        }
+      })
+      .filter((logString) => logString)
+      .join(" ");
   }
 }
 function isVersionServiceProvider(provider) {
@@ -84,7 +95,7 @@ const PLATFORM_LOG_STRING = {
   [name$2]: "fire-vertex",
   "fire-js": "fire-js",
   // Platform identifier for JS SDK.
-  [name]: "fire-js-all"
+  [name]: "fire-js-all",
 };
 const _apps = /* @__PURE__ */ new Map();
 const _serverApps = /* @__PURE__ */ new Map();
@@ -112,7 +123,9 @@ function _registerComponent(component) {
   return true;
 }
 function _getProvider(app, name2) {
-  const heartbeatController = app.container.getProvider("heartbeat").getImmediate({ optional: true });
+  const heartbeatController = app.container
+    .getProvider("heartbeat")
+    .getImmediate({ optional: true });
   if (heartbeatController) {
     void heartbeatController.triggerHeartbeat();
   }
@@ -125,62 +138,48 @@ function _isFirebaseServerApp(obj) {
   return obj.settings !== void 0;
 }
 const ERRORS = {
-  [
-    "no-app"
+  ["no-app"]:
     /* AppError.NO_APP */
-  ]: "No Firebase App '{$appName}' has been created - call initializeApp() first",
-  [
-    "bad-app-name"
+    "No Firebase App '{$appName}' has been created - call initializeApp() first",
+  ["bad-app-name"]:
     /* AppError.BAD_APP_NAME */
-  ]: "Illegal App name: '{$appName}'",
-  [
-    "duplicate-app"
+    "Illegal App name: '{$appName}'",
+  ["duplicate-app"]:
     /* AppError.DUPLICATE_APP */
-  ]: "Firebase App named '{$appName}' already exists with different options or config",
-  [
-    "app-deleted"
+    "Firebase App named '{$appName}' already exists with different options or config",
+  ["app-deleted"]:
     /* AppError.APP_DELETED */
-  ]: "Firebase App named '{$appName}' already deleted",
-  [
-    "server-app-deleted"
+    "Firebase App named '{$appName}' already deleted",
+  ["server-app-deleted"]:
     /* AppError.SERVER_APP_DELETED */
-  ]: "Firebase Server App has been deleted",
-  [
-    "no-options"
+    "Firebase Server App has been deleted",
+  ["no-options"]:
     /* AppError.NO_OPTIONS */
-  ]: "Need to provide options, when not being deployed to hosting via source.",
-  [
-    "invalid-app-argument"
+    "Need to provide options, when not being deployed to hosting via source.",
+  ["invalid-app-argument"]:
     /* AppError.INVALID_APP_ARGUMENT */
-  ]: "firebase.{$appName}() takes either no argument or a Firebase App instance.",
-  [
-    "invalid-log-argument"
+    "firebase.{$appName}() takes either no argument or a Firebase App instance.",
+  ["invalid-log-argument"]:
     /* AppError.INVALID_LOG_ARGUMENT */
-  ]: "First argument to `onLog` must be null or a function.",
-  [
-    "idb-open"
+    "First argument to `onLog` must be null or a function.",
+  ["idb-open"]:
     /* AppError.IDB_OPEN */
-  ]: "Error thrown when opening IndexedDB. Original error: {$originalErrorMessage}.",
-  [
-    "idb-get"
+    "Error thrown when opening IndexedDB. Original error: {$originalErrorMessage}.",
+  ["idb-get"]:
     /* AppError.IDB_GET */
-  ]: "Error thrown when reading from IndexedDB. Original error: {$originalErrorMessage}.",
-  [
-    "idb-set"
+    "Error thrown when reading from IndexedDB. Original error: {$originalErrorMessage}.",
+  ["idb-set"]:
     /* AppError.IDB_WRITE */
-  ]: "Error thrown when writing to IndexedDB. Original error: {$originalErrorMessage}.",
-  [
-    "idb-delete"
+    "Error thrown when writing to IndexedDB. Original error: {$originalErrorMessage}.",
+  ["idb-delete"]:
     /* AppError.IDB_DELETE */
-  ]: "Error thrown when deleting from IndexedDB. Original error: {$originalErrorMessage}.",
-  [
-    "finalization-registry-not-supported"
+    "Error thrown when deleting from IndexedDB. Original error: {$originalErrorMessage}.",
+  ["finalization-registry-not-supported"]:
     /* AppError.FINALIZATION_REGISTRY_NOT_SUPPORTED */
-  ]: "FirebaseServerApp deleteOnDeref field defined but the JS runtime does not support FinalizationRegistry.",
-  [
-    "invalid-server-app-environment"
+    "FirebaseServerApp deleteOnDeref field defined but the JS runtime does not support FinalizationRegistry.",
+  ["invalid-server-app-environment"]:
     /* AppError.INVALID_SERVER_APP_ENVIRONMENT */
-  ]: "FirebaseServerApp is not for use in browser environments."
+    "FirebaseServerApp is not for use in browser environments.",
 };
 const ERROR_FACTORY = new ErrorFactory("app", "Firebase", ERRORS);
 class FirebaseAppImpl {
@@ -191,12 +190,14 @@ class FirebaseAppImpl {
     this._name = config.name;
     this._automaticDataCollectionEnabled = config.automaticDataCollectionEnabled;
     this._container = container;
-    this.container.addComponent(new Component(
-      "app",
-      () => this,
-      "PUBLIC"
-      /* ComponentType.PUBLIC */
-    ));
+    this.container.addComponent(
+      new Component(
+        "app",
+        () => this,
+        "PUBLIC",
+        /* ComponentType.PUBLIC */
+      ),
+    );
   }
   get automaticDataCollectionEnabled() {
     this.checkDestroyed();
@@ -247,18 +248,18 @@ function initializeApp(_options, rawConfig = {}) {
   const config = {
     name: DEFAULT_ENTRY_NAME,
     automaticDataCollectionEnabled: true,
-    ...rawConfig
+    ...rawConfig,
   };
   const name2 = config.name;
   if (typeof name2 !== "string" || !name2) {
     throw ERROR_FACTORY.create("bad-app-name", {
-      appName: String(name2)
+      appName: String(name2),
     });
   }
   options || (options = getDefaultAppConfig());
   if (!options) {
     throw ERROR_FACTORY.create(
-      "no-options"
+      "no-options",
       /* AppError.NO_OPTIONS */
     );
   }
@@ -299,9 +300,7 @@ function registerVersion(libraryKeyOrName, version2, variant) {
   const libraryMismatch = library.match(/\s|\//);
   const versionMismatch = version2.match(/\s|\//);
   if (libraryMismatch || versionMismatch) {
-    const warning = [
-      `Unable to register library "${library}" with version "${version2}":`
-    ];
+    const warning = [`Unable to register library "${library}" with version "${version2}":`];
     if (libraryMismatch) {
       warning.push(`library name "${library}" contains illegal characters (whitespace or "/")`);
     }
@@ -314,12 +313,14 @@ function registerVersion(libraryKeyOrName, version2, variant) {
     logger.warn(warning.join(" "));
     return;
   }
-  _registerComponent(new Component(
-    `${library}-version`,
-    () => ({ library, version: version2 }),
-    "VERSION"
-    /* ComponentType.VERSION */
-  ));
+  _registerComponent(
+    new Component(
+      `${library}-version`,
+      () => ({ library, version: version2 }),
+      "VERSION",
+      /* ComponentType.VERSION */
+    ),
+  );
 }
 const DB_NAME = "firebase-heartbeat-database";
 const DB_VERSION = 1;
@@ -337,10 +338,10 @@ function getDbPromise() {
               console.warn(e);
             }
         }
-      }
+      },
     }).catch((e) => {
       throw ERROR_FACTORY.create("idb-open", {
-        originalErrorMessage: e.message
+        originalErrorMessage: e.message,
       });
     });
   }
@@ -358,7 +359,7 @@ async function readHeartbeatsFromIndexedDB(app) {
       logger.warn(e.message);
     } else {
       const idbGetError = ERROR_FACTORY.create("idb-get", {
-        originalErrorMessage: e?.message
+        originalErrorMessage: e?.message,
       });
       logger.warn(idbGetError.message);
     }
@@ -376,7 +377,7 @@ async function writeHeartbeatsToIndexedDB(app, heartbeatObject) {
       logger.warn(e.message);
     } else {
       const idbGetError = ERROR_FACTORY.create("idb-set", {
-        originalErrorMessage: e?.message
+        originalErrorMessage: e?.message,
       });
       logger.warn(idbGetError.message);
     }
@@ -416,7 +417,12 @@ class HeartbeatServiceImpl {
           return;
         }
       }
-      if (this._heartbeatsCache.lastSentHeartbeatDate === date || this._heartbeatsCache.heartbeats.some((singleDateHeartbeat) => singleDateHeartbeat.date === date)) {
+      if (
+        this._heartbeatsCache.lastSentHeartbeatDate === date ||
+        this._heartbeatsCache.heartbeats.some(
+          (singleDateHeartbeat) => singleDateHeartbeat.date === date,
+        )
+      ) {
         return;
       } else {
         this._heartbeatsCache.heartbeats.push({ date, agent });
@@ -442,12 +448,19 @@ class HeartbeatServiceImpl {
       if (this._heartbeatsCache === null) {
         await this._heartbeatsCachePromise;
       }
-      if (this._heartbeatsCache?.heartbeats == null || this._heartbeatsCache.heartbeats.length === 0) {
+      if (
+        this._heartbeatsCache?.heartbeats == null ||
+        this._heartbeatsCache.heartbeats.length === 0
+      ) {
         return "";
       }
       const date = getUTCDateString();
-      const { heartbeatsToSend, unsentEntries } = extractHeartbeatsForHeader(this._heartbeatsCache.heartbeats);
-      const headerString = base64urlEncodeWithoutPadding(JSON.stringify({ version: 2, heartbeats: heartbeatsToSend }));
+      const { heartbeatsToSend, unsentEntries } = extractHeartbeatsForHeader(
+        this._heartbeatsCache.heartbeats,
+      );
+      const headerString = base64urlEncodeWithoutPadding(
+        JSON.stringify({ version: 2, heartbeats: heartbeatsToSend }),
+      );
       this._heartbeatsCache.lastSentHeartbeatDate = date;
       if (unsentEntries.length > 0) {
         this._heartbeatsCache.heartbeats = unsentEntries;
@@ -475,7 +488,7 @@ function extractHeartbeatsForHeader(heartbeatsCache, maxSize = MAX_HEADER_BYTES)
     if (!heartbeatEntry) {
       heartbeatsToSend.push({
         agent: singleDateHeartbeat.agent,
-        dates: [singleDateHeartbeat.date]
+        dates: [singleDateHeartbeat.date],
       });
       if (countBytes(heartbeatsToSend) > maxSize) {
         heartbeatsToSend.pop();
@@ -492,7 +505,7 @@ function extractHeartbeatsForHeader(heartbeatsCache, maxSize = MAX_HEADER_BYTES)
   }
   return {
     heartbeatsToSend,
-    unsentEntries
+    unsentEntries,
   };
 }
 class HeartbeatStorageImpl {
@@ -504,7 +517,9 @@ class HeartbeatStorageImpl {
     if (!isIndexedDBAvailable()) {
       return false;
     } else {
-      return validateIndexedDBOpenable().then(() => true).catch(() => false);
+      return validateIndexedDBOpenable()
+        .then(() => true)
+        .catch(() => false);
     }
   }
   /**
@@ -531,8 +546,9 @@ class HeartbeatStorageImpl {
     } else {
       const existingHeartbeatsObject = await this.read();
       return writeHeartbeatsToIndexedDB(this.app, {
-        lastSentHeartbeatDate: heartbeatsObject.lastSentHeartbeatDate ?? existingHeartbeatsObject.lastSentHeartbeatDate,
-        heartbeats: heartbeatsObject.heartbeats
+        lastSentHeartbeatDate:
+          heartbeatsObject.lastSentHeartbeatDate ?? existingHeartbeatsObject.lastSentHeartbeatDate,
+        heartbeats: heartbeatsObject.heartbeats,
       });
     }
   }
@@ -544,11 +560,9 @@ class HeartbeatStorageImpl {
     } else {
       const existingHeartbeatsObject = await this.read();
       return writeHeartbeatsToIndexedDB(this.app, {
-        lastSentHeartbeatDate: heartbeatsObject.lastSentHeartbeatDate ?? existingHeartbeatsObject.lastSentHeartbeatDate,
-        heartbeats: [
-          ...existingHeartbeatsObject.heartbeats,
-          ...heartbeatsObject.heartbeats
-        ]
+        lastSentHeartbeatDate:
+          heartbeatsObject.lastSentHeartbeatDate ?? existingHeartbeatsObject.lastSentHeartbeatDate,
+        heartbeats: [...existingHeartbeatsObject.heartbeats, ...heartbeatsObject.heartbeats],
       });
     }
   }
@@ -556,7 +570,7 @@ class HeartbeatStorageImpl {
 function countBytes(heartbeatsCache) {
   return base64urlEncodeWithoutPadding(
     // heartbeatsCache wrapper properties
-    JSON.stringify({ version: 2, heartbeats: heartbeatsCache })
+    JSON.stringify({ version: 2, heartbeats: heartbeatsCache }),
   ).length;
 }
 function getEarliestHeartbeatIdx(heartbeats) {
@@ -574,18 +588,22 @@ function getEarliestHeartbeatIdx(heartbeats) {
   return earliestHeartbeatIdx;
 }
 function registerCoreComponents(variant) {
-  _registerComponent(new Component(
-    "platform-logger",
-    (container) => new PlatformLoggerServiceImpl(container),
-    "PRIVATE"
-    /* ComponentType.PRIVATE */
-  ));
-  _registerComponent(new Component(
-    "heartbeat",
-    (container) => new HeartbeatServiceImpl(container),
-    "PRIVATE"
-    /* ComponentType.PRIVATE */
-  ));
+  _registerComponent(
+    new Component(
+      "platform-logger",
+      (container) => new PlatformLoggerServiceImpl(container),
+      "PRIVATE",
+      /* ComponentType.PRIVATE */
+    ),
+  );
+  _registerComponent(
+    new Component(
+      "heartbeat",
+      (container) => new HeartbeatServiceImpl(container),
+      "PRIVATE",
+      /* ComponentType.PRIVATE */
+    ),
+  );
   registerVersion(name$q, version$1, variant);
   registerVersion(name$q, version$1, "esm2020");
   registerVersion("fire-js", "");
@@ -599,5 +617,5 @@ export {
   getApps as c,
   getApp as g,
   initializeApp as i,
-  registerVersion as r
+  registerVersion as r,
 };

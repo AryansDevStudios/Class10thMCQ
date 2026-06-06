@@ -33,6 +33,6 @@ export function seededShuffle<T>(arr: T[], seed: string): T[] {
 export function shuffledOrder(length: number, seed: string): number[] {
   return seededShuffle(
     Array.from({ length }, (_, i) => i),
-    seed
+    seed,
   );
 }

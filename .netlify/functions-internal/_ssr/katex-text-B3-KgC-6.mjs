@@ -1,4 +1,9 @@
-import { b as doc, j as setDoc, g as getDoc, s as serverTimestamp } from "../_libs/firebase__firestore.mjs";
+import {
+  b as doc,
+  j as setDoc,
+  g as getDoc,
+  s as serverTimestamp,
+} from "../_libs/firebase__firestore.mjs";
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { F as FIREBASE_CONFIGURED, d as db } from "./firebase-BOBCTMcs.mjs";
 import { r as reactKatexExports } from "../_libs/react-katex.mjs";
@@ -39,8 +44,7 @@ function useServerNow(tickMs = 250) {
     init();
     const tick = setInterval(() => setNow(getServerNow()), tickMs);
     const resync = setInterval(() => {
-      syncServerTime().catch(() => {
-      });
+      syncServerTime().catch(() => {});
     }, 3e4);
     return () => {
       cancelled = true;
@@ -78,17 +82,31 @@ function KatexText({ text }) {
       i = end;
     }
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "katex-text", children: parts.map((p, idx) => {
-    if (p.type === "text") return /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.Fragment, { children: p.value }, idx);
-    try {
-      return p.type === "inline" ? /* @__PURE__ */ jsxRuntimeExports.jsx(reactKatexExports.InlineMath, { math: p.value }, idx) : /* @__PURE__ */ jsxRuntimeExports.jsx(reactKatexExports.BlockMath, { math: p.value }, idx);
-    } catch {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx("code", { children: p.value }, idx);
-    }
-  }) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("span", {
+    className: "katex-text",
+    children: parts.map((p, idx) => {
+      if (p.type === "text")
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+          reactExports.Fragment,
+          { children: p.value },
+          idx,
+        );
+      try {
+        return p.type === "inline"
+          ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+              reactKatexExports.InlineMath,
+              { math: p.value },
+              idx,
+            )
+          : /* @__PURE__ */ jsxRuntimeExports.jsx(
+              reactKatexExports.BlockMath,
+              { math: p.value },
+              idx,
+            );
+      } catch {
+        return /* @__PURE__ */ jsxRuntimeExports.jsx("code", { children: p.value }, idx);
+      }
+    }),
+  });
 }
-export {
-  KatexText as K,
-  getServerNow as g,
-  useServerNow as u
-};
+export { KatexText as K, getServerNow as g, useServerNow as u };

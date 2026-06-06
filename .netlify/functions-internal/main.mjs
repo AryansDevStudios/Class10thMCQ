@@ -11,19 +11,22 @@ function lazyService(loader) {
         return mod.fetch(req);
       }
       if (!promise) {
-        promise = loader().then((_mod) => mod = _mod.default || _mod);
+        promise = loader().then((_mod) => (mod = _mod.default || _mod));
       }
       return promise.then((mod2) => mod2.fetch(req));
-    }
+    },
   };
 }
 const services = {
-  ["ssr"]: lazyService(() => import("./_ssr/index.mjs"))
+  ["ssr"]: lazyService(() => import("./_ssr/index.mjs")),
 };
 globalThis.__nitro_vite_envs__ = services;
 const errorHandler$1 = (error, event) => {
   const res = defaultHandler(error, event);
-  return new NodeResponse(typeof res.body === "string" ? res.body : JSON.stringify(res.body, null, 2), res);
+  return new NodeResponse(
+    typeof res.body === "string" ? res.body : JSON.stringify(res.body, null, 2),
+    res,
+  );
 };
 function defaultHandler(error, event) {
   const unhandled = error.unhandled ?? !HTTPError.isError(error);
@@ -34,28 +37,32 @@ function defaultHandler(error, event) {
     if (/^\/[^/]/.test(baseURL) && !url.pathname.startsWith(baseURL)) {
       return {
         status: 302,
-        headers: new Headers({ location: `${baseURL}${url.pathname.slice(1)}${url.search}` })
+        headers: new Headers({ location: `${baseURL}${url.pathname.slice(1)}${url.search}` }),
       };
     }
   }
   const headers2 = new Headers(unhandled ? {} : error.headers);
   headers2.set("content-type", "application/json; charset=utf-8");
-  const jsonBody = unhandled ? {
-    status,
-    unhandled: true
-  } : typeof error.toJSON === "function" ? error.toJSON() : {
-    status,
-    statusText,
-    message: error.message
-  };
+  const jsonBody = unhandled
+    ? {
+        status,
+        unhandled: true,
+      }
+    : typeof error.toJSON === "function"
+      ? error.toJSON()
+      : {
+          status,
+          statusText,
+          message: error.message,
+        };
   return {
     status,
     statusText,
     headers: headers2,
     body: {
       error: true,
-      ...jsonBody
-    }
+      ...jsonBody,
+    },
   };
 }
 const errorHandlers = [errorHandler$1];
@@ -71,20 +78,29 @@ async function errorHandler(error, event) {
     }
   }
 }
-const headers = ((m) => function headersRouteRule(event) {
-  for (const [key, value] of Object.entries(m.options || {})) {
-    event.res.headers.set(key, value);
-  }
-});
+const headers = (m) =>
+  function headersRouteRule(event) {
+    for (const [key, value] of Object.entries(m.options || {})) {
+      event.res.headers.set(key, value);
+    }
+  };
 const findRouteRules = /* @__PURE__ */ (() => {
-  const $0 = [{ name: "headers", route: "/assets/**", handler: headers, options: { "cache-control": "public, max-age=31536000, immutable" } }];
+  const $0 = [
+    {
+      name: "headers",
+      route: "/assets/**",
+      handler: headers,
+      options: { "cache-control": "public, max-age=31536000, immutable" },
+    },
+  ];
   return (m, p) => {
     let r = [];
     if (p.charCodeAt(p.length - 1) === 47) p = p.slice(0, -1) || "/";
-    let s = p.split("/"), l = s.length;
+    let s = p.split("/"),
+      l = s.length;
     if (l > 1) {
       if (s[1] === "assets") {
-        r.unshift({ data: $0, params: { "_": s.slice(2).join("/") } });
+        r.unshift({ data: $0, params: { _: s.slice(2).join("/") } });
       }
     }
     return r;
@@ -93,9 +109,9 @@ const findRouteRules = /* @__PURE__ */ (() => {
 const _lazy_xO3MRd = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
 const findRoute = /* @__PURE__ */ (() => {
   const data = { route: "/**", handler: _lazy_xO3MRd };
-  return ((_m, p) => {
-    return { data, params: { "_": p.slice(1) } };
-  });
+  return (_m, p) => {
+    return { data, params: { _: p.slice(1) } };
+  };
 })();
 const APP_ID = "default";
 function useNitroApp() {
@@ -116,14 +132,16 @@ function createNitroApp() {
       if (errors) {
         errors.push({
           error,
-          context: errorCtx
+          context: errorCtx,
         });
       }
     }
   };
-  const h3App = createH3App({ onError(error, event) {
-    return errorHandler(error, event);
-  } });
+  const h3App = createH3App({
+    onError(error, event) {
+      return errorHandler(error, event);
+    },
+  });
   let appHandler = (req) => {
     req.context ||= {};
     req.context.nitro = req.context.nitro || { errors: [] };
@@ -133,7 +151,7 @@ function createNitroApp() {
     fetch: appHandler,
     h3: h3App,
     hooks,
-    captureError
+    captureError,
   };
   return app;
 }
@@ -177,7 +195,7 @@ function getRouteRules(method, pathname) {
         if (typeof currentRule.options === "object" && typeof rule.options === "object") {
           currentRule.options = {
             ...currentRule.options,
-            ...rule.options
+            ...rule.options,
           };
         } else {
           currentRule.options = rule.options;
@@ -185,18 +203,20 @@ function getRouteRules(method, pathname) {
         currentRule.route = rule.route;
         currentRule.params = {
           ...currentRule.params,
-          ...layer.params
+          ...layer.params,
         };
       } else if (rule.options !== false) {
         routeRules[rule.name] = {
           ...rule,
-          params: layer.params
+          params: layer.params,
         };
       }
     }
   }
   const middleware = [];
-  const orderedRules = Object.values(routeRules).sort((a, b) => (a.handler?.order || 0) - (b.handler?.order || 0));
+  const orderedRules = Object.values(routeRules).sort(
+    (a, b) => (a.handler?.order || 0) - (b.handler?.order || 0),
+  );
   for (const rule of orderedRules) {
     if (rule.options === false || !rule.handler) {
       continue;
@@ -205,7 +225,7 @@ function getRouteRules(method, pathname) {
   }
   return {
     routeRules,
-    routeRuleMiddleware: middleware
+    routeRuleMiddleware: middleware,
   };
 }
 const nitroApp = useNitroApp();
@@ -217,14 +237,16 @@ const handler = async (req) => {
   const isr = (req.context?.routeRules || {})?.isr?.options;
   if (isr) {
     const maxAge = typeof isr === "number" ? isr : ONE_YEAR_IN_SECONDS;
-    const revalidateDirective = typeof isr === "number" ? `stale-while-revalidate=${ONE_YEAR_IN_SECONDS}` : "must-revalidate";
+    const revalidateDirective =
+      typeof isr === "number" ? `stale-while-revalidate=${ONE_YEAR_IN_SECONDS}` : "must-revalidate";
     if (!response.headers.has("Cache-Control")) {
       response.headers.set("Cache-Control", "public, max-age=0, must-revalidate");
     }
-    response.headers.set("Netlify-CDN-Cache-Control", `public, max-age=${maxAge}, ${revalidateDirective}, durable`);
+    response.headers.set(
+      "Netlify-CDN-Cache-Control",
+      `public, max-age=${maxAge}, ${revalidateDirective}, durable`,
+    );
   }
   return response;
 };
-export {
-  handler as default
-};
+export { handler as default };

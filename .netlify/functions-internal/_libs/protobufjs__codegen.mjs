@@ -4,7 +4,8 @@ function requireCodegen() {
   if (hasRequiredCodegen) return codegen_1;
   hasRequiredCodegen = 1;
   codegen_1 = codegen;
-  var reservedRe = /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
+  var reservedRe =
+    /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
   function codegen(functionParams, functionName) {
     if (typeof functionParams === "string") {
       functionName = functionParams;
@@ -14,11 +15,13 @@ function requireCodegen() {
     function Codegen(formatStringOrScope) {
       if (typeof formatStringOrScope !== "string") {
         var source = toString();
-        if (codegen.verbose)
-          console.log("codegen: " + source);
+        if (codegen.verbose) console.log("codegen: " + source);
         source = "return " + source;
         if (formatStringOrScope) {
-          var scopeKeys = Object.keys(formatStringOrScope), scopeParams = new Array(scopeKeys.length + 1), scopeValues = new Array(scopeKeys.length), scopeOffset = 0;
+          var scopeKeys = Object.keys(formatStringOrScope),
+            scopeParams = new Array(scopeKeys.length + 1),
+            scopeValues = new Array(scopeKeys.length),
+            scopeOffset = 0;
           while (scopeOffset < scopeKeys.length) {
             scopeParams[scopeOffset] = scopeKeys[scopeOffset];
             scopeValues[scopeOffset] = formatStringOrScope[scopeKeys[scopeOffset++]];
@@ -28,7 +31,8 @@ function requireCodegen() {
         }
         return Function(source)();
       }
-      var formatParams = new Array(arguments.length - 1), formatOffset = 0;
+      var formatParams = new Array(arguments.length - 1),
+        formatOffset = 0;
       while (formatOffset < formatParams.length)
         formatParams[formatOffset] = arguments[++formatOffset];
       formatOffset = 0;
@@ -47,30 +51,32 @@ function requireCodegen() {
         }
         return "%";
       });
-      if (formatOffset !== formatParams.length)
-        throw Error("parameter count mismatch");
+      if (formatOffset !== formatParams.length) throw Error("parameter count mismatch");
       body.push(formatStringOrScope);
       return Codegen;
     }
     function toString(functionNameOverride) {
-      return "function " + safeFunctionName(functionNameOverride || functionName) + "(" + (functionParams && functionParams.join(",") || "") + "){\n  " + body.join("\n  ") + "\n}";
+      return (
+        "function " +
+        safeFunctionName(functionNameOverride || functionName) +
+        "(" +
+        ((functionParams && functionParams.join(",")) || "") +
+        "){\n  " +
+        body.join("\n  ") +
+        "\n}"
+      );
     }
     Codegen.toString = toString;
     return Codegen;
   }
   codegen.verbose = false;
   function safeFunctionName(name) {
-    if (!name)
-      return "";
+    if (!name) return "";
     name = String(name).replace(/[^\w$]/g, "");
-    if (!name)
-      return "";
-    if (/^\d/.test(name))
-      name = "_" + name;
+    if (!name) return "";
+    if (/^\d/.test(name)) name = "_" + name;
     return reservedRe.test(name) ? name + "_" : name;
   }
   return codegen_1;
 }
-export {
-  requireCodegen as r
-};
+export { requireCodegen as r };

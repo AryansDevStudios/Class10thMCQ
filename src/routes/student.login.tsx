@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db, FIREBASE_CONFIGURED } from "@/lib/firebase";
+import { studentLoginFn } from "@/server.functions/auth.functions";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/student/login")({
@@ -19,24 +18,11 @@ function StudentLogin() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!FIREBASE_CONFIGURED) {
-      setError("Firebase not configured. See homepage notice.");
-      return;
-    }
     setLoading(true);
     try {
-      const snap = await getDoc(doc(db(), "students", srNo.trim()));
-      if (!snap.exists()) {
-        setError("No student with that Sr. No.");
-      } else {
-        const data = snap.data() as { password: string; name: string; section: "A" | "B" | "H" };
-        if (data.password !== password) {
-          setError("Incorrect password. Ask administration to reset it.");
-        } else {
-          loginStudent({ srNo: srNo.trim(), name: data.name, section: data.section });
-          navigate({ to: "/student" });
-        }
-      }
+      const data = await studentLoginFn({ data: { srNo: srNo.trim(), password } });
+      loginStudent({ srNo: data.srNo, name: data.name, section: data.section });
+      navigate({ to: "/student" });
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -47,9 +33,14 @@ function StudentLogin() {
   return (
     <div className="min-h-screen bg-slate-50 px-6 py-16">
       <div className="mx-auto max-w-md">
-        <Link to="/" className="text-sm text-slate-600 hover:text-slate-900">← Back to home</Link>
+        <Link to="/" className="text-sm text-slate-600 hover:text-slate-900">
+          ← Back to home
+        </Link>
         <h1 className="mt-3 text-2xl font-bold text-slate-900">Student Login</h1>
-        <form onSubmit={onSubmit} className="mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <form
+          onSubmit={onSubmit}
+          className="mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+        >
           <Field label="Sr. No.">
             <input
               value={srNo}

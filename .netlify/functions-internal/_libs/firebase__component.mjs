@@ -55,13 +55,12 @@ class Provider {
       if (this.isInitialized(normalizedIdentifier) || this.shouldAutoInitialize()) {
         try {
           const instance = this.getOrInitializeService({
-            instanceIdentifier: normalizedIdentifier
+            instanceIdentifier: normalizedIdentifier,
           });
           if (instance) {
             deferred.resolve(instance);
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
     }
     return this.instancesDeferred.get(normalizedIdentifier).promise;
@@ -72,7 +71,7 @@ class Provider {
     if (this.isInitialized(normalizedIdentifier) || this.shouldAutoInitialize()) {
       try {
         return this.getOrInitializeService({
-          instanceIdentifier: normalizedIdentifier
+          instanceIdentifier: normalizedIdentifier,
         });
       } catch (e) {
         if (optional) {
@@ -106,18 +105,16 @@ class Provider {
     if (isComponentEager(component)) {
       try {
         this.getOrInitializeService({ instanceIdentifier: DEFAULT_ENTRY_NAME });
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     for (const [instanceIdentifier, instanceDeferred] of this.instancesDeferred.entries()) {
       const normalizedIdentifier = this.normalizeInstanceIdentifier(instanceIdentifier);
       try {
         const instance = this.getOrInitializeService({
-          instanceIdentifier: normalizedIdentifier
+          instanceIdentifier: normalizedIdentifier,
         });
         instanceDeferred.resolve(instance);
-      } catch (e) {
-      }
+      } catch (e) {}
     }
   }
   clearInstance(identifier = DEFAULT_ENTRY_NAME) {
@@ -130,8 +127,10 @@ class Provider {
   async delete() {
     const services = Array.from(this.instances.values());
     await Promise.all([
-      ...services.filter((service) => "INTERNAL" in service).map((service) => service.INTERNAL.delete()),
-      ...services.filter((service) => "_delete" in service).map((service) => service._delete())
+      ...services
+        .filter((service) => "INTERNAL" in service)
+        .map((service) => service.INTERNAL.delete()),
+      ...services.filter((service) => "_delete" in service).map((service) => service._delete()),
     ]);
   }
   isComponentSet() {
@@ -154,7 +153,7 @@ class Provider {
     }
     const instance = this.getOrInitializeService({
       instanceIdentifier: normalizedIdentifier,
-      options
+      options,
     });
     for (const [instanceIdentifier, instanceDeferred] of this.instancesDeferred.entries()) {
       const normalizedDeferredIdentifier = this.normalizeInstanceIdentifier(instanceIdentifier);
@@ -174,7 +173,8 @@ class Provider {
    */
   onInit(callback, identifier) {
     const normalizedIdentifier = this.normalizeInstanceIdentifier(identifier);
-    const existingCallbacks = this.onInitCallbacks.get(normalizedIdentifier) ?? /* @__PURE__ */ new Set();
+    const existingCallbacks =
+      this.onInitCallbacks.get(normalizedIdentifier) ?? /* @__PURE__ */ new Set();
     existingCallbacks.add(callback);
     this.onInitCallbacks.set(normalizedIdentifier, existingCallbacks);
     const existingInstance = this.instances.get(normalizedIdentifier);
@@ -197,8 +197,7 @@ class Provider {
     for (const callback of callbacks) {
       try {
         callback(instance, identifier);
-      } catch {
-      }
+      } catch {}
     }
   }
   getOrInitializeService({ instanceIdentifier, options = {} }) {
@@ -206,7 +205,7 @@ class Provider {
     if (!instance && this.component) {
       instance = this.component.instanceFactory(this.container, {
         instanceIdentifier: normalizeIdentifierForFactory(instanceIdentifier),
-        options
+        options,
       });
       this.instances.set(instanceIdentifier, instance);
       this.instancesOptions.set(instanceIdentifier, options);
@@ -214,8 +213,7 @@ class Provider {
       if (this.component.onInstanceCreated) {
         try {
           this.component.onInstanceCreated(this.container, instanceIdentifier, instance);
-        } catch {
-        }
+        } catch {}
       }
     }
     return instance || null;
@@ -284,7 +282,4 @@ class ComponentContainer {
     return Array.from(this.providers.values());
   }
 }
-export {
-  Component as C,
-  ComponentContainer as a
-};
+export { Component as C, ComponentContainer as a };

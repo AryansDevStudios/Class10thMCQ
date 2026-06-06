@@ -1,4 +1,3 @@
-
 # Academic Testing Platform — Build Plan
 
 A real-time MCQ testing app for one class (10th, sections A/B/H) with strict server-time windows, KaTeX rendering, and anti-cheat. Firebase Firestore is the only backend.
@@ -61,13 +60,14 @@ Firestore client clocks can't be trusted. I'll use `serverTimestamp()` for write
 - Form: title, start datetime, end datetime, then repeatable question blocks (question + 4 options + correct).
 - Every text field accepts LaTeX inline as `$...$` or block `$$...$$`; a live preview renders via KaTeX so the teacher sees what students will see.
 - "Bulk upload JSON" button accepts:
+
 ```json
 {
   "title": "Chemistry Mock 1",
   "startAt": "2026-05-30T18:00:00+05:30",
-  "endAt":   "2026-05-30T19:00:00+05:30",
+  "endAt": "2026-05-30T19:00:00+05:30",
   "questions": [
-    { "text": "Balance: $H_2 + O_2 \\to H_2O$", "options": ["1","2","3","4"], "correctIndex": 1 }
+    { "text": "Balance: $H_2 + O_2 \\to H_2O$", "options": ["1", "2", "3", "4"], "correctIndex": 1 }
   ]
 }
 ```

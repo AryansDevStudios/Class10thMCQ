@@ -4,36 +4,39 @@ var hasRequiredKatex;
 function requireKatex() {
   if (hasRequiredKatex) return katex$1.exports;
   hasRequiredKatex = 1;
-  (function(module, exports) {
+  (function (module, exports) {
     (function webpackUniversalModuleDefinition(root, factory) {
       module.exports = factory();
-    })(typeof self !== "undefined" ? self : katex, function() {
+    })(typeof self !== "undefined" ? self : katex, function () {
       return (
         /******/
-        (function() {
+        (function () {
           var __webpack_require__ = {};
-          !(function() {
-            __webpack_require__.d = function(exports2, definition) {
+          !(function () {
+            __webpack_require__.d = function (exports2, definition) {
               for (var key in definition) {
-                if (__webpack_require__.o(definition, key) && !__webpack_require__.o(exports2, key)) {
+                if (
+                  __webpack_require__.o(definition, key) &&
+                  !__webpack_require__.o(exports2, key)
+                ) {
                   Object.defineProperty(exports2, key, { enumerable: true, get: definition[key] });
                 }
               }
             };
           })();
-          !(function() {
-            __webpack_require__.o = function(obj, prop) {
+          !(function () {
+            __webpack_require__.o = function (obj, prop) {
               return Object.prototype.hasOwnProperty.call(obj, prop);
             };
           })();
           var __webpack_exports__ = {};
           __webpack_require__.d(__webpack_exports__, {
-            "default": function() {
+            default: function () {
               return (
                 /* binding */
                 katex_webpack
               );
-            }
+            },
           });
           class ParseError extends Error {
             // The underlying error message without any context added.
@@ -87,10 +90,11 @@ function requireKatex() {
             ">": "&gt;",
             "<": "&lt;",
             '"': "&quot;",
-            "'": "&#x27;"
+            "'": "&#x27;",
           };
           const ESCAPE_REGEX = /[&><"']/g;
-          const utils_escape = (text) => String(text).replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
+          const utils_escape = (text) =>
+            String(text).replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
           const getBaseElem = (group) => {
             if (group.type === "ordgroup") {
               if (group.body.length === 1) {
@@ -128,92 +132,105 @@ function requireKatex() {
           const SETTINGS_SCHEMA = {
             displayMode: {
               type: "boolean",
-              description: "Render math in display mode, which puts the math in display style (so \\int and \\sum are large, for example), and centers the math on the page on its own line.",
-              cli: "-d, --display-mode"
+              description:
+                "Render math in display mode, which puts the math in display style (so \\int and \\sum are large, for example), and centers the math on the page on its own line.",
+              cli: "-d, --display-mode",
             },
             output: {
               type: {
-                enum: ["htmlAndMathml", "html", "mathml"]
+                enum: ["htmlAndMathml", "html", "mathml"],
               },
               description: "Determines the markup language of the output.",
-              cli: "-F, --format <type>"
+              cli: "-F, --format <type>",
             },
             leqno: {
               type: "boolean",
-              description: "Render display math in leqno style (left-justified tags)."
+              description: "Render display math in leqno style (left-justified tags).",
             },
             fleqn: {
               type: "boolean",
-              description: "Render display math flush left."
+              description: "Render display math flush left.",
             },
             throwOnError: {
               type: "boolean",
               default: true,
               cli: "-t, --no-throw-on-error",
-              cliDescription: "Render errors (in the color given by --error-color) instead of throwing a ParseError exception when encountering an error."
+              cliDescription:
+                "Render errors (in the color given by --error-color) instead of throwing a ParseError exception when encountering an error.",
             },
             errorColor: {
               type: "string",
               default: "#cc0000",
               cli: "-c, --error-color <color>",
-              cliDescription: "A color string given in the format 'rgb' or 'rrggbb' (no #). This option determines the color of errors rendered by the -t option.",
-              cliProcessor: (color) => "#" + color
+              cliDescription:
+                "A color string given in the format 'rgb' or 'rrggbb' (no #). This option determines the color of errors rendered by the -t option.",
+              cliProcessor: (color) => "#" + color,
             },
             macros: {
               type: "object",
               cli: "-m, --macro <def>",
-              cliDescription: "Define custom macro of the form '\\foo:expansion' (use multiple -m arguments for multiple macros).",
+              cliDescription:
+                "Define custom macro of the form '\\foo:expansion' (use multiple -m arguments for multiple macros).",
               cliDefault: [],
               cliProcessor: (def, defs) => {
                 defs.push(def);
                 return defs;
-              }
+              },
             },
             minRuleThickness: {
               type: "number",
-              description: "Specifies a minimum thickness, in ems, for fraction lines, `\\sqrt` top lines, `{array}` vertical lines, `\\hline`, `\\hdashline`, `\\underline`, `\\overline`, and the borders of `\\fbox`, `\\boxed`, and `\\fcolorbox`.",
+              description:
+                "Specifies a minimum thickness, in ems, for fraction lines, `\\sqrt` top lines, `{array}` vertical lines, `\\hline`, `\\hdashline`, `\\underline`, `\\overline`, and the borders of `\\fbox`, `\\boxed`, and `\\fcolorbox`.",
               processor: (t) => Math.max(0, t),
               cli: "--min-rule-thickness <size>",
-              cliProcessor: parseFloat
+              cliProcessor: parseFloat,
             },
             colorIsTextColor: {
               type: "boolean",
-              description: "Makes \\color behave like LaTeX's 2-argument \\textcolor, instead of LaTeX's one-argument \\color mode change.",
-              cli: "-b, --color-is-text-color"
+              description:
+                "Makes \\color behave like LaTeX's 2-argument \\textcolor, instead of LaTeX's one-argument \\color mode change.",
+              cli: "-b, --color-is-text-color",
             },
             strict: {
-              type: [{
-                enum: ["warn", "ignore", "error"]
-              }, "boolean", "function"],
-              description: "Turn on strict / LaTeX faithfulness mode, which throws an error if the input uses features that are not supported by LaTeX.",
+              type: [
+                {
+                  enum: ["warn", "ignore", "error"],
+                },
+                "boolean",
+                "function",
+              ],
+              description:
+                "Turn on strict / LaTeX faithfulness mode, which throws an error if the input uses features that are not supported by LaTeX.",
               cli: "-S, --strict",
-              cliDefault: false
+              cliDefault: false,
             },
             trust: {
               type: ["boolean", "function"],
               description: "Trust the input, enabling all HTML features such as \\url.",
-              cli: "-T, --trust"
+              cli: "-T, --trust",
             },
             maxSize: {
               type: "number",
               default: Infinity,
-              description: "If non-zero, all user-specified sizes, e.g. in \\rule{500em}{500em}, will be capped to maxSize ems. Otherwise, elements and spaces can be arbitrarily large",
+              description:
+                "If non-zero, all user-specified sizes, e.g. in \\rule{500em}{500em}, will be capped to maxSize ems. Otherwise, elements and spaces can be arbitrarily large",
               processor: (s) => Math.max(0, s),
               cli: "-s, --max-size <n>",
-              cliProcessor: parseInt
+              cliProcessor: parseInt,
             },
             maxExpand: {
               type: "number",
               default: 1e3,
-              description: "Limit the number of macro expansions to the specified number, to prevent e.g. infinite macro loops. If set to Infinity, the macro expander will try to fully expand as in LaTeX.",
+              description:
+                "Limit the number of macro expansions to the specified number, to prevent e.g. infinite macro loops. If set to Infinity, the macro expander will try to fully expand as in LaTeX.",
               processor: (n) => Math.max(0, n),
               cli: "-e, --max-expand <n>",
-              cliProcessor: (n) => n === "Infinity" ? Infinity : parseInt(n)
+              cliProcessor: (n) => (n === "Infinity" ? Infinity : parseInt(n)),
             },
             globalGroup: {
               type: "boolean",
-              cli: false
-            }
+              cli: false,
+            },
           };
           function getImplicitDefault(type) {
             if (typeof type !== "string") {
@@ -229,7 +246,9 @@ function requireKatex() {
               case "object":
                 return {};
               default:
-                throw new Error("Unexpected schema type; settings must declare an explicit default.");
+                throw new Error(
+                  "Unexpected schema type; settings must declare an explicit default.",
+                );
             }
           }
           function getDefaultValue(schema) {
@@ -241,7 +260,12 @@ function requireKatex() {
           }
           function applySetting(target, prop, options, schema) {
             const optionValue = options[prop];
-            target[prop] = optionValue !== void 0 ? schema.processor ? schema.processor(optionValue) : optionValue : getDefaultValue(schema);
+            target[prop] =
+              optionValue !== void 0
+                ? schema.processor
+                  ? schema.processor(optionValue)
+                  : optionValue
+                : getDefaultValue(schema);
           }
           class Settings {
             constructor(options) {
@@ -282,11 +306,23 @@ function requireKatex() {
               if (!strict || strict === "ignore") {
                 return;
               } else if (strict === true || strict === "error") {
-                throw new src_ParseError("LaTeX-incompatible input and strict mode is set to 'error': " + (errorMsg + " [" + errorCode + "]"), token);
+                throw new src_ParseError(
+                  "LaTeX-incompatible input and strict mode is set to 'error': " +
+                    (errorMsg + " [" + errorCode + "]"),
+                  token,
+                );
               } else if (strict === "warn") {
-                typeof console !== "undefined" && console.warn("LaTeX-incompatible input and strict mode is set to 'warn': " + (errorMsg + " [" + errorCode + "]"));
+                typeof console !== "undefined" &&
+                  console.warn(
+                    "LaTeX-incompatible input and strict mode is set to 'warn': " +
+                      (errorMsg + " [" + errorCode + "]"),
+                  );
               } else {
-                typeof console !== "undefined" && console.warn("LaTeX-incompatible input and strict mode is set to " + ("unrecognized '" + strict + "': " + errorMsg + " [" + errorCode + "]"));
+                typeof console !== "undefined" &&
+                  console.warn(
+                    "LaTeX-incompatible input and strict mode is set to " +
+                      ("unrecognized '" + strict + "': " + errorMsg + " [" + errorCode + "]"),
+                  );
               }
             }
             /**
@@ -311,10 +347,18 @@ function requireKatex() {
               } else if (strict === true || strict === "error") {
                 return true;
               } else if (strict === "warn") {
-                typeof console !== "undefined" && console.warn("LaTeX-incompatible input and strict mode is set to 'warn': " + (errorMsg + " [" + errorCode + "]"));
+                typeof console !== "undefined" &&
+                  console.warn(
+                    "LaTeX-incompatible input and strict mode is set to 'warn': " +
+                      (errorMsg + " [" + errorCode + "]"),
+                  );
                 return false;
               } else {
-                typeof console !== "undefined" && console.warn("LaTeX-incompatible input and strict mode is set to " + ("unrecognized '" + strict + "': " + errorMsg + " [" + errorCode + "]"));
+                typeof console !== "undefined" &&
+                  console.warn(
+                    "LaTeX-incompatible input and strict mode is set to " +
+                      ("unrecognized '" + strict + "': " + errorMsg + " [" + errorCode + "]"),
+                  );
                 return false;
               }
             }
@@ -401,7 +445,16 @@ function requireKatex() {
           const Sc = 5;
           const SS = 6;
           const SSc = 7;
-          const styles = [new Style(D, 0, false), new Style(Dc, 0, true), new Style(T, 1, false), new Style(Tc, 1, true), new Style(S, 2, false), new Style(Sc, 2, true), new Style(SS, 3, false), new Style(SSc, 3, true)];
+          const styles = [
+            new Style(D, 0, false),
+            new Style(Dc, 0, true),
+            new Style(T, 1, false),
+            new Style(Tc, 1, true),
+            new Style(S, 2, false),
+            new Style(Sc, 2, true),
+            new Style(SS, 3, false),
+            new Style(SSc, 3, true),
+          ];
           const sup = [S, Sc, S, Sc, SS, SSc, SS, SSc];
           const sub = [Sc, Sc, Sc, Sc, SSc, SSc, SSc, SSc];
           const fracNum = [T, Tc, S, Sc, SS, SSc, SS, SSc];
@@ -412,67 +465,75 @@ function requireKatex() {
             DISPLAY: styles[D],
             TEXT: styles[T],
             SCRIPT: styles[S],
-            SCRIPTSCRIPT: styles[SS]
+            SCRIPTSCRIPT: styles[SS],
           };
-          const scriptData = [{
-            // Latin characters beyond the Latin-1 characters we have metrics for.
-            // Needed for Czech, Hungarian and Turkish text, for example.
-            name: "latin",
-            blocks: [
-              [256, 591],
-              // Latin Extended-A and Latin Extended-B
-              [768, 879]
-              // Combining Diacritical marks
-            ]
-          }, {
-            // The Cyrillic script used by Russian and related languages.
-            // A Cyrillic subset used to be supported as explicitly defined
-            // symbols in symbols.js
-            name: "cyrillic",
-            blocks: [[1024, 1279]]
-          }, {
-            // Armenian
-            name: "armenian",
-            blocks: [[1328, 1423]]
-          }, {
-            // The Brahmic scripts of South and Southeast Asia
-            // Devanagari (0900–097F)
-            // Bengali (0980–09FF)
-            // Gurmukhi (0A00–0A7F)
-            // Gujarati (0A80–0AFF)
-            // Oriya (0B00–0B7F)
-            // Tamil (0B80–0BFF)
-            // Telugu (0C00–0C7F)
-            // Kannada (0C80–0CFF)
-            // Malayalam (0D00–0D7F)
-            // Sinhala (0D80–0DFF)
-            // Thai (0E00–0E7F)
-            // Lao (0E80–0EFF)
-            // Tibetan (0F00–0FFF)
-            // Myanmar (1000–109F)
-            name: "brahmic",
-            blocks: [[2304, 4255]]
-          }, {
-            name: "georgian",
-            blocks: [[4256, 4351]]
-          }, {
-            // Chinese and Japanese.
-            // The "k" in cjk is for Korean, but we've separated Korean out
-            name: "cjk",
-            blocks: [
-              [12288, 12543],
-              // CJK symbols and punctuation, Hiragana, Katakana
-              [19968, 40879],
-              // CJK ideograms
-              [65280, 65376]
-              // Fullwidth punctuation
-              // TODO: add halfwidth Katakana and Romanji glyphs
-            ]
-          }, {
-            // Korean
-            name: "hangul",
-            blocks: [[44032, 55215]]
-          }];
+          const scriptData = [
+            {
+              // Latin characters beyond the Latin-1 characters we have metrics for.
+              // Needed for Czech, Hungarian and Turkish text, for example.
+              name: "latin",
+              blocks: [
+                [256, 591],
+                // Latin Extended-A and Latin Extended-B
+                [768, 879],
+                // Combining Diacritical marks
+              ],
+            },
+            {
+              // The Cyrillic script used by Russian and related languages.
+              // A Cyrillic subset used to be supported as explicitly defined
+              // symbols in symbols.js
+              name: "cyrillic",
+              blocks: [[1024, 1279]],
+            },
+            {
+              // Armenian
+              name: "armenian",
+              blocks: [[1328, 1423]],
+            },
+            {
+              // The Brahmic scripts of South and Southeast Asia
+              // Devanagari (0900–097F)
+              // Bengali (0980–09FF)
+              // Gurmukhi (0A00–0A7F)
+              // Gujarati (0A80–0AFF)
+              // Oriya (0B00–0B7F)
+              // Tamil (0B80–0BFF)
+              // Telugu (0C00–0C7F)
+              // Kannada (0C80–0CFF)
+              // Malayalam (0D00–0D7F)
+              // Sinhala (0D80–0DFF)
+              // Thai (0E00–0E7F)
+              // Lao (0E80–0EFF)
+              // Tibetan (0F00–0FFF)
+              // Myanmar (1000–109F)
+              name: "brahmic",
+              blocks: [[2304, 4255]],
+            },
+            {
+              name: "georgian",
+              blocks: [[4256, 4351]],
+            },
+            {
+              // Chinese and Japanese.
+              // The "k" in cjk is for Korean, but we've separated Korean out
+              name: "cjk",
+              blocks: [
+                [12288, 12543],
+                // CJK symbols and punctuation, Hiragana, Katakana
+                [19968, 40879],
+                // CJK ideograms
+                [65280, 65376],
+                // Fullwidth punctuation
+                // TODO: add halfwidth Katakana and Romanji glyphs
+              ],
+            },
+            {
+              // Korean
+              name: "hangul",
+              blocks: [[44032, 55215]],
+            },
+          ];
           function scriptFromCodepoint(codepoint) {
             for (let i = 0; i < scriptData.length; i++) {
               const script2 = scriptData[i];
@@ -497,30 +558,122 @@ function requireKatex() {
           }
           const doubleBrushStroke = (svgPath) => svgPath + " " + svgPath;
           const hLinePad = 80;
-          const sqrtMain = function(extraVinculum, hLinePad2) {
-            return "M95," + (622 + extraVinculum + hLinePad2) + "\nc-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14\nc0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54\nc44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10\ns173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429\nc69,-144,104.5,-217.7,106.5,-221\nl" + extraVinculum / 2.075 + " -" + extraVinculum + "\nc5.3,-9.3,12,-14,20,-14\nH400000v" + (40 + extraVinculum) + "H845.2724\ns-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7\nc-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z\nM" + (834 + extraVinculum) + " " + hLinePad2 + "h400000v" + (40 + extraVinculum) + "h-400000z";
+          const sqrtMain = function (extraVinculum, hLinePad2) {
+            return (
+              "M95," +
+              (622 + extraVinculum + hLinePad2) +
+              "\nc-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14\nc0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54\nc44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10\ns173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429\nc69,-144,104.5,-217.7,106.5,-221\nl" +
+              extraVinculum / 2.075 +
+              " -" +
+              extraVinculum +
+              "\nc5.3,-9.3,12,-14,20,-14\nH400000v" +
+              (40 + extraVinculum) +
+              "H845.2724\ns-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7\nc-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z\nM" +
+              (834 + extraVinculum) +
+              " " +
+              hLinePad2 +
+              "h400000v" +
+              (40 + extraVinculum) +
+              "h-400000z"
+            );
           };
-          const sqrtSize1 = function(extraVinculum, hLinePad2) {
-            return "M263," + (601 + extraVinculum + hLinePad2) + "c0.7,0,18,39.7,52,119\nc34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120\nc340,-704.7,510.7,-1060.3,512,-1067\nl" + extraVinculum / 2.084 + " -" + extraVinculum + "\nc4.7,-7.3,11,-11,19,-11\nH40000v" + (40 + extraVinculum) + "H1012.3\ns-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232\nc-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1\ns-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26\nc-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z\nM" + (1001 + extraVinculum) + " " + hLinePad2 + "h400000v" + (40 + extraVinculum) + "h-400000z";
+          const sqrtSize1 = function (extraVinculum, hLinePad2) {
+            return (
+              "M263," +
+              (601 + extraVinculum + hLinePad2) +
+              "c0.7,0,18,39.7,52,119\nc34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120\nc340,-704.7,510.7,-1060.3,512,-1067\nl" +
+              extraVinculum / 2.084 +
+              " -" +
+              extraVinculum +
+              "\nc4.7,-7.3,11,-11,19,-11\nH40000v" +
+              (40 + extraVinculum) +
+              "H1012.3\ns-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232\nc-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1\ns-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26\nc-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z\nM" +
+              (1001 + extraVinculum) +
+              " " +
+              hLinePad2 +
+              "h400000v" +
+              (40 + extraVinculum) +
+              "h-400000z"
+            );
           };
-          const sqrtSize2 = function(extraVinculum, hLinePad2) {
-            return "M983 " + (10 + extraVinculum + hLinePad2) + "\nl" + extraVinculum / 3.13 + " -" + extraVinculum + "\nc4,-6.7,10,-10,18,-10 H400000v" + (40 + extraVinculum) + "\nH1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7\ns-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744\nc-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30\nc26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722\nc56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5\nc53.7,-170.3,84.5,-266.8,92.5,-289.5z\nM" + (1001 + extraVinculum) + " " + hLinePad2 + "h400000v" + (40 + extraVinculum) + "h-400000z";
+          const sqrtSize2 = function (extraVinculum, hLinePad2) {
+            return (
+              "M983 " +
+              (10 + extraVinculum + hLinePad2) +
+              "\nl" +
+              extraVinculum / 3.13 +
+              " -" +
+              extraVinculum +
+              "\nc4,-6.7,10,-10,18,-10 H400000v" +
+              (40 + extraVinculum) +
+              "\nH1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7\ns-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744\nc-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30\nc26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722\nc56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5\nc53.7,-170.3,84.5,-266.8,92.5,-289.5z\nM" +
+              (1001 + extraVinculum) +
+              " " +
+              hLinePad2 +
+              "h400000v" +
+              (40 + extraVinculum) +
+              "h-400000z"
+            );
           };
-          const sqrtSize3 = function(extraVinculum, hLinePad2) {
-            return "M424," + (2398 + extraVinculum + hLinePad2) + "\nc-1.3,-0.7,-38.5,-172,-111.5,-514c-73,-342,-109.8,-513.3,-110.5,-514\nc0,-2,-10.7,14.3,-32,49c-4.7,7.3,-9.8,15.7,-15.5,25c-5.7,9.3,-9.8,16,-12.5,20\ns-5,7,-5,7c-4,-3.3,-8.3,-7.7,-13,-13s-13,-13,-13,-13s76,-122,76,-122s77,-121,77,-121\ns209,968,209,968c0,-2,84.7,-361.7,254,-1079c169.3,-717.3,254.7,-1077.7,256,-1081\nl" + extraVinculum / 4.223 + " -" + extraVinculum + "c4,-6.7,10,-10,18,-10 H400000\nv" + (40 + extraVinculum) + "H1014.6\ns-87.3,378.7,-272.6,1166c-185.3,787.3,-279.3,1182.3,-282,1185\nc-2,6,-10,9,-24,9\nc-8,0,-12,-0.7,-12,-2z M" + (1001 + extraVinculum) + " " + hLinePad2 + "\nh400000v" + (40 + extraVinculum) + "h-400000z";
+          const sqrtSize3 = function (extraVinculum, hLinePad2) {
+            return (
+              "M424," +
+              (2398 + extraVinculum + hLinePad2) +
+              "\nc-1.3,-0.7,-38.5,-172,-111.5,-514c-73,-342,-109.8,-513.3,-110.5,-514\nc0,-2,-10.7,14.3,-32,49c-4.7,7.3,-9.8,15.7,-15.5,25c-5.7,9.3,-9.8,16,-12.5,20\ns-5,7,-5,7c-4,-3.3,-8.3,-7.7,-13,-13s-13,-13,-13,-13s76,-122,76,-122s77,-121,77,-121\ns209,968,209,968c0,-2,84.7,-361.7,254,-1079c169.3,-717.3,254.7,-1077.7,256,-1081\nl" +
+              extraVinculum / 4.223 +
+              " -" +
+              extraVinculum +
+              "c4,-6.7,10,-10,18,-10 H400000\nv" +
+              (40 + extraVinculum) +
+              "H1014.6\ns-87.3,378.7,-272.6,1166c-185.3,787.3,-279.3,1182.3,-282,1185\nc-2,6,-10,9,-24,9\nc-8,0,-12,-0.7,-12,-2z M" +
+              (1001 + extraVinculum) +
+              " " +
+              hLinePad2 +
+              "\nh400000v" +
+              (40 + extraVinculum) +
+              "h-400000z"
+            );
           };
-          const sqrtSize4 = function(extraVinculum, hLinePad2) {
-            return "M473," + (2713 + extraVinculum + hLinePad2) + "\nc339.3,-1799.3,509.3,-2700,510,-2702 l" + extraVinculum / 5.298 + " -" + extraVinculum + "\nc3.3,-7.3,9.3,-11,18,-11 H400000v" + (40 + extraVinculum) + "H1017.7\ns-90.5,478,-276.2,1466c-185.7,988,-279.5,1483,-281.5,1485c-2,6,-10,9,-24,9\nc-8,0,-12,-0.7,-12,-2c0,-1.3,-5.3,-32,-16,-92c-50.7,-293.3,-119.7,-693.3,-207,-1200\nc0,-1.3,-5.3,8.7,-16,30c-10.7,21.3,-21.3,42.7,-32,64s-16,33,-16,33s-26,-26,-26,-26\ns76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,104,\n606zM" + (1001 + extraVinculum) + " " + hLinePad2 + "h400000v" + (40 + extraVinculum) + "H1017.7z";
+          const sqrtSize4 = function (extraVinculum, hLinePad2) {
+            return (
+              "M473," +
+              (2713 + extraVinculum + hLinePad2) +
+              "\nc339.3,-1799.3,509.3,-2700,510,-2702 l" +
+              extraVinculum / 5.298 +
+              " -" +
+              extraVinculum +
+              "\nc3.3,-7.3,9.3,-11,18,-11 H400000v" +
+              (40 + extraVinculum) +
+              "H1017.7\ns-90.5,478,-276.2,1466c-185.7,988,-279.5,1483,-281.5,1485c-2,6,-10,9,-24,9\nc-8,0,-12,-0.7,-12,-2c0,-1.3,-5.3,-32,-16,-92c-50.7,-293.3,-119.7,-693.3,-207,-1200\nc0,-1.3,-5.3,8.7,-16,30c-10.7,21.3,-21.3,42.7,-32,64s-16,33,-16,33s-26,-26,-26,-26\ns76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,104,\n606zM" +
+              (1001 + extraVinculum) +
+              " " +
+              hLinePad2 +
+              "h400000v" +
+              (40 + extraVinculum) +
+              "H1017.7z"
+            );
           };
-          const phasePath = function(y) {
+          const phasePath = function (y) {
             const x = y / 2;
             return "M400000 " + y + " H0 L" + x + " 0 l65 45 L145 " + (y - 80) + " H400000z";
           };
-          const sqrtTall = function(extraVinculum, hLinePad2, viewBoxHeight) {
+          const sqrtTall = function (extraVinculum, hLinePad2, viewBoxHeight) {
             const vertSegment = viewBoxHeight - 54 - hLinePad2 - extraVinculum;
-            return "M702 " + (extraVinculum + hLinePad2) + "H400000" + (40 + extraVinculum) + "\nH742v" + vertSegment + "l-4 4-4 4c-.667.7 -2 1.5-4 2.5s-4.167 1.833-6.5 2.5-5.5 1-9.5 1\nh-12l-28-84c-16.667-52-96.667 -294.333-240-727l-212 -643 -85 170\nc-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667\n219 661 l218 661zM702 " + hLinePad2 + "H400000v" + (40 + extraVinculum) + "H742z";
+            return (
+              "M702 " +
+              (extraVinculum + hLinePad2) +
+              "H400000" +
+              (40 + extraVinculum) +
+              "\nH742v" +
+              vertSegment +
+              "l-4 4-4 4c-.667.7 -2 1.5-4 2.5s-4.167 1.833-6.5 2.5-5.5 1-9.5 1\nh-12l-28-84c-16.667-52-96.667 -294.333-240-727l-212 -643 -85 170\nc-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667\n219 661 l218 661zM702 " +
+              hLinePad2 +
+              "H400000v" +
+              (40 + extraVinculum) +
+              "H742z"
+            );
           };
-          const sqrtPath = function(size, extraVinculum, viewBoxHeight) {
+          const sqrtPath = function (size, extraVinculum, viewBoxHeight) {
             extraVinculum = 1e3 * extraVinculum;
             let path2 = "";
             switch (size) {
@@ -544,14 +697,17 @@ function requireKatex() {
             }
             return path2;
           };
-          const innerPath = function(name, height) {
+          const innerPath = function (name, height) {
             switch (name) {
               case "⎜":
                 return doubleBrushStroke("M291 0 H417 V" + height + " H291z");
               case "∣":
                 return doubleBrushStroke("M145 0 H188 V" + height + " H145z");
               case "∥":
-                return doubleBrushStroke("M145 0 H188 V" + height + " H145z") + doubleBrushStroke("M367 0 H410 V" + height + " H367z");
+                return (
+                  doubleBrushStroke("M145 0 H188 V" + height + " H145z") +
+                  doubleBrushStroke("M367 0 H410 V" + height + " H367z")
+                );
               case "⎟":
                 return doubleBrushStroke("M457 0 H583 V" + height + " H457z");
               case "⎢":
@@ -563,115 +719,238 @@ function requireKatex() {
               case "⏐":
                 return doubleBrushStroke("M312 0 H355 V" + height + " H312z");
               case "‖":
-                return doubleBrushStroke("M257 0 H300 V" + height + " H257z") + doubleBrushStroke("M478 0 H521 V" + height + " H478z");
+                return (
+                  doubleBrushStroke("M257 0 H300 V" + height + " H257z") +
+                  doubleBrushStroke("M478 0 H521 V" + height + " H478z")
+                );
               default:
                 return "";
             }
           };
           const path = {
             // The doubleleftarrow geometry is from glyph U+21D0 in the font KaTeX Main
-            doubleleftarrow: "M262 157\nl10-10c34-36 62.7-77 86-123 3.3-8 5-13.3 5-16 0-5.3-6.7-8-20-8-7.3\n 0-12.2.5-14.5 1.5-2.3 1-4.8 4.5-7.5 10.5-49.3 97.3-121.7 169.3-217 216-28\n 14-57.3 25-88 33-6.7 2-11 3.8-13 5.5-2 1.7-3 4.2-3 7.5s1 5.8 3 7.5\nc2 1.7 6.3 3.5 13 5.5 68 17.3 128.2 47.8 180.5 91.5 52.3 43.7 93.8 96.2 124.5\n 157.5 9.3 8 15.3 12.3 18 13h6c12-.7 18-4 18-10 0-2-1.7-7-5-15-23.3-46-52-87\n-86-123l-10-10h399738v-40H218c328 0 0 0 0 0l-10-8c-26.7-20-65.7-43-117-69 2.7\n-2 6-3.7 10-5 36.7-16 72.3-37.3 107-64l10-8h399782v-40z\nm8 0v40h399730v-40zm0 194v40h399730v-40z",
+            doubleleftarrow:
+              "M262 157\nl10-10c34-36 62.7-77 86-123 3.3-8 5-13.3 5-16 0-5.3-6.7-8-20-8-7.3\n 0-12.2.5-14.5 1.5-2.3 1-4.8 4.5-7.5 10.5-49.3 97.3-121.7 169.3-217 216-28\n 14-57.3 25-88 33-6.7 2-11 3.8-13 5.5-2 1.7-3 4.2-3 7.5s1 5.8 3 7.5\nc2 1.7 6.3 3.5 13 5.5 68 17.3 128.2 47.8 180.5 91.5 52.3 43.7 93.8 96.2 124.5\n 157.5 9.3 8 15.3 12.3 18 13h6c12-.7 18-4 18-10 0-2-1.7-7-5-15-23.3-46-52-87\n-86-123l-10-10h399738v-40H218c328 0 0 0 0 0l-10-8c-26.7-20-65.7-43-117-69 2.7\n-2 6-3.7 10-5 36.7-16 72.3-37.3 107-64l10-8h399782v-40z\nm8 0v40h399730v-40zm0 194v40h399730v-40z",
             // doublerightarrow is from glyph U+21D2 in font KaTeX Main
-            doublerightarrow: "M399738 392l\n-10 10c-34 36-62.7 77-86 123-3.3 8-5 13.3-5 16 0 5.3 6.7 8 20 8 7.3 0 12.2-.5\n 14.5-1.5 2.3-1 4.8-4.5 7.5-10.5 49.3-97.3 121.7-169.3 217-216 28-14 57.3-25 88\n-33 6.7-2 11-3.8 13-5.5 2-1.7 3-4.2 3-7.5s-1-5.8-3-7.5c-2-1.7-6.3-3.5-13-5.5-68\n-17.3-128.2-47.8-180.5-91.5-52.3-43.7-93.8-96.2-124.5-157.5-9.3-8-15.3-12.3-18\n-13h-6c-12 .7-18 4-18 10 0 2 1.7 7 5 15 23.3 46 52 87 86 123l10 10H0v40h399782\nc-328 0 0 0 0 0l10 8c26.7 20 65.7 43 117 69-2.7 2-6 3.7-10 5-36.7 16-72.3 37.3\n-107 64l-10 8H0v40zM0 157v40h399730v-40zm0 194v40h399730v-40z",
+            doublerightarrow:
+              "M399738 392l\n-10 10c-34 36-62.7 77-86 123-3.3 8-5 13.3-5 16 0 5.3 6.7 8 20 8 7.3 0 12.2-.5\n 14.5-1.5 2.3-1 4.8-4.5 7.5-10.5 49.3-97.3 121.7-169.3 217-216 28-14 57.3-25 88\n-33 6.7-2 11-3.8 13-5.5 2-1.7 3-4.2 3-7.5s-1-5.8-3-7.5c-2-1.7-6.3-3.5-13-5.5-68\n-17.3-128.2-47.8-180.5-91.5-52.3-43.7-93.8-96.2-124.5-157.5-9.3-8-15.3-12.3-18\n-13h-6c-12 .7-18 4-18 10 0 2 1.7 7 5 15 23.3 46 52 87 86 123l10 10H0v40h399782\nc-328 0 0 0 0 0l10 8c26.7 20 65.7 43 117 69-2.7 2-6 3.7-10 5-36.7 16-72.3 37.3\n-107 64l-10 8H0v40zM0 157v40h399730v-40zm0 194v40h399730v-40z",
             // leftarrow is from glyph U+2190 in font KaTeX Main
-            leftarrow: "M400000 241H110l3-3c68.7-52.7 113.7-120\n 135-202 4-14.7 6-23 6-25 0-7.3-7-11-21-11-8 0-13.2.8-15.5 2.5-2.3 1.7-4.2 5.8\n-5.5 12.5-1.3 4.7-2.7 10.3-4 17-12 48.7-34.8 92-68.5 130S65.3 228.3 18 247\nc-10 4-16 7.7-18 11 0 8.7 6 14.3 18 17 47.3 18.7 87.8 47 121.5 85S196 441.3 208\n 490c.7 2 1.3 5 2 9s1.2 6.7 1.5 8c.3 1.3 1 3.3 2 6s2.2 4.5 3.5 5.5c1.3 1 3.3\n 1.8 6 2.5s6 1 10 1c14 0 21-3.7 21-11 0-2-2-10.3-6-25-20-79.3-65-146.7-135-202\n l-3-3h399890zM100 241v40h399900v-40z",
+            leftarrow:
+              "M400000 241H110l3-3c68.7-52.7 113.7-120\n 135-202 4-14.7 6-23 6-25 0-7.3-7-11-21-11-8 0-13.2.8-15.5 2.5-2.3 1.7-4.2 5.8\n-5.5 12.5-1.3 4.7-2.7 10.3-4 17-12 48.7-34.8 92-68.5 130S65.3 228.3 18 247\nc-10 4-16 7.7-18 11 0 8.7 6 14.3 18 17 47.3 18.7 87.8 47 121.5 85S196 441.3 208\n 490c.7 2 1.3 5 2 9s1.2 6.7 1.5 8c.3 1.3 1 3.3 2 6s2.2 4.5 3.5 5.5c1.3 1 3.3\n 1.8 6 2.5s6 1 10 1c14 0 21-3.7 21-11 0-2-2-10.3-6-25-20-79.3-65-146.7-135-202\n l-3-3h399890zM100 241v40h399900v-40z",
             // overbrace is from glyphs U+23A9/23A8/23A7 in font KaTeX_Size4-Regular
-            leftbrace: "M6 548l-6-6v-35l6-11c56-104 135.3-181.3 238-232 57.3-28.7 117\n-45 179-50h399577v120H403c-43.3 7-81 15-113 26-100.7 33-179.7 91-237 174-2.7\n 5-6 9-10 13-.7 1-7.3 1-20 1H6z",
-            leftbraceunder: "M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13\n 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688\n 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7\n-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z",
+            leftbrace:
+              "M6 548l-6-6v-35l6-11c56-104 135.3-181.3 238-232 57.3-28.7 117\n-45 179-50h399577v120H403c-43.3 7-81 15-113 26-100.7 33-179.7 91-237 174-2.7\n 5-6 9-10 13-.7 1-7.3 1-20 1H6z",
+            leftbraceunder:
+              "M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13\n 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688\n 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7\n-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z",
             // overgroup is from the MnSymbol package (public domain)
-            leftgroup: "M400000 80\nH435C64 80 168.3 229.4 21 260c-5.9 1.2-18 0-18 0-2 0-3-1-3-3v-38C76 61 257 0\n 435 0h399565z",
-            leftgroupunder: "M400000 262\nH435C64 262 168.3 112.6 21 82c-5.9-1.2-18 0-18 0-2 0-3 1-3 3v38c76 158 257 219\n 435 219h399565z",
+            leftgroup:
+              "M400000 80\nH435C64 80 168.3 229.4 21 260c-5.9 1.2-18 0-18 0-2 0-3-1-3-3v-38C76 61 257 0\n 435 0h399565z",
+            leftgroupunder:
+              "M400000 262\nH435C64 262 168.3 112.6 21 82c-5.9-1.2-18 0-18 0-2 0-3 1-3 3v38c76 158 257 219\n 435 219h399565z",
             // Harpoons are from glyph U+21BD in font KaTeX Main
-            leftharpoon: "M0 267c.7 5.3 3 10 7 14h399993v-40H93c3.3\n-3.3 10.2-9.5 20.5-18.5s17.8-15.8 22.5-20.5c50.7-52 88-110.3 112-175 4-11.3 5\n-18.3 3-21-1.3-4-7.3-6-18-6-8 0-13 .7-15 2s-4.7 6.7-8 16c-42 98.7-107.3 174.7\n-196 228-6.7 4.7-10.7 8-12 10-1.3 2-2 5.7-2 11zm100-26v40h399900v-40z",
-            leftharpoonplus: "M0 267c.7 5.3 3 10 7 14h399993v-40H93c3.3-3.3 10.2-9.5\n 20.5-18.5s17.8-15.8 22.5-20.5c50.7-52 88-110.3 112-175 4-11.3 5-18.3 3-21-1.3\n-4-7.3-6-18-6-8 0-13 .7-15 2s-4.7 6.7-8 16c-42 98.7-107.3 174.7-196 228-6.7 4.7\n-10.7 8-12 10-1.3 2-2 5.7-2 11zm100-26v40h399900v-40zM0 435v40h400000v-40z\nm0 0v40h400000v-40z",
-            leftharpoondown: "M7 241c-4 4-6.333 8.667-7 14 0 5.333.667 9 2 11s5.333\n 5.333 12 10c90.667 54 156 130 196 228 3.333 10.667 6.333 16.333 9 17 2 .667 5\n 1 9 1h5c10.667 0 16.667-2 18-6 2-2.667 1-9.667-3-21-32-87.333-82.667-157.667\n-152-211l-3-3h399907v-40zM93 281 H400000 v-40L7 241z",
-            leftharpoondownplus: "M7 435c-4 4-6.3 8.7-7 14 0 5.3.7 9 2 11s5.3 5.3 12\n 10c90.7 54 156 130 196 228 3.3 10.7 6.3 16.3 9 17 2 .7 5 1 9 1h5c10.7 0 16.7\n-2 18-6 2-2.7 1-9.7-3-21-32-87.3-82.7-157.7-152-211l-3-3h399907v-40H7zm93 0\nv40h399900v-40zM0 241v40h399900v-40zm0 0v40h399900v-40z",
+            leftharpoon:
+              "M0 267c.7 5.3 3 10 7 14h399993v-40H93c3.3\n-3.3 10.2-9.5 20.5-18.5s17.8-15.8 22.5-20.5c50.7-52 88-110.3 112-175 4-11.3 5\n-18.3 3-21-1.3-4-7.3-6-18-6-8 0-13 .7-15 2s-4.7 6.7-8 16c-42 98.7-107.3 174.7\n-196 228-6.7 4.7-10.7 8-12 10-1.3 2-2 5.7-2 11zm100-26v40h399900v-40z",
+            leftharpoonplus:
+              "M0 267c.7 5.3 3 10 7 14h399993v-40H93c3.3-3.3 10.2-9.5\n 20.5-18.5s17.8-15.8 22.5-20.5c50.7-52 88-110.3 112-175 4-11.3 5-18.3 3-21-1.3\n-4-7.3-6-18-6-8 0-13 .7-15 2s-4.7 6.7-8 16c-42 98.7-107.3 174.7-196 228-6.7 4.7\n-10.7 8-12 10-1.3 2-2 5.7-2 11zm100-26v40h399900v-40zM0 435v40h400000v-40z\nm0 0v40h400000v-40z",
+            leftharpoondown:
+              "M7 241c-4 4-6.333 8.667-7 14 0 5.333.667 9 2 11s5.333\n 5.333 12 10c90.667 54 156 130 196 228 3.333 10.667 6.333 16.333 9 17 2 .667 5\n 1 9 1h5c10.667 0 16.667-2 18-6 2-2.667 1-9.667-3-21-32-87.333-82.667-157.667\n-152-211l-3-3h399907v-40zM93 281 H400000 v-40L7 241z",
+            leftharpoondownplus:
+              "M7 435c-4 4-6.3 8.7-7 14 0 5.3.7 9 2 11s5.3 5.3 12\n 10c90.7 54 156 130 196 228 3.3 10.7 6.3 16.3 9 17 2 .7 5 1 9 1h5c10.7 0 16.7\n-2 18-6 2-2.7 1-9.7-3-21-32-87.3-82.7-157.7-152-211l-3-3h399907v-40H7zm93 0\nv40h399900v-40zM0 241v40h399900v-40zm0 0v40h399900v-40z",
             // hook is from glyph U+21A9 in font KaTeX Main
-            lefthook: "M400000 281 H103s-33-11.2-61-33.5S0 197.3 0 164s14.2-61.2 42.5\n-83.5C70.8 58.2 104 47 142 47 c16.7 0 25 6.7 25 20 0 12-8.7 18.7-26 20-40 3.3\n-68.7 15.7-86 37-10 12-15 25.3-15 40 0 22.7 9.8 40.7 29.5 54 19.7 13.3 43.5 21\n 71.5 23h399859zM103 281v-40h399897v40z",
+            lefthook:
+              "M400000 281 H103s-33-11.2-61-33.5S0 197.3 0 164s14.2-61.2 42.5\n-83.5C70.8 58.2 104 47 142 47 c16.7 0 25 6.7 25 20 0 12-8.7 18.7-26 20-40 3.3\n-68.7 15.7-86 37-10 12-15 25.3-15 40 0 22.7 9.8 40.7 29.5 54 19.7 13.3 43.5 21\n 71.5 23h399859zM103 281v-40h399897v40z",
             leftlinesegment: doubleBrushStroke("M40 281 V428 H0 V94 H40 V241 H400000 v40z"),
             leftbracketunder: doubleBrushStroke("M0 0 h120 V290 H399995 v120 H0z"),
             leftbracketover: doubleBrushStroke("M0 440 h120 V150 H399995 v-120 H0z"),
             leftmapsto: doubleBrushStroke("M40 281 V448H0V74H40V241H400000v40z"),
             // tofrom is from glyph U+21C4 in font KaTeX AMS Regular
-            leftToFrom: "M0 147h400000v40H0zm0 214c68 40 115.7 95.7 143 167h22c15.3 0 23\n-.3 23-1 0-1.3-5.3-13.7-16-37-18-35.3-41.3-69-70-101l-7-8h399905v-40H95l7-8\nc28.7-32 52-65.7 70-101 10.7-23.3 16-35.7 16-37 0-.7-7.7-1-23-1h-22C115.7 265.3\n 68 321 0 361zm0-174v-40h399900v40zm100 154v40h399900v-40z",
+            leftToFrom:
+              "M0 147h400000v40H0zm0 214c68 40 115.7 95.7 143 167h22c15.3 0 23\n-.3 23-1 0-1.3-5.3-13.7-16-37-18-35.3-41.3-69-70-101l-7-8h399905v-40H95l7-8\nc28.7-32 52-65.7 70-101 10.7-23.3 16-35.7 16-37 0-.7-7.7-1-23-1h-22C115.7 265.3\n 68 321 0 361zm0-174v-40h399900v40zm100 154v40h399900v-40z",
             longequal: doubleBrushStroke("M0 50 h400000 v40H0z m0 194h40000v40H0z"),
-            midbrace: "M200428 334\nc-100.7-8.3-195.3-44-280-108-55.3-42-101.7-93-139-153l-9-14c-2.7 4-5.7 8.7-9 14\n-53.3 86.7-123.7 153-211 199-66.7 36-137.3 56.3-212 62H0V214h199568c178.3-11.7\n 311.7-78.3 403-201 6-8 9.7-12 11-12 .7-.7 6.7-1 18-1s17.3.3 18 1c1.3 0 5 4 11\n 12 44.7 59.3 101.3 106.3 170 141s145.3 54.3 229 60h199572v120z",
-            midbraceunder: "M199572 214\nc100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14\n 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3\n 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0\n-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z",
-            oiintSize1: "M512.6 71.6c272.6 0 320.3 106.8 320.3 178.2 0 70.8-47.7 177.6\n-320.3 177.6S193.1 320.6 193.1 249.8c0-71.4 46.9-178.2 319.5-178.2z\nm368.1 178.2c0-86.4-60.9-215.4-368.1-215.4-306.4 0-367.3 129-367.3 215.4 0 85.8\n60.9 214.8 367.3 214.8 307.2 0 368.1-129 368.1-214.8z",
-            oiintSize2: "M757.8 100.1c384.7 0 451.1 137.6 451.1 230 0 91.3-66.4 228.8\n-451.1 228.8-386.3 0-452.7-137.5-452.7-228.8 0-92.4 66.4-230 452.7-230z\nm502.4 230c0-111.2-82.4-277.2-502.4-277.2s-504 166-504 277.2\nc0 110 84 276 504 276s502.4-166 502.4-276z",
-            oiiintSize1: "M681.4 71.6c408.9 0 480.5 106.8 480.5 178.2 0 70.8-71.6 177.6\n-480.5 177.6S202.1 320.6 202.1 249.8c0-71.4 70.5-178.2 479.3-178.2z\nm525.8 178.2c0-86.4-86.8-215.4-525.7-215.4-437.9 0-524.7 129-524.7 215.4 0\n85.8 86.8 214.8 524.7 214.8 438.9 0 525.7-129 525.7-214.8z",
-            oiiintSize2: "M1021.2 53c603.6 0 707.8 165.8 707.8 277.2 0 110-104.2 275.8\n-707.8 275.8-606 0-710.2-165.8-710.2-275.8C311 218.8 415.2 53 1021.2 53z\nm770.4 277.1c0-131.2-126.4-327.6-770.5-327.6S248.4 198.9 248.4 330.1\nc0 130 128.8 326.4 772.7 326.4s770.5-196.4 770.5-326.4z",
-            rightarrow: "M0 241v40h399891c-47.3 35.3-84 78-110 128\n-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20\n 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7\n 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85\n-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5\n-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67\n 151.7 139 205zm0 0v40h399900v-40z",
-            rightbrace: "M400000 542l\n-6 6h-17c-12.7 0-19.3-.3-20-1-4-4-7.3-8.3-10-13-35.3-51.3-80.8-93.8-136.5-127.5\ns-117.2-55.8-184.5-66.5c-.7 0-2-.3-4-1-18.7-2.7-76-4.3-172-5H0V214h399571l6 1\nc124.7 8 235 61.7 331 161 31.3 33.3 59.7 72.7 85 118l7 13v35z",
-            rightbraceunder: "M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3\n 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237\n-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z",
-            rightgroup: "M0 80h399565c371 0 266.7 149.4 414 180 5.9 1.2 18 0 18 0 2 0\n 3-1 3-3v-38c-76-158-257-219-435-219H0z",
-            rightgroupunder: "M0 262h399565c371 0 266.7-149.4 414-180 5.9-1.2 18 0 18\n 0 2 0 3 1 3 3v38c-76 158-257 219-435 219H0z",
-            rightharpoon: "M0 241v40h399993c4.7-4.7 7-9.3 7-14 0-9.3\n-3.7-15.3-11-18-92.7-56.7-159-133.7-199-231-3.3-9.3-6-14.7-8-16-2-1.3-7-2-15-2\n-10.7 0-16.7 2-18 6-2 2.7-1 9.7 3 21 15.3 42 36.7 81.8 64 119.5 27.3 37.7 58\n 69.2 92 94.5zm0 0v40h399900v-40z",
-            rightharpoonplus: "M0 241v40h399993c4.7-4.7 7-9.3 7-14 0-9.3-3.7-15.3-11\n-18-92.7-56.7-159-133.7-199-231-3.3-9.3-6-14.7-8-16-2-1.3-7-2-15-2-10.7 0-16.7\n 2-18 6-2 2.7-1 9.7 3 21 15.3 42 36.7 81.8 64 119.5 27.3 37.7 58 69.2 92 94.5z\nm0 0v40h399900v-40z m100 194v40h399900v-40zm0 0v40h399900v-40z",
-            rightharpoondown: "M399747 511c0 7.3 6.7 11 20 11 8 0 13-.8 15-2.5s4.7-6.8\n 8-15.5c40-94 99.3-166.3 178-217 13.3-8 20.3-12.3 21-13 5.3-3.3 8.5-5.8 9.5\n-7.5 1-1.7 1.5-5.2 1.5-10.5s-2.3-10.3-7-15H0v40h399908c-34 25.3-64.7 57-92 95\n-27.3 38-48.7 77.7-64 119-3.3 8.7-5 14-5 16zM0 241v40h399900v-40z",
-            rightharpoondownplus: "M399747 705c0 7.3 6.7 11 20 11 8 0 13-.8\n 15-2.5s4.7-6.8 8-15.5c40-94 99.3-166.3 178-217 13.3-8 20.3-12.3 21-13 5.3-3.3\n 8.5-5.8 9.5-7.5 1-1.7 1.5-5.2 1.5-10.5s-2.3-10.3-7-15H0v40h399908c-34 25.3\n-64.7 57-92 95-27.3 38-48.7 77.7-64 119-3.3 8.7-5 14-5 16zM0 435v40h399900v-40z\nm0-194v40h400000v-40zm0 0v40h400000v-40z",
-            righthook: "M399859 241c-764 0 0 0 0 0 40-3.3 68.7-15.7 86-37 10-12 15-25.3\n 15-40 0-22.7-9.8-40.7-29.5-54-19.7-13.3-43.5-21-71.5-23-17.3-1.3-26-8-26-20 0\n-13.3 8.7-20 26-20 38 0 71 11.2 99 33.5 0 0 7 5.6 21 16.7 14 11.2 21 33.5 21\n 66.8s-14 61.2-42 83.5c-28 22.3-61 33.5-99 33.5L0 241z M0 281v-40h399859v40z",
+            midbrace:
+              "M200428 334\nc-100.7-8.3-195.3-44-280-108-55.3-42-101.7-93-139-153l-9-14c-2.7 4-5.7 8.7-9 14\n-53.3 86.7-123.7 153-211 199-66.7 36-137.3 56.3-212 62H0V214h199568c178.3-11.7\n 311.7-78.3 403-201 6-8 9.7-12 11-12 .7-.7 6.7-1 18-1s17.3.3 18 1c1.3 0 5 4 11\n 12 44.7 59.3 101.3 106.3 170 141s145.3 54.3 229 60h199572v120z",
+            midbraceunder:
+              "M199572 214\nc100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14\n 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3\n 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0\n-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z",
+            oiintSize1:
+              "M512.6 71.6c272.6 0 320.3 106.8 320.3 178.2 0 70.8-47.7 177.6\n-320.3 177.6S193.1 320.6 193.1 249.8c0-71.4 46.9-178.2 319.5-178.2z\nm368.1 178.2c0-86.4-60.9-215.4-368.1-215.4-306.4 0-367.3 129-367.3 215.4 0 85.8\n60.9 214.8 367.3 214.8 307.2 0 368.1-129 368.1-214.8z",
+            oiintSize2:
+              "M757.8 100.1c384.7 0 451.1 137.6 451.1 230 0 91.3-66.4 228.8\n-451.1 228.8-386.3 0-452.7-137.5-452.7-228.8 0-92.4 66.4-230 452.7-230z\nm502.4 230c0-111.2-82.4-277.2-502.4-277.2s-504 166-504 277.2\nc0 110 84 276 504 276s502.4-166 502.4-276z",
+            oiiintSize1:
+              "M681.4 71.6c408.9 0 480.5 106.8 480.5 178.2 0 70.8-71.6 177.6\n-480.5 177.6S202.1 320.6 202.1 249.8c0-71.4 70.5-178.2 479.3-178.2z\nm525.8 178.2c0-86.4-86.8-215.4-525.7-215.4-437.9 0-524.7 129-524.7 215.4 0\n85.8 86.8 214.8 524.7 214.8 438.9 0 525.7-129 525.7-214.8z",
+            oiiintSize2:
+              "M1021.2 53c603.6 0 707.8 165.8 707.8 277.2 0 110-104.2 275.8\n-707.8 275.8-606 0-710.2-165.8-710.2-275.8C311 218.8 415.2 53 1021.2 53z\nm770.4 277.1c0-131.2-126.4-327.6-770.5-327.6S248.4 198.9 248.4 330.1\nc0 130 128.8 326.4 772.7 326.4s770.5-196.4 770.5-326.4z",
+            rightarrow:
+              "M0 241v40h399891c-47.3 35.3-84 78-110 128\n-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20\n 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7\n 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85\n-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5\n-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67\n 151.7 139 205zm0 0v40h399900v-40z",
+            rightbrace:
+              "M400000 542l\n-6 6h-17c-12.7 0-19.3-.3-20-1-4-4-7.3-8.3-10-13-35.3-51.3-80.8-93.8-136.5-127.5\ns-117.2-55.8-184.5-66.5c-.7 0-2-.3-4-1-18.7-2.7-76-4.3-172-5H0V214h399571l6 1\nc124.7 8 235 61.7 331 161 31.3 33.3 59.7 72.7 85 118l7 13v35z",
+            rightbraceunder:
+              "M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3\n 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237\n-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z",
+            rightgroup:
+              "M0 80h399565c371 0 266.7 149.4 414 180 5.9 1.2 18 0 18 0 2 0\n 3-1 3-3v-38c-76-158-257-219-435-219H0z",
+            rightgroupunder:
+              "M0 262h399565c371 0 266.7-149.4 414-180 5.9-1.2 18 0 18\n 0 2 0 3 1 3 3v38c-76 158-257 219-435 219H0z",
+            rightharpoon:
+              "M0 241v40h399993c4.7-4.7 7-9.3 7-14 0-9.3\n-3.7-15.3-11-18-92.7-56.7-159-133.7-199-231-3.3-9.3-6-14.7-8-16-2-1.3-7-2-15-2\n-10.7 0-16.7 2-18 6-2 2.7-1 9.7 3 21 15.3 42 36.7 81.8 64 119.5 27.3 37.7 58\n 69.2 92 94.5zm0 0v40h399900v-40z",
+            rightharpoonplus:
+              "M0 241v40h399993c4.7-4.7 7-9.3 7-14 0-9.3-3.7-15.3-11\n-18-92.7-56.7-159-133.7-199-231-3.3-9.3-6-14.7-8-16-2-1.3-7-2-15-2-10.7 0-16.7\n 2-18 6-2 2.7-1 9.7 3 21 15.3 42 36.7 81.8 64 119.5 27.3 37.7 58 69.2 92 94.5z\nm0 0v40h399900v-40z m100 194v40h399900v-40zm0 0v40h399900v-40z",
+            rightharpoondown:
+              "M399747 511c0 7.3 6.7 11 20 11 8 0 13-.8 15-2.5s4.7-6.8\n 8-15.5c40-94 99.3-166.3 178-217 13.3-8 20.3-12.3 21-13 5.3-3.3 8.5-5.8 9.5\n-7.5 1-1.7 1.5-5.2 1.5-10.5s-2.3-10.3-7-15H0v40h399908c-34 25.3-64.7 57-92 95\n-27.3 38-48.7 77.7-64 119-3.3 8.7-5 14-5 16zM0 241v40h399900v-40z",
+            rightharpoondownplus:
+              "M399747 705c0 7.3 6.7 11 20 11 8 0 13-.8\n 15-2.5s4.7-6.8 8-15.5c40-94 99.3-166.3 178-217 13.3-8 20.3-12.3 21-13 5.3-3.3\n 8.5-5.8 9.5-7.5 1-1.7 1.5-5.2 1.5-10.5s-2.3-10.3-7-15H0v40h399908c-34 25.3\n-64.7 57-92 95-27.3 38-48.7 77.7-64 119-3.3 8.7-5 14-5 16zM0 435v40h399900v-40z\nm0-194v40h400000v-40zm0 0v40h400000v-40z",
+            righthook:
+              "M399859 241c-764 0 0 0 0 0 40-3.3 68.7-15.7 86-37 10-12 15-25.3\n 15-40 0-22.7-9.8-40.7-29.5-54-19.7-13.3-43.5-21-71.5-23-17.3-1.3-26-8-26-20 0\n-13.3 8.7-20 26-20 38 0 71 11.2 99 33.5 0 0 7 5.6 21 16.7 14 11.2 21 33.5 21\n 66.8s-14 61.2-42 83.5c-28 22.3-61 33.5-99 33.5L0 241z M0 281v-40h399859v40z",
             rightlinesegment: doubleBrushStroke("M399960 241 V94 h40 V428 h-40 V281 H0 v-40z"),
             rightbracketunder: doubleBrushStroke("M399995 0 h-120 V290 H0 v120 H400000z"),
             rightbracketover: doubleBrushStroke("M399995 440 h-120 V150 H0 v-120 H399995z"),
-            rightToFrom: "M400000 167c-70.7-42-118-97.7-142-167h-23c-15.3 0-23 .3-23\n 1 0 1.3 5.3 13.7 16 37 18 35.3 41.3 69 70 101l7 8H0v40h399905l-7 8c-28.7 32\n-52 65.7-70 101-10.7 23.3-16 35.7-16 37 0 .7 7.7 1 23 1h23c24-69.3 71.3-125 142\n-167z M100 147v40h399900v-40zM0 341v40h399900v-40z",
+            rightToFrom:
+              "M400000 167c-70.7-42-118-97.7-142-167h-23c-15.3 0-23 .3-23\n 1 0 1.3 5.3 13.7 16 37 18 35.3 41.3 69 70 101l7 8H0v40h399905l-7 8c-28.7 32\n-52 65.7-70 101-10.7 23.3-16 35.7-16 37 0 .7 7.7 1 23 1h23c24-69.3 71.3-125 142\n-167z M100 147v40h399900v-40zM0 341v40h399900v-40z",
             // twoheadleftarrow is from glyph U+219E in font KaTeX AMS Regular
-            twoheadleftarrow: "M0 167c68 40\n 115.7 95.7 143 167h22c15.3 0 23-.3 23-1 0-1.3-5.3-13.7-16-37-18-35.3-41.3-69\n-70-101l-7-8h125l9 7c50.7 39.3 85 86 103 140h46c0-4.7-6.3-18.7-19-42-18-35.3\n-40-67.3-66-96l-9-9h399716v-40H284l9-9c26-28.7 48-60.7 66-96 12.7-23.333 19\n-37.333 19-42h-46c-18 54-52.3 100.7-103 140l-9 7H95l7-8c28.7-32 52-65.7 70-101\n 10.7-23.333 16-35.7 16-37 0-.7-7.7-1-23-1h-22C115.7 71.3 68 127 0 167z",
-            twoheadrightarrow: "M400000 167\nc-68-40-115.7-95.7-143-167h-22c-15.3 0-23 .3-23 1 0 1.3 5.3 13.7 16 37 18 35.3\n 41.3 69 70 101l7 8h-125l-9-7c-50.7-39.3-85-86-103-140h-46c0 4.7 6.3 18.7 19 42\n 18 35.3 40 67.3 66 96l9 9H0v40h399716l-9 9c-26 28.7-48 60.7-66 96-12.7 23.333\n-19 37.333-19 42h46c18-54 52.3-100.7 103-140l9-7h125l-7 8c-28.7 32-52 65.7-70\n 101-10.7 23.333-16 35.7-16 37 0 .7 7.7 1 23 1h22c27.3-71.3 75-127 143-167z",
+            twoheadleftarrow:
+              "M0 167c68 40\n 115.7 95.7 143 167h22c15.3 0 23-.3 23-1 0-1.3-5.3-13.7-16-37-18-35.3-41.3-69\n-70-101l-7-8h125l9 7c50.7 39.3 85 86 103 140h46c0-4.7-6.3-18.7-19-42-18-35.3\n-40-67.3-66-96l-9-9h399716v-40H284l9-9c26-28.7 48-60.7 66-96 12.7-23.333 19\n-37.333 19-42h-46c-18 54-52.3 100.7-103 140l-9 7H95l7-8c28.7-32 52-65.7 70-101\n 10.7-23.333 16-35.7 16-37 0-.7-7.7-1-23-1h-22C115.7 71.3 68 127 0 167z",
+            twoheadrightarrow:
+              "M400000 167\nc-68-40-115.7-95.7-143-167h-22c-15.3 0-23 .3-23 1 0 1.3 5.3 13.7 16 37 18 35.3\n 41.3 69 70 101l7 8h-125l-9-7c-50.7-39.3-85-86-103-140h-46c0 4.7 6.3 18.7 19 42\n 18 35.3 40 67.3 66 96l9 9H0v40h399716l-9 9c-26 28.7-48 60.7-66 96-12.7 23.333\n-19 37.333-19 42h46c18-54 52.3-100.7 103-140l9-7h125l-7 8c-28.7 32-52 65.7-70\n 101-10.7 23.333-16 35.7-16 37 0 .7 7.7 1 23 1h22c27.3-71.3 75-127 143-167z",
             // tilde1 is a modified version of a glyph from the MnSymbol package
-            tilde1: "M200 55.538c-77 0-168 73.953-177 73.953-3 0-7\n-2.175-9-5.437L2 97c-1-2-2-4-2-6 0-4 2-7 5-9l20-12C116 12 171 0 207 0c86 0\n 114 68 191 68 78 0 168-68 177-68 4 0 7 2 9 5l12 19c1 2.175 2 4.35 2 6.525 0\n 4.35-2 7.613-5 9.788l-19 13.05c-92 63.077-116.937 75.308-183 76.128\n-68.267.847-113-73.952-191-73.952z",
+            tilde1:
+              "M200 55.538c-77 0-168 73.953-177 73.953-3 0-7\n-2.175-9-5.437L2 97c-1-2-2-4-2-6 0-4 2-7 5-9l20-12C116 12 171 0 207 0c86 0\n 114 68 191 68 78 0 168-68 177-68 4 0 7 2 9 5l12 19c1 2.175 2 4.35 2 6.525 0\n 4.35-2 7.613-5 9.788l-19 13.05c-92 63.077-116.937 75.308-183 76.128\n-68.267.847-113-73.952-191-73.952z",
             // ditto tilde2, tilde3, & tilde4
-            tilde2: "M344 55.266c-142 0-300.638 81.316-311.5 86.418\n-8.01 3.762-22.5 10.91-23.5 5.562L1 120c-1-2-1-3-1-4 0-5 3-9 8-10l18.4-9C160.9\n 31.9 283 0 358 0c148 0 188 122 331 122s314-97 326-97c4 0 8 2 10 7l7 21.114\nc1 2.14 1 3.21 1 4.28 0 5.347-3 9.626-7 10.696l-22.3 12.622C852.6 158.372 751\n 181.476 676 181.476c-149 0-189-126.21-332-126.21z",
-            tilde3: "M786 59C457 59 32 175.242 13 175.242c-6 0-10-3.457\n-11-10.37L.15 138c-1-7 3-12 10-13l19.2-6.4C378.4 40.7 634.3 0 804.3 0c337 0\n 411.8 157 746.8 157 328 0 754-112 773-112 5 0 10 3 11 9l1 14.075c1 8.066-.697\n 16.595-6.697 17.492l-21.052 7.31c-367.9 98.146-609.15 122.696-778.15 122.696\n -338 0-409-156.573-744-156.573z",
-            tilde4: "M786 58C457 58 32 177.487 13 177.487c-6 0-10-3.345\n-11-10.035L.15 143c-1-7 3-12 10-13l22-6.7C381.2 35 637.15 0 807.15 0c337 0 409\n 177 744 177 328 0 754-127 773-127 5 0 10 3 11 9l1 14.794c1 7.805-3 13.38-9\n 14.495l-20.7 5.574c-366.85 99.79-607.3 139.372-776.3 139.372-338 0-409\n -175.236-744-175.236z",
+            tilde2:
+              "M344 55.266c-142 0-300.638 81.316-311.5 86.418\n-8.01 3.762-22.5 10.91-23.5 5.562L1 120c-1-2-1-3-1-4 0-5 3-9 8-10l18.4-9C160.9\n 31.9 283 0 358 0c148 0 188 122 331 122s314-97 326-97c4 0 8 2 10 7l7 21.114\nc1 2.14 1 3.21 1 4.28 0 5.347-3 9.626-7 10.696l-22.3 12.622C852.6 158.372 751\n 181.476 676 181.476c-149 0-189-126.21-332-126.21z",
+            tilde3:
+              "M786 59C457 59 32 175.242 13 175.242c-6 0-10-3.457\n-11-10.37L.15 138c-1-7 3-12 10-13l19.2-6.4C378.4 40.7 634.3 0 804.3 0c337 0\n 411.8 157 746.8 157 328 0 754-112 773-112 5 0 10 3 11 9l1 14.075c1 8.066-.697\n 16.595-6.697 17.492l-21.052 7.31c-367.9 98.146-609.15 122.696-778.15 122.696\n -338 0-409-156.573-744-156.573z",
+            tilde4:
+              "M786 58C457 58 32 177.487 13 177.487c-6 0-10-3.345\n-11-10.035L.15 143c-1-7 3-12 10-13l22-6.7C381.2 35 637.15 0 807.15 0c337 0 409\n 177 744 177 328 0 754-127 773-127 5 0 10 3 11 9l1 14.794c1 7.805-3 13.38-9\n 14.495l-20.7 5.574c-366.85 99.79-607.3 139.372-776.3 139.372-338 0-409\n -175.236-744-175.236z",
             // vec is from glyph U+20D7 in font KaTeX Main
             vec: "M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5\n3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11\n10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63\n-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1\n-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59\nH213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359\nc-16-25.333-24-45-24-59z",
             // widehat1 is a modified version of a glyph from the MnSymbol package
-            widehat1: "M529 0h5l519 115c5 1 9 5 9 10 0 1-1 2-1 3l-4 22\nc-1 5-5 9-11 9h-2L532 67 19 159h-2c-5 0-9-4-11-9l-5-22c-1-6 2-12 8-13z",
+            widehat1:
+              "M529 0h5l519 115c5 1 9 5 9 10 0 1-1 2-1 3l-4 22\nc-1 5-5 9-11 9h-2L532 67 19 159h-2c-5 0-9-4-11-9l-5-22c-1-6 2-12 8-13z",
             // ditto widehat2, widehat3, & widehat4
-            widehat2: "M1181 0h2l1171 176c6 0 10 5 10 11l-2 23c-1 6-5 10\n-11 10h-1L1182 67 15 220h-1c-6 0-10-4-11-10l-2-23c-1-6 4-11 10-11z",
-            widehat3: "M1181 0h2l1171 236c6 0 10 5 10 11l-2 23c-1 6-5 10\n-11 10h-1L1182 67 15 280h-1c-6 0-10-4-11-10l-2-23c-1-6 4-11 10-11z",
-            widehat4: "M1181 0h2l1171 296c6 0 10 5 10 11l-2 23c-1 6-5 10\n-11 10h-1L1182 67 15 340h-1c-6 0-10-4-11-10l-2-23c-1-6 4-11 10-11z",
+            widehat2:
+              "M1181 0h2l1171 176c6 0 10 5 10 11l-2 23c-1 6-5 10\n-11 10h-1L1182 67 15 220h-1c-6 0-10-4-11-10l-2-23c-1-6 4-11 10-11z",
+            widehat3:
+              "M1181 0h2l1171 236c6 0 10 5 10 11l-2 23c-1 6-5 10\n-11 10h-1L1182 67 15 280h-1c-6 0-10-4-11-10l-2-23c-1-6 4-11 10-11z",
+            widehat4:
+              "M1181 0h2l1171 296c6 0 10 5 10 11l-2 23c-1 6-5 10\n-11 10h-1L1182 67 15 340h-1c-6 0-10-4-11-10l-2-23c-1-6 4-11 10-11z",
             // widecheck paths are all inverted versions of widehat
-            widecheck1: "M529,159h5l519,-115c5,-1,9,-5,9,-10c0,-1,-1,-2,-1,-3l-4,-22c-1,\n-5,-5,-9,-11,-9h-2l-512,92l-513,-92h-2c-5,0,-9,4,-11,9l-5,22c-1,6,2,12,8,13z",
-            widecheck2: "M1181,220h2l1171,-176c6,0,10,-5,10,-11l-2,-23c-1,-6,-5,-10,\n-11,-10h-1l-1168,153l-1167,-153h-1c-6,0,-10,4,-11,10l-2,23c-1,6,4,11,10,11z",
-            widecheck3: "M1181,280h2l1171,-236c6,0,10,-5,10,-11l-2,-23c-1,-6,-5,-10,\n-11,-10h-1l-1168,213l-1167,-213h-1c-6,0,-10,4,-11,10l-2,23c-1,6,4,11,10,11z",
-            widecheck4: "M1181,340h2l1171,-296c6,0,10,-5,10,-11l-2,-23c-1,-6,-5,-10,\n-11,-10h-1l-1168,273l-1167,-273h-1c-6,0,-10,4,-11,10l-2,23c-1,6,4,11,10,11z",
+            widecheck1:
+              "M529,159h5l519,-115c5,-1,9,-5,9,-10c0,-1,-1,-2,-1,-3l-4,-22c-1,\n-5,-5,-9,-11,-9h-2l-512,92l-513,-92h-2c-5,0,-9,4,-11,9l-5,22c-1,6,2,12,8,13z",
+            widecheck2:
+              "M1181,220h2l1171,-176c6,0,10,-5,10,-11l-2,-23c-1,-6,-5,-10,\n-11,-10h-1l-1168,153l-1167,-153h-1c-6,0,-10,4,-11,10l-2,23c-1,6,4,11,10,11z",
+            widecheck3:
+              "M1181,280h2l1171,-236c6,0,10,-5,10,-11l-2,-23c-1,-6,-5,-10,\n-11,-10h-1l-1168,213l-1167,-213h-1c-6,0,-10,4,-11,10l-2,23c-1,6,4,11,10,11z",
+            widecheck4:
+              "M1181,340h2l1171,-296c6,0,10,-5,10,-11l-2,-23c-1,-6,-5,-10,\n-11,-10h-1l-1168,273l-1167,-273h-1c-6,0,-10,4,-11,10l-2,23c-1,6,4,11,10,11z",
             // The next ten paths support reaction arrows from the mhchem package.
             // Arrows for \ce{<-->} are offset from xAxis by 0.22ex, per mhchem in LaTeX
             // baraboveleftarrow is mostly from glyph U+2190 in font KaTeX Main
-            baraboveleftarrow: "M400000 620h-399890l3 -3c68.7 -52.7 113.7 -120 135 -202\nc4 -14.7 6 -23 6 -25c0 -7.3 -7 -11 -21 -11c-8 0 -13.2 0.8 -15.5 2.5\nc-2.3 1.7 -4.2 5.8 -5.5 12.5c-1.3 4.7 -2.7 10.3 -4 17c-12 48.7 -34.8 92 -68.5 130\ns-74.2 66.3 -121.5 85c-10 4 -16 7.7 -18 11c0 8.7 6 14.3 18 17c47.3 18.7 87.8 47\n121.5 85s56.5 81.3 68.5 130c0.7 2 1.3 5 2 9s1.2 6.7 1.5 8c0.3 1.3 1 3.3 2 6\ns2.2 4.5 3.5 5.5c1.3 1 3.3 1.8 6 2.5s6 1 10 1c14 0 21 -3.7 21 -11\nc0 -2 -2 -10.3 -6 -25c-20 -79.3 -65 -146.7 -135 -202l-3 -3h399890z\nM100 620v40h399900v-40z M0 241v40h399900v-40zM0 241v40h399900v-40z",
+            baraboveleftarrow:
+              "M400000 620h-399890l3 -3c68.7 -52.7 113.7 -120 135 -202\nc4 -14.7 6 -23 6 -25c0 -7.3 -7 -11 -21 -11c-8 0 -13.2 0.8 -15.5 2.5\nc-2.3 1.7 -4.2 5.8 -5.5 12.5c-1.3 4.7 -2.7 10.3 -4 17c-12 48.7 -34.8 92 -68.5 130\ns-74.2 66.3 -121.5 85c-10 4 -16 7.7 -18 11c0 8.7 6 14.3 18 17c47.3 18.7 87.8 47\n121.5 85s56.5 81.3 68.5 130c0.7 2 1.3 5 2 9s1.2 6.7 1.5 8c0.3 1.3 1 3.3 2 6\ns2.2 4.5 3.5 5.5c1.3 1 3.3 1.8 6 2.5s6 1 10 1c14 0 21 -3.7 21 -11\nc0 -2 -2 -10.3 -6 -25c-20 -79.3 -65 -146.7 -135 -202l-3 -3h399890z\nM100 620v40h399900v-40z M0 241v40h399900v-40zM0 241v40h399900v-40z",
             // rightarrowabovebar is mostly from glyph U+2192, KaTeX Main
-            rightarrowabovebar: "M0 241v40h399891c-47.3 35.3-84 78-110 128-16.7 32\n-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20 11 8 0\n13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7 39\n-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85-40.5\n-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5\n-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67\n151.7 139 205zm96 379h399894v40H0zm0 0h399904v40H0z",
+            rightarrowabovebar:
+              "M0 241v40h399891c-47.3 35.3-84 78-110 128-16.7 32\n-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20 11 8 0\n13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7 39\n-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85-40.5\n-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5\n-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67\n151.7 139 205zm96 379h399894v40H0zm0 0h399904v40H0z",
             // The short left harpoon has 0.5em (i.e. 500 units) kern on the left end.
             // Ref from mhchem.sty: \rlap{\raisebox{-.22ex}{$\kern0.5em
-            baraboveshortleftharpoon: "M507,435c-4,4,-6.3,8.7,-7,14c0,5.3,0.7,9,2,11\nc1.3,2,5.3,5.3,12,10c90.7,54,156,130,196,228c3.3,10.7,6.3,16.3,9,17\nc2,0.7,5,1,9,1c0,0,5,0,5,0c10.7,0,16.7,-2,18,-6c2,-2.7,1,-9.7,-3,-21\nc-32,-87.3,-82.7,-157.7,-152,-211c0,0,-3,-3,-3,-3l399351,0l0,-40\nc-398570,0,-399437,0,-399437,0z M593 435 v40 H399500 v-40z\nM0 281 v-40 H399908 v40z M0 281 v-40 H399908 v40z",
-            rightharpoonaboveshortbar: "M0,241 l0,40c399126,0,399993,0,399993,0\nc4.7,-4.7,7,-9.3,7,-14c0,-9.3,-3.7,-15.3,-11,-18c-92.7,-56.7,-159,-133.7,-199,\n-231c-3.3,-9.3,-6,-14.7,-8,-16c-2,-1.3,-7,-2,-15,-2c-10.7,0,-16.7,2,-18,6\nc-2,2.7,-1,9.7,3,21c15.3,42,36.7,81.8,64,119.5c27.3,37.7,58,69.2,92,94.5z\nM0 241 v40 H399908 v-40z M0 475 v-40 H399500 v40z M0 475 v-40 H399500 v40z",
-            shortbaraboveleftharpoon: "M7,435c-4,4,-6.3,8.7,-7,14c0,5.3,0.7,9,2,11\nc1.3,2,5.3,5.3,12,10c90.7,54,156,130,196,228c3.3,10.7,6.3,16.3,9,17c2,0.7,5,1,9,\n1c0,0,5,0,5,0c10.7,0,16.7,-2,18,-6c2,-2.7,1,-9.7,-3,-21c-32,-87.3,-82.7,-157.7,\n-152,-211c0,0,-3,-3,-3,-3l399907,0l0,-40c-399126,0,-399993,0,-399993,0z\nM93 435 v40 H400000 v-40z M500 241 v40 H400000 v-40z M500 241 v40 H400000 v-40z",
-            shortrightharpoonabovebar: "M53,241l0,40c398570,0,399437,0,399437,0\nc4.7,-4.7,7,-9.3,7,-14c0,-9.3,-3.7,-15.3,-11,-18c-92.7,-56.7,-159,-133.7,-199,\n-231c-3.3,-9.3,-6,-14.7,-8,-16c-2,-1.3,-7,-2,-15,-2c-10.7,0,-16.7,2,-18,6\nc-2,2.7,-1,9.7,3,21c15.3,42,36.7,81.8,64,119.5c27.3,37.7,58,69.2,92,94.5z\nM500 241 v40 H399408 v-40z M500 435 v40 H400000 v-40z"
+            baraboveshortleftharpoon:
+              "M507,435c-4,4,-6.3,8.7,-7,14c0,5.3,0.7,9,2,11\nc1.3,2,5.3,5.3,12,10c90.7,54,156,130,196,228c3.3,10.7,6.3,16.3,9,17\nc2,0.7,5,1,9,1c0,0,5,0,5,0c10.7,0,16.7,-2,18,-6c2,-2.7,1,-9.7,-3,-21\nc-32,-87.3,-82.7,-157.7,-152,-211c0,0,-3,-3,-3,-3l399351,0l0,-40\nc-398570,0,-399437,0,-399437,0z M593 435 v40 H399500 v-40z\nM0 281 v-40 H399908 v40z M0 281 v-40 H399908 v40z",
+            rightharpoonaboveshortbar:
+              "M0,241 l0,40c399126,0,399993,0,399993,0\nc4.7,-4.7,7,-9.3,7,-14c0,-9.3,-3.7,-15.3,-11,-18c-92.7,-56.7,-159,-133.7,-199,\n-231c-3.3,-9.3,-6,-14.7,-8,-16c-2,-1.3,-7,-2,-15,-2c-10.7,0,-16.7,2,-18,6\nc-2,2.7,-1,9.7,3,21c15.3,42,36.7,81.8,64,119.5c27.3,37.7,58,69.2,92,94.5z\nM0 241 v40 H399908 v-40z M0 475 v-40 H399500 v40z M0 475 v-40 H399500 v40z",
+            shortbaraboveleftharpoon:
+              "M7,435c-4,4,-6.3,8.7,-7,14c0,5.3,0.7,9,2,11\nc1.3,2,5.3,5.3,12,10c90.7,54,156,130,196,228c3.3,10.7,6.3,16.3,9,17c2,0.7,5,1,9,\n1c0,0,5,0,5,0c10.7,0,16.7,-2,18,-6c2,-2.7,1,-9.7,-3,-21c-32,-87.3,-82.7,-157.7,\n-152,-211c0,0,-3,-3,-3,-3l399907,0l0,-40c-399126,0,-399993,0,-399993,0z\nM93 435 v40 H400000 v-40z M500 241 v40 H400000 v-40z M500 241 v40 H400000 v-40z",
+            shortrightharpoonabovebar:
+              "M53,241l0,40c398570,0,399437,0,399437,0\nc4.7,-4.7,7,-9.3,7,-14c0,-9.3,-3.7,-15.3,-11,-18c-92.7,-56.7,-159,-133.7,-199,\n-231c-3.3,-9.3,-6,-14.7,-8,-16c-2,-1.3,-7,-2,-15,-2c-10.7,0,-16.7,2,-18,6\nc-2,2.7,-1,9.7,3,21c15.3,42,36.7,81.8,64,119.5c27.3,37.7,58,69.2,92,94.5z\nM500 241 v40 H399408 v-40z M500 435 v40 H400000 v-40z",
           };
-          const tallDelim = function(label, midHeight) {
+          const tallDelim = function (label, midHeight) {
             switch (label) {
               case "lbrack":
-                return "M403 1759 V84 H666 V0 H319 V1759 v" + midHeight + " v1759 v84 h347 v-84\nH403z M403 1759 V0 H319 V1759 v" + midHeight + " v1759 v84 h84z";
+                return (
+                  "M403 1759 V84 H666 V0 H319 V1759 v" +
+                  midHeight +
+                  " v1759 v84 h347 v-84\nH403z M403 1759 V0 H319 V1759 v" +
+                  midHeight +
+                  " v1759 v84 h84z"
+                );
               case "rbrack":
-                return "M347 1759 V0 H0 V84 H263 V1759 v" + midHeight + " v1759 H0 v84 H347z\nM347 1759 V0 H263 V1759 v" + midHeight + " v1759 h84z";
+                return (
+                  "M347 1759 V0 H0 V84 H263 V1759 v" +
+                  midHeight +
+                  " v1759 H0 v84 H347z\nM347 1759 V0 H263 V1759 v" +
+                  midHeight +
+                  " v1759 h84z"
+                );
               case "vert":
-                return "M145 15 v585 v" + midHeight + " v585 c2.667,10,9.667,15,21,15\nc10,0,16.667,-5,20,-15 v-585 v" + -midHeight + " v-585 c-2.667,-10,-9.667,-15,-21,-15\nc-10,0,-16.667,5,-20,15z M188 15 H145 v585 v" + midHeight + " v585 h43z";
+                return (
+                  "M145 15 v585 v" +
+                  midHeight +
+                  " v585 c2.667,10,9.667,15,21,15\nc10,0,16.667,-5,20,-15 v-585 v" +
+                  -midHeight +
+                  " v-585 c-2.667,-10,-9.667,-15,-21,-15\nc-10,0,-16.667,5,-20,15z M188 15 H145 v585 v" +
+                  midHeight +
+                  " v585 h43z"
+                );
               case "doublevert":
-                return "M145 15 v585 v" + midHeight + " v585 c2.667,10,9.667,15,21,15\nc10,0,16.667,-5,20,-15 v-585 v" + -midHeight + " v-585 c-2.667,-10,-9.667,-15,-21,-15\nc-10,0,-16.667,5,-20,15z M188 15 H145 v585 v" + midHeight + " v585 h43z\nM367 15 v585 v" + midHeight + " v585 c2.667,10,9.667,15,21,15\nc10,0,16.667,-5,20,-15 v-585 v" + -midHeight + " v-585 c-2.667,-10,-9.667,-15,-21,-15\nc-10,0,-16.667,5,-20,15z M410 15 H367 v585 v" + midHeight + " v585 h43z";
+                return (
+                  "M145 15 v585 v" +
+                  midHeight +
+                  " v585 c2.667,10,9.667,15,21,15\nc10,0,16.667,-5,20,-15 v-585 v" +
+                  -midHeight +
+                  " v-585 c-2.667,-10,-9.667,-15,-21,-15\nc-10,0,-16.667,5,-20,15z M188 15 H145 v585 v" +
+                  midHeight +
+                  " v585 h43z\nM367 15 v585 v" +
+                  midHeight +
+                  " v585 c2.667,10,9.667,15,21,15\nc10,0,16.667,-5,20,-15 v-585 v" +
+                  -midHeight +
+                  " v-585 c-2.667,-10,-9.667,-15,-21,-15\nc-10,0,-16.667,5,-20,15z M410 15 H367 v585 v" +
+                  midHeight +
+                  " v585 h43z"
+                );
               case "lfloor":
-                return "M319 602 V0 H403 V602 v" + midHeight + " v1715 h263 v84 H319z\nMM319 602 V0 H403 V602 v" + midHeight + " v1715 H319z";
+                return (
+                  "M319 602 V0 H403 V602 v" +
+                  midHeight +
+                  " v1715 h263 v84 H319z\nMM319 602 V0 H403 V602 v" +
+                  midHeight +
+                  " v1715 H319z"
+                );
               case "rfloor":
-                return "M319 602 V0 H403 V602 v" + midHeight + " v1799 H0 v-84 H319z\nMM319 602 V0 H403 V602 v" + midHeight + " v1715 H319z";
+                return (
+                  "M319 602 V0 H403 V602 v" +
+                  midHeight +
+                  " v1799 H0 v-84 H319z\nMM319 602 V0 H403 V602 v" +
+                  midHeight +
+                  " v1715 H319z"
+                );
               case "lceil":
-                return "M403 1759 V84 H666 V0 H319 V1759 v" + midHeight + " v602 h84z\nM403 1759 V0 H319 V1759 v" + midHeight + " v602 h84z";
+                return (
+                  "M403 1759 V84 H666 V0 H319 V1759 v" +
+                  midHeight +
+                  " v602 h84z\nM403 1759 V0 H319 V1759 v" +
+                  midHeight +
+                  " v602 h84z"
+                );
               case "rceil":
-                return "M347 1759 V0 H0 V84 H263 V1759 v" + midHeight + " v602 h84z\nM347 1759 V0 h-84 V1759 v" + midHeight + " v602 h84z";
+                return (
+                  "M347 1759 V0 H0 V84 H263 V1759 v" +
+                  midHeight +
+                  " v602 h84z\nM347 1759 V0 h-84 V1759 v" +
+                  midHeight +
+                  " v602 h84z"
+                );
               case "lparen":
-                return "M863,9c0,-2,-2,-5,-6,-9c0,0,-17,0,-17,0c-12.7,0,-19.3,0.3,-20,1\nc-5.3,5.3,-10.3,11,-15,17c-242.7,294.7,-395.3,682,-458,1162c-21.3,163.3,-33.3,349,\n-36,557 l0," + (midHeight + 84) + "c0.2,6,0,26,0,60c2,159.3,10,310.7,24,454c53.3,528,210,\n949.7,470,1265c4.7,6,9.7,11.7,15,17c0.7,0.7,7,1,19,1c0,0,18,0,18,0c4,-4,6,-7,6,-9\nc0,-2.7,-3.3,-8.7,-10,-18c-135.3,-192.7,-235.5,-414.3,-300.5,-665c-65,-250.7,-102.5,\n-544.7,-112.5,-882c-2,-104,-3,-167,-3,-189\nl0,-" + (midHeight + 92) + "c0,-162.7,5.7,-314,17,-454c20.7,-272,63.7,-513,129,-723c65.3,\n-210,155.3,-396.3,270,-559c6.7,-9.3,10,-15.3,10,-18z";
+                return (
+                  "M863,9c0,-2,-2,-5,-6,-9c0,0,-17,0,-17,0c-12.7,0,-19.3,0.3,-20,1\nc-5.3,5.3,-10.3,11,-15,17c-242.7,294.7,-395.3,682,-458,1162c-21.3,163.3,-33.3,349,\n-36,557 l0," +
+                  (midHeight + 84) +
+                  "c0.2,6,0,26,0,60c2,159.3,10,310.7,24,454c53.3,528,210,\n949.7,470,1265c4.7,6,9.7,11.7,15,17c0.7,0.7,7,1,19,1c0,0,18,0,18,0c4,-4,6,-7,6,-9\nc0,-2.7,-3.3,-8.7,-10,-18c-135.3,-192.7,-235.5,-414.3,-300.5,-665c-65,-250.7,-102.5,\n-544.7,-112.5,-882c-2,-104,-3,-167,-3,-189\nl0,-" +
+                  (midHeight + 92) +
+                  "c0,-162.7,5.7,-314,17,-454c20.7,-272,63.7,-513,129,-723c65.3,\n-210,155.3,-396.3,270,-559c6.7,-9.3,10,-15.3,10,-18z"
+                );
               case "rparen":
-                return "M76,0c-16.7,0,-25,3,-25,9c0,2,2,6.3,6,13c21.3,28.7,42.3,60.3,\n63,95c96.7,156.7,172.8,332.5,228.5,527.5c55.7,195,92.8,416.5,111.5,664.5\nc11.3,139.3,17,290.7,17,454c0,28,1.7,43,3.3,45l0," + (midHeight + 9) + "\nc-3,4,-3.3,16.7,-3.3,38c0,162,-5.7,313.7,-17,455c-18.7,248,-55.8,469.3,-111.5,664\nc-55.7,194.7,-131.8,370.3,-228.5,527c-20.7,34.7,-41.7,66.3,-63,95c-2,3.3,-4,7,-6,11\nc0,7.3,5.7,11,17,11c0,0,11,0,11,0c9.3,0,14.3,-0.3,15,-1c5.3,-5.3,10.3,-11,15,-17\nc242.7,-294.7,395.3,-681.7,458,-1161c21.3,-164.7,33.3,-350.7,36,-558\nl0,-" + (midHeight + 144) + "c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,\n-470,-1265c-4.7,-6,-9.7,-11.7,-15,-17c-0.7,-0.7,-6.7,-1,-18,-1z";
+                return (
+                  "M76,0c-16.7,0,-25,3,-25,9c0,2,2,6.3,6,13c21.3,28.7,42.3,60.3,\n63,95c96.7,156.7,172.8,332.5,228.5,527.5c55.7,195,92.8,416.5,111.5,664.5\nc11.3,139.3,17,290.7,17,454c0,28,1.7,43,3.3,45l0," +
+                  (midHeight + 9) +
+                  "\nc-3,4,-3.3,16.7,-3.3,38c0,162,-5.7,313.7,-17,455c-18.7,248,-55.8,469.3,-111.5,664\nc-55.7,194.7,-131.8,370.3,-228.5,527c-20.7,34.7,-41.7,66.3,-63,95c-2,3.3,-4,7,-6,11\nc0,7.3,5.7,11,17,11c0,0,11,0,11,0c9.3,0,14.3,-0.3,15,-1c5.3,-5.3,10.3,-11,15,-17\nc242.7,-294.7,395.3,-681.7,458,-1161c21.3,-164.7,33.3,-350.7,36,-558\nl0,-" +
+                  (midHeight + 144) +
+                  "c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,\n-470,-1265c-4.7,-6,-9.7,-11.7,-15,-17c-0.7,-0.7,-6.7,-1,-18,-1z"
+                );
               default:
                 throw new Error("Unknown stretchy delimiter.");
             }
@@ -719,58 +998,63 @@ function requireKatex() {
              * MathDomNode's only.
              */
             toText() {
-              return this.children.map((child) => {
-                if (isMathDomNode(child)) {
-                  return child.toText();
-                }
-                throw new Error("Expected MathDomNode with toText, got " + child.constructor.name);
-              }).join("");
+              return this.children
+                .map((child) => {
+                  if (isMathDomNode(child)) {
+                    return child.toText();
+                  }
+                  throw new Error(
+                    "Expected MathDomNode with toText, got " + child.constructor.name,
+                  );
+                })
+                .join("");
             }
           }
           const ptPerUnit = {
             // https://en.wikibooks.org/wiki/LaTeX/Lengths and
             // https://tex.stackexchange.com/a/8263
-            "pt": 1,
+            pt: 1,
             // TeX point
-            "mm": 7227 / 2540,
+            mm: 7227 / 2540,
             // millimeter
-            "cm": 7227 / 254,
+            cm: 7227 / 254,
             // centimeter
-            "in": 72.27,
+            in: 72.27,
             // inch
-            "bp": 803 / 800,
+            bp: 803 / 800,
             // big (PostScript) points
-            "pc": 12,
+            pc: 12,
             // pica
-            "dd": 1238 / 1157,
+            dd: 1238 / 1157,
             // didot
-            "cc": 14856 / 1157,
+            cc: 14856 / 1157,
             // cicero (12 didot)
-            "nd": 685 / 642,
+            nd: 685 / 642,
             // new didot
-            "nc": 1370 / 107,
+            nc: 1370 / 107,
             // new cicero (12 new didot)
-            "sp": 1 / 65536,
+            sp: 1 / 65536,
             // scaled point (TeX's internal smallest unit)
             // https://tex.stackexchange.com/a/41371
-            "px": 803 / 800
+            px: 803 / 800,
             // \pdfpxdimen defaults to 1 bp in pdfTeX and LuaTeX
           };
           const relativeUnit = {
-            "ex": true,
-            "em": true,
-            "mu": true
+            ex: true,
+            em: true,
+            mu: true,
           };
-          const validUnit = function(unit) {
+          const validUnit = function (unit) {
             if (typeof unit !== "string") {
               unit = unit.unit;
             }
             return unit in ptPerUnit || unit in relativeUnit || unit === "ex";
           };
-          const calculateSize = function(sizeValue, options) {
+          const calculateSize = function (sizeValue, options) {
             let scale;
             if (sizeValue.unit in ptPerUnit) {
-              scale = ptPerUnit[sizeValue.unit] / options.fontMetrics().ptPerEm / options.sizeMultiplier;
+              scale =
+                ptPerUnit[sizeValue.unit] / options.fontMetrics().ptPerEm / options.sizeMultiplier;
             } else if (sizeValue.unit === "mu") {
               scale = options.fontMetrics().cssEmPerMu;
             } else {
@@ -793,13 +1077,13 @@ function requireKatex() {
             }
             return Math.min(sizeValue.number * scale, options.maxSize);
           };
-          const makeEm = function(n) {
+          const makeEm = function (n) {
             return +n.toFixed(4) + "em";
           };
-          const createClass = function(classes) {
+          const createClass = function (classes) {
             return classes.filter((cls) => cls).join(" ");
           };
-          const cssStyleToString = function(style) {
+          const cssStyleToString = function (style) {
             let styles2 = "";
             for (const key of Object.keys(style)) {
               const value = style[key];
@@ -809,7 +1093,7 @@ function requireKatex() {
             }
             return styles2;
           };
-          const initNode = function(classes, options, style) {
+          const initNode = function (classes, options, style) {
             this.classes = classes || [];
             this.attributes = {};
             this.height = 0;
@@ -826,7 +1110,7 @@ function requireKatex() {
               }
             }
           };
-          const toNode = function(tagName) {
+          const toNode = function (tagName) {
             const node = document.createElement(tagName);
             node.className = createClass(this.classes);
             Object.assign(node.style, this.style);
@@ -839,7 +1123,7 @@ function requireKatex() {
             return node;
           };
           const invalidAttributeNameRegex = /[\s"'>/=\x00-\x1f]/;
-          const toMarkup = function(tagName) {
+          const toMarkup = function (tagName) {
             let markup = "<" + tagName;
             if (this.classes.length) {
               markup += ' class="' + utils_escape(createClass(this.classes)) + '"';
@@ -948,7 +1232,11 @@ function requireKatex() {
               return node;
             }
             toMarkup() {
-              let markup = '<img src="' + utils_escape(this.src) + '"' + (' alt="' + utils_escape(this.alt) + '"');
+              let markup =
+                '<img src="' +
+                utils_escape(this.src) +
+                '"' +
+                (' alt="' + utils_escape(this.alt) + '"');
               const styles2 = cssStyleToString(this.style);
               if (styles2) {
                 markup += ' style="' + utils_escape(styles2) + '"';
@@ -958,11 +1246,11 @@ function requireKatex() {
             }
           }
           const iCombinations = {
-            "î": "ı̂",
-            "ï": "ı̈",
-            "í": "ı́",
+            î: "ı̂",
+            ï: "ı̈",
+            í: "ı́",
             // 'ī': '\u0131\u0304', // enable when we add Extended Latin
-            "ì": "ı̀"
+            ì: "ı̀",
           };
           class SymbolNode {
             constructor(text, height, depth, italic2, skew, width, classes, style) {
@@ -1145,2082 +1433,2083 @@ function requireKatex() {
               throw new Error("Expected span<HtmlDomNode> but got " + String(group) + ".");
             }
           }
-          const hasHtmlDomChildren = (node) => node instanceof Span || node instanceof Anchor || node instanceof DocumentFragment;
+          const hasHtmlDomChildren = (node) =>
+            node instanceof Span || node instanceof Anchor || node instanceof DocumentFragment;
           var fontMetricsData = {
             "AMS-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "65": [0, 0.68889, 0, 0, 0.72222],
-              "66": [0, 0.68889, 0, 0, 0.66667],
-              "67": [0, 0.68889, 0, 0, 0.72222],
-              "68": [0, 0.68889, 0, 0, 0.72222],
-              "69": [0, 0.68889, 0, 0, 0.66667],
-              "70": [0, 0.68889, 0, 0, 0.61111],
-              "71": [0, 0.68889, 0, 0, 0.77778],
-              "72": [0, 0.68889, 0, 0, 0.77778],
-              "73": [0, 0.68889, 0, 0, 0.38889],
-              "74": [0.16667, 0.68889, 0, 0, 0.5],
-              "75": [0, 0.68889, 0, 0, 0.77778],
-              "76": [0, 0.68889, 0, 0, 0.66667],
-              "77": [0, 0.68889, 0, 0, 0.94445],
-              "78": [0, 0.68889, 0, 0, 0.72222],
-              "79": [0.16667, 0.68889, 0, 0, 0.77778],
-              "80": [0, 0.68889, 0, 0, 0.61111],
-              "81": [0.16667, 0.68889, 0, 0, 0.77778],
-              "82": [0, 0.68889, 0, 0, 0.72222],
-              "83": [0, 0.68889, 0, 0, 0.55556],
-              "84": [0, 0.68889, 0, 0, 0.66667],
-              "85": [0, 0.68889, 0, 0, 0.72222],
-              "86": [0, 0.68889, 0, 0, 0.72222],
-              "87": [0, 0.68889, 0, 0, 1],
-              "88": [0, 0.68889, 0, 0, 0.72222],
-              "89": [0, 0.68889, 0, 0, 0.72222],
-              "90": [0, 0.68889, 0, 0, 0.66667],
-              "107": [0, 0.68889, 0, 0, 0.55556],
-              "160": [0, 0, 0, 0, 0.25],
-              "165": [0, 0.675, 0.025, 0, 0.75],
-              "174": [0.15559, 0.69224, 0, 0, 0.94666],
-              "240": [0, 0.68889, 0, 0, 0.55556],
-              "295": [0, 0.68889, 0, 0, 0.54028],
-              "710": [0, 0.825, 0, 0, 2.33334],
-              "732": [0, 0.9, 0, 0, 2.33334],
-              "770": [0, 0.825, 0, 0, 2.33334],
-              "771": [0, 0.9, 0, 0, 2.33334],
-              "989": [0.08167, 0.58167, 0, 0, 0.77778],
-              "1008": [0, 0.43056, 0.04028, 0, 0.66667],
-              "8245": [0, 0.54986, 0, 0, 0.275],
-              "8463": [0, 0.68889, 0, 0, 0.54028],
-              "8487": [0, 0.68889, 0, 0, 0.72222],
-              "8498": [0, 0.68889, 0, 0, 0.55556],
-              "8502": [0, 0.68889, 0, 0, 0.66667],
-              "8503": [0, 0.68889, 0, 0, 0.44445],
-              "8504": [0, 0.68889, 0, 0, 0.66667],
-              "8513": [0, 0.68889, 0, 0, 0.63889],
-              "8592": [-0.03598, 0.46402, 0, 0, 0.5],
-              "8594": [-0.03598, 0.46402, 0, 0, 0.5],
-              "8602": [-0.13313, 0.36687, 0, 0, 1],
-              "8603": [-0.13313, 0.36687, 0, 0, 1],
-              "8606": [0.01354, 0.52239, 0, 0, 1],
-              "8608": [0.01354, 0.52239, 0, 0, 1],
-              "8610": [0.01354, 0.52239, 0, 0, 1.11111],
-              "8611": [0.01354, 0.52239, 0, 0, 1.11111],
-              "8619": [0, 0.54986, 0, 0, 1],
-              "8620": [0, 0.54986, 0, 0, 1],
-              "8621": [-0.13313, 0.37788, 0, 0, 1.38889],
-              "8622": [-0.13313, 0.36687, 0, 0, 1],
-              "8624": [0, 0.69224, 0, 0, 0.5],
-              "8625": [0, 0.69224, 0, 0, 0.5],
-              "8630": [0, 0.43056, 0, 0, 1],
-              "8631": [0, 0.43056, 0, 0, 1],
-              "8634": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8635": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8638": [0.19444, 0.69224, 0, 0, 0.41667],
-              "8639": [0.19444, 0.69224, 0, 0, 0.41667],
-              "8642": [0.19444, 0.69224, 0, 0, 0.41667],
-              "8643": [0.19444, 0.69224, 0, 0, 0.41667],
-              "8644": [0.1808, 0.675, 0, 0, 1],
-              "8646": [0.1808, 0.675, 0, 0, 1],
-              "8647": [0.1808, 0.675, 0, 0, 1],
-              "8648": [0.19444, 0.69224, 0, 0, 0.83334],
-              "8649": [0.1808, 0.675, 0, 0, 1],
-              "8650": [0.19444, 0.69224, 0, 0, 0.83334],
-              "8651": [0.01354, 0.52239, 0, 0, 1],
-              "8652": [0.01354, 0.52239, 0, 0, 1],
-              "8653": [-0.13313, 0.36687, 0, 0, 1],
-              "8654": [-0.13313, 0.36687, 0, 0, 1],
-              "8655": [-0.13313, 0.36687, 0, 0, 1],
-              "8666": [0.13667, 0.63667, 0, 0, 1],
-              "8667": [0.13667, 0.63667, 0, 0, 1],
-              "8669": [-0.13313, 0.37788, 0, 0, 1],
-              "8672": [-0.064, 0.437, 0, 0, 1.334],
-              "8674": [-0.064, 0.437, 0, 0, 1.334],
-              "8705": [0, 0.825, 0, 0, 0.5],
-              "8708": [0, 0.68889, 0, 0, 0.55556],
-              "8709": [0.08167, 0.58167, 0, 0, 0.77778],
-              "8717": [0, 0.43056, 0, 0, 0.42917],
-              "8722": [-0.03598, 0.46402, 0, 0, 0.5],
-              "8724": [0.08198, 0.69224, 0, 0, 0.77778],
-              "8726": [0.08167, 0.58167, 0, 0, 0.77778],
-              "8733": [0, 0.69224, 0, 0, 0.77778],
-              "8736": [0, 0.69224, 0, 0, 0.72222],
-              "8737": [0, 0.69224, 0, 0, 0.72222],
-              "8738": [0.03517, 0.52239, 0, 0, 0.72222],
-              "8739": [0.08167, 0.58167, 0, 0, 0.22222],
-              "8740": [0.25142, 0.74111, 0, 0, 0.27778],
-              "8741": [0.08167, 0.58167, 0, 0, 0.38889],
-              "8742": [0.25142, 0.74111, 0, 0, 0.5],
-              "8756": [0, 0.69224, 0, 0, 0.66667],
-              "8757": [0, 0.69224, 0, 0, 0.66667],
-              "8764": [-0.13313, 0.36687, 0, 0, 0.77778],
-              "8765": [-0.13313, 0.37788, 0, 0, 0.77778],
-              "8769": [-0.13313, 0.36687, 0, 0, 0.77778],
-              "8770": [-0.03625, 0.46375, 0, 0, 0.77778],
-              "8774": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8776": [-0.01688, 0.48312, 0, 0, 0.77778],
-              "8778": [0.08167, 0.58167, 0, 0, 0.77778],
-              "8782": [0.06062, 0.54986, 0, 0, 0.77778],
-              "8783": [0.06062, 0.54986, 0, 0, 0.77778],
-              "8785": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8786": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8787": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8790": [0, 0.69224, 0, 0, 0.77778],
-              "8791": [0.22958, 0.72958, 0, 0, 0.77778],
-              "8796": [0.08198, 0.91667, 0, 0, 0.77778],
-              "8806": [0.25583, 0.75583, 0, 0, 0.77778],
-              "8807": [0.25583, 0.75583, 0, 0, 0.77778],
-              "8808": [0.25142, 0.75726, 0, 0, 0.77778],
-              "8809": [0.25142, 0.75726, 0, 0, 0.77778],
-              "8812": [0.25583, 0.75583, 0, 0, 0.5],
-              "8814": [0.20576, 0.70576, 0, 0, 0.77778],
-              "8815": [0.20576, 0.70576, 0, 0, 0.77778],
-              "8816": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8817": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8818": [0.22958, 0.72958, 0, 0, 0.77778],
-              "8819": [0.22958, 0.72958, 0, 0, 0.77778],
-              "8822": [0.1808, 0.675, 0, 0, 0.77778],
-              "8823": [0.1808, 0.675, 0, 0, 0.77778],
-              "8828": [0.13667, 0.63667, 0, 0, 0.77778],
-              "8829": [0.13667, 0.63667, 0, 0, 0.77778],
-              "8830": [0.22958, 0.72958, 0, 0, 0.77778],
-              "8831": [0.22958, 0.72958, 0, 0, 0.77778],
-              "8832": [0.20576, 0.70576, 0, 0, 0.77778],
-              "8833": [0.20576, 0.70576, 0, 0, 0.77778],
-              "8840": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8841": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8842": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8843": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8847": [0.03517, 0.54986, 0, 0, 0.77778],
-              "8848": [0.03517, 0.54986, 0, 0, 0.77778],
-              "8858": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8859": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8861": [0.08198, 0.58198, 0, 0, 0.77778],
-              "8862": [0, 0.675, 0, 0, 0.77778],
-              "8863": [0, 0.675, 0, 0, 0.77778],
-              "8864": [0, 0.675, 0, 0, 0.77778],
-              "8865": [0, 0.675, 0, 0, 0.77778],
-              "8872": [0, 0.69224, 0, 0, 0.61111],
-              "8873": [0, 0.69224, 0, 0, 0.72222],
-              "8874": [0, 0.69224, 0, 0, 0.88889],
-              "8876": [0, 0.68889, 0, 0, 0.61111],
-              "8877": [0, 0.68889, 0, 0, 0.61111],
-              "8878": [0, 0.68889, 0, 0, 0.72222],
-              "8879": [0, 0.68889, 0, 0, 0.72222],
-              "8882": [0.03517, 0.54986, 0, 0, 0.77778],
-              "8883": [0.03517, 0.54986, 0, 0, 0.77778],
-              "8884": [0.13667, 0.63667, 0, 0, 0.77778],
-              "8885": [0.13667, 0.63667, 0, 0, 0.77778],
-              "8888": [0, 0.54986, 0, 0, 1.11111],
-              "8890": [0.19444, 0.43056, 0, 0, 0.55556],
-              "8891": [0.19444, 0.69224, 0, 0, 0.61111],
-              "8892": [0.19444, 0.69224, 0, 0, 0.61111],
-              "8901": [0, 0.54986, 0, 0, 0.27778],
-              "8903": [0.08167, 0.58167, 0, 0, 0.77778],
-              "8905": [0.08167, 0.58167, 0, 0, 0.77778],
-              "8906": [0.08167, 0.58167, 0, 0, 0.77778],
-              "8907": [0, 0.69224, 0, 0, 0.77778],
-              "8908": [0, 0.69224, 0, 0, 0.77778],
-              "8909": [-0.03598, 0.46402, 0, 0, 0.77778],
-              "8910": [0, 0.54986, 0, 0, 0.76042],
-              "8911": [0, 0.54986, 0, 0, 0.76042],
-              "8912": [0.03517, 0.54986, 0, 0, 0.77778],
-              "8913": [0.03517, 0.54986, 0, 0, 0.77778],
-              "8914": [0, 0.54986, 0, 0, 0.66667],
-              "8915": [0, 0.54986, 0, 0, 0.66667],
-              "8916": [0, 0.69224, 0, 0, 0.66667],
-              "8918": [0.0391, 0.5391, 0, 0, 0.77778],
-              "8919": [0.0391, 0.5391, 0, 0, 0.77778],
-              "8920": [0.03517, 0.54986, 0, 0, 1.33334],
-              "8921": [0.03517, 0.54986, 0, 0, 1.33334],
-              "8922": [0.38569, 0.88569, 0, 0, 0.77778],
-              "8923": [0.38569, 0.88569, 0, 0, 0.77778],
-              "8926": [0.13667, 0.63667, 0, 0, 0.77778],
-              "8927": [0.13667, 0.63667, 0, 0, 0.77778],
-              "8928": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8929": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8934": [0.23222, 0.74111, 0, 0, 0.77778],
-              "8935": [0.23222, 0.74111, 0, 0, 0.77778],
-              "8936": [0.23222, 0.74111, 0, 0, 0.77778],
-              "8937": [0.23222, 0.74111, 0, 0, 0.77778],
-              "8938": [0.20576, 0.70576, 0, 0, 0.77778],
-              "8939": [0.20576, 0.70576, 0, 0, 0.77778],
-              "8940": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8941": [0.30274, 0.79383, 0, 0, 0.77778],
-              "8994": [0.19444, 0.69224, 0, 0, 0.77778],
-              "8995": [0.19444, 0.69224, 0, 0, 0.77778],
-              "9416": [0.15559, 0.69224, 0, 0, 0.90222],
-              "9484": [0, 0.69224, 0, 0, 0.5],
-              "9488": [0, 0.69224, 0, 0, 0.5],
-              "9492": [0, 0.37788, 0, 0, 0.5],
-              "9496": [0, 0.37788, 0, 0, 0.5],
-              "9585": [0.19444, 0.68889, 0, 0, 0.88889],
-              "9586": [0.19444, 0.74111, 0, 0, 0.88889],
-              "9632": [0, 0.675, 0, 0, 0.77778],
-              "9633": [0, 0.675, 0, 0, 0.77778],
-              "9650": [0, 0.54986, 0, 0, 0.72222],
-              "9651": [0, 0.54986, 0, 0, 0.72222],
-              "9654": [0.03517, 0.54986, 0, 0, 0.77778],
-              "9660": [0, 0.54986, 0, 0, 0.72222],
-              "9661": [0, 0.54986, 0, 0, 0.72222],
-              "9664": [0.03517, 0.54986, 0, 0, 0.77778],
-              "9674": [0.11111, 0.69224, 0, 0, 0.66667],
-              "9733": [0.19444, 0.69224, 0, 0, 0.94445],
-              "10003": [0, 0.69224, 0, 0, 0.83334],
-              "10016": [0, 0.69224, 0, 0, 0.83334],
-              "10731": [0.11111, 0.69224, 0, 0, 0.66667],
-              "10846": [0.19444, 0.75583, 0, 0, 0.61111],
-              "10877": [0.13667, 0.63667, 0, 0, 0.77778],
-              "10878": [0.13667, 0.63667, 0, 0, 0.77778],
-              "10885": [0.25583, 0.75583, 0, 0, 0.77778],
-              "10886": [0.25583, 0.75583, 0, 0, 0.77778],
-              "10887": [0.13597, 0.63597, 0, 0, 0.77778],
-              "10888": [0.13597, 0.63597, 0, 0, 0.77778],
-              "10889": [0.26167, 0.75726, 0, 0, 0.77778],
-              "10890": [0.26167, 0.75726, 0, 0, 0.77778],
-              "10891": [0.48256, 0.98256, 0, 0, 0.77778],
-              "10892": [0.48256, 0.98256, 0, 0, 0.77778],
-              "10901": [0.13667, 0.63667, 0, 0, 0.77778],
-              "10902": [0.13667, 0.63667, 0, 0, 0.77778],
-              "10933": [0.25142, 0.75726, 0, 0, 0.77778],
-              "10934": [0.25142, 0.75726, 0, 0, 0.77778],
-              "10935": [0.26167, 0.75726, 0, 0, 0.77778],
-              "10936": [0.26167, 0.75726, 0, 0, 0.77778],
-              "10937": [0.26167, 0.75726, 0, 0, 0.77778],
-              "10938": [0.26167, 0.75726, 0, 0, 0.77778],
-              "10949": [0.25583, 0.75583, 0, 0, 0.77778],
-              "10950": [0.25583, 0.75583, 0, 0, 0.77778],
-              "10955": [0.28481, 0.79383, 0, 0, 0.77778],
-              "10956": [0.28481, 0.79383, 0, 0, 0.77778],
-              "57350": [0.08167, 0.58167, 0, 0, 0.22222],
-              "57351": [0.08167, 0.58167, 0, 0, 0.38889],
-              "57352": [0.08167, 0.58167, 0, 0, 0.77778],
-              "57353": [0, 0.43056, 0.04028, 0, 0.66667],
-              "57356": [0.25142, 0.75726, 0, 0, 0.77778],
-              "57357": [0.25142, 0.75726, 0, 0, 0.77778],
-              "57358": [0.41951, 0.91951, 0, 0, 0.77778],
-              "57359": [0.30274, 0.79383, 0, 0, 0.77778],
-              "57360": [0.30274, 0.79383, 0, 0, 0.77778],
-              "57361": [0.41951, 0.91951, 0, 0, 0.77778],
-              "57366": [0.25142, 0.75726, 0, 0, 0.77778],
-              "57367": [0.25142, 0.75726, 0, 0, 0.77778],
-              "57368": [0.25142, 0.75726, 0, 0, 0.77778],
-              "57369": [0.25142, 0.75726, 0, 0, 0.77778],
-              "57370": [0.13597, 0.63597, 0, 0, 0.77778],
-              "57371": [0.13597, 0.63597, 0, 0, 0.77778]
+              32: [0, 0, 0, 0, 0.25],
+              65: [0, 0.68889, 0, 0, 0.72222],
+              66: [0, 0.68889, 0, 0, 0.66667],
+              67: [0, 0.68889, 0, 0, 0.72222],
+              68: [0, 0.68889, 0, 0, 0.72222],
+              69: [0, 0.68889, 0, 0, 0.66667],
+              70: [0, 0.68889, 0, 0, 0.61111],
+              71: [0, 0.68889, 0, 0, 0.77778],
+              72: [0, 0.68889, 0, 0, 0.77778],
+              73: [0, 0.68889, 0, 0, 0.38889],
+              74: [0.16667, 0.68889, 0, 0, 0.5],
+              75: [0, 0.68889, 0, 0, 0.77778],
+              76: [0, 0.68889, 0, 0, 0.66667],
+              77: [0, 0.68889, 0, 0, 0.94445],
+              78: [0, 0.68889, 0, 0, 0.72222],
+              79: [0.16667, 0.68889, 0, 0, 0.77778],
+              80: [0, 0.68889, 0, 0, 0.61111],
+              81: [0.16667, 0.68889, 0, 0, 0.77778],
+              82: [0, 0.68889, 0, 0, 0.72222],
+              83: [0, 0.68889, 0, 0, 0.55556],
+              84: [0, 0.68889, 0, 0, 0.66667],
+              85: [0, 0.68889, 0, 0, 0.72222],
+              86: [0, 0.68889, 0, 0, 0.72222],
+              87: [0, 0.68889, 0, 0, 1],
+              88: [0, 0.68889, 0, 0, 0.72222],
+              89: [0, 0.68889, 0, 0, 0.72222],
+              90: [0, 0.68889, 0, 0, 0.66667],
+              107: [0, 0.68889, 0, 0, 0.55556],
+              160: [0, 0, 0, 0, 0.25],
+              165: [0, 0.675, 0.025, 0, 0.75],
+              174: [0.15559, 0.69224, 0, 0, 0.94666],
+              240: [0, 0.68889, 0, 0, 0.55556],
+              295: [0, 0.68889, 0, 0, 0.54028],
+              710: [0, 0.825, 0, 0, 2.33334],
+              732: [0, 0.9, 0, 0, 2.33334],
+              770: [0, 0.825, 0, 0, 2.33334],
+              771: [0, 0.9, 0, 0, 2.33334],
+              989: [0.08167, 0.58167, 0, 0, 0.77778],
+              1008: [0, 0.43056, 0.04028, 0, 0.66667],
+              8245: [0, 0.54986, 0, 0, 0.275],
+              8463: [0, 0.68889, 0, 0, 0.54028],
+              8487: [0, 0.68889, 0, 0, 0.72222],
+              8498: [0, 0.68889, 0, 0, 0.55556],
+              8502: [0, 0.68889, 0, 0, 0.66667],
+              8503: [0, 0.68889, 0, 0, 0.44445],
+              8504: [0, 0.68889, 0, 0, 0.66667],
+              8513: [0, 0.68889, 0, 0, 0.63889],
+              8592: [-0.03598, 0.46402, 0, 0, 0.5],
+              8594: [-0.03598, 0.46402, 0, 0, 0.5],
+              8602: [-0.13313, 0.36687, 0, 0, 1],
+              8603: [-0.13313, 0.36687, 0, 0, 1],
+              8606: [0.01354, 0.52239, 0, 0, 1],
+              8608: [0.01354, 0.52239, 0, 0, 1],
+              8610: [0.01354, 0.52239, 0, 0, 1.11111],
+              8611: [0.01354, 0.52239, 0, 0, 1.11111],
+              8619: [0, 0.54986, 0, 0, 1],
+              8620: [0, 0.54986, 0, 0, 1],
+              8621: [-0.13313, 0.37788, 0, 0, 1.38889],
+              8622: [-0.13313, 0.36687, 0, 0, 1],
+              8624: [0, 0.69224, 0, 0, 0.5],
+              8625: [0, 0.69224, 0, 0, 0.5],
+              8630: [0, 0.43056, 0, 0, 1],
+              8631: [0, 0.43056, 0, 0, 1],
+              8634: [0.08198, 0.58198, 0, 0, 0.77778],
+              8635: [0.08198, 0.58198, 0, 0, 0.77778],
+              8638: [0.19444, 0.69224, 0, 0, 0.41667],
+              8639: [0.19444, 0.69224, 0, 0, 0.41667],
+              8642: [0.19444, 0.69224, 0, 0, 0.41667],
+              8643: [0.19444, 0.69224, 0, 0, 0.41667],
+              8644: [0.1808, 0.675, 0, 0, 1],
+              8646: [0.1808, 0.675, 0, 0, 1],
+              8647: [0.1808, 0.675, 0, 0, 1],
+              8648: [0.19444, 0.69224, 0, 0, 0.83334],
+              8649: [0.1808, 0.675, 0, 0, 1],
+              8650: [0.19444, 0.69224, 0, 0, 0.83334],
+              8651: [0.01354, 0.52239, 0, 0, 1],
+              8652: [0.01354, 0.52239, 0, 0, 1],
+              8653: [-0.13313, 0.36687, 0, 0, 1],
+              8654: [-0.13313, 0.36687, 0, 0, 1],
+              8655: [-0.13313, 0.36687, 0, 0, 1],
+              8666: [0.13667, 0.63667, 0, 0, 1],
+              8667: [0.13667, 0.63667, 0, 0, 1],
+              8669: [-0.13313, 0.37788, 0, 0, 1],
+              8672: [-0.064, 0.437, 0, 0, 1.334],
+              8674: [-0.064, 0.437, 0, 0, 1.334],
+              8705: [0, 0.825, 0, 0, 0.5],
+              8708: [0, 0.68889, 0, 0, 0.55556],
+              8709: [0.08167, 0.58167, 0, 0, 0.77778],
+              8717: [0, 0.43056, 0, 0, 0.42917],
+              8722: [-0.03598, 0.46402, 0, 0, 0.5],
+              8724: [0.08198, 0.69224, 0, 0, 0.77778],
+              8726: [0.08167, 0.58167, 0, 0, 0.77778],
+              8733: [0, 0.69224, 0, 0, 0.77778],
+              8736: [0, 0.69224, 0, 0, 0.72222],
+              8737: [0, 0.69224, 0, 0, 0.72222],
+              8738: [0.03517, 0.52239, 0, 0, 0.72222],
+              8739: [0.08167, 0.58167, 0, 0, 0.22222],
+              8740: [0.25142, 0.74111, 0, 0, 0.27778],
+              8741: [0.08167, 0.58167, 0, 0, 0.38889],
+              8742: [0.25142, 0.74111, 0, 0, 0.5],
+              8756: [0, 0.69224, 0, 0, 0.66667],
+              8757: [0, 0.69224, 0, 0, 0.66667],
+              8764: [-0.13313, 0.36687, 0, 0, 0.77778],
+              8765: [-0.13313, 0.37788, 0, 0, 0.77778],
+              8769: [-0.13313, 0.36687, 0, 0, 0.77778],
+              8770: [-0.03625, 0.46375, 0, 0, 0.77778],
+              8774: [0.30274, 0.79383, 0, 0, 0.77778],
+              8776: [-0.01688, 0.48312, 0, 0, 0.77778],
+              8778: [0.08167, 0.58167, 0, 0, 0.77778],
+              8782: [0.06062, 0.54986, 0, 0, 0.77778],
+              8783: [0.06062, 0.54986, 0, 0, 0.77778],
+              8785: [0.08198, 0.58198, 0, 0, 0.77778],
+              8786: [0.08198, 0.58198, 0, 0, 0.77778],
+              8787: [0.08198, 0.58198, 0, 0, 0.77778],
+              8790: [0, 0.69224, 0, 0, 0.77778],
+              8791: [0.22958, 0.72958, 0, 0, 0.77778],
+              8796: [0.08198, 0.91667, 0, 0, 0.77778],
+              8806: [0.25583, 0.75583, 0, 0, 0.77778],
+              8807: [0.25583, 0.75583, 0, 0, 0.77778],
+              8808: [0.25142, 0.75726, 0, 0, 0.77778],
+              8809: [0.25142, 0.75726, 0, 0, 0.77778],
+              8812: [0.25583, 0.75583, 0, 0, 0.5],
+              8814: [0.20576, 0.70576, 0, 0, 0.77778],
+              8815: [0.20576, 0.70576, 0, 0, 0.77778],
+              8816: [0.30274, 0.79383, 0, 0, 0.77778],
+              8817: [0.30274, 0.79383, 0, 0, 0.77778],
+              8818: [0.22958, 0.72958, 0, 0, 0.77778],
+              8819: [0.22958, 0.72958, 0, 0, 0.77778],
+              8822: [0.1808, 0.675, 0, 0, 0.77778],
+              8823: [0.1808, 0.675, 0, 0, 0.77778],
+              8828: [0.13667, 0.63667, 0, 0, 0.77778],
+              8829: [0.13667, 0.63667, 0, 0, 0.77778],
+              8830: [0.22958, 0.72958, 0, 0, 0.77778],
+              8831: [0.22958, 0.72958, 0, 0, 0.77778],
+              8832: [0.20576, 0.70576, 0, 0, 0.77778],
+              8833: [0.20576, 0.70576, 0, 0, 0.77778],
+              8840: [0.30274, 0.79383, 0, 0, 0.77778],
+              8841: [0.30274, 0.79383, 0, 0, 0.77778],
+              8842: [0.13597, 0.63597, 0, 0, 0.77778],
+              8843: [0.13597, 0.63597, 0, 0, 0.77778],
+              8847: [0.03517, 0.54986, 0, 0, 0.77778],
+              8848: [0.03517, 0.54986, 0, 0, 0.77778],
+              8858: [0.08198, 0.58198, 0, 0, 0.77778],
+              8859: [0.08198, 0.58198, 0, 0, 0.77778],
+              8861: [0.08198, 0.58198, 0, 0, 0.77778],
+              8862: [0, 0.675, 0, 0, 0.77778],
+              8863: [0, 0.675, 0, 0, 0.77778],
+              8864: [0, 0.675, 0, 0, 0.77778],
+              8865: [0, 0.675, 0, 0, 0.77778],
+              8872: [0, 0.69224, 0, 0, 0.61111],
+              8873: [0, 0.69224, 0, 0, 0.72222],
+              8874: [0, 0.69224, 0, 0, 0.88889],
+              8876: [0, 0.68889, 0, 0, 0.61111],
+              8877: [0, 0.68889, 0, 0, 0.61111],
+              8878: [0, 0.68889, 0, 0, 0.72222],
+              8879: [0, 0.68889, 0, 0, 0.72222],
+              8882: [0.03517, 0.54986, 0, 0, 0.77778],
+              8883: [0.03517, 0.54986, 0, 0, 0.77778],
+              8884: [0.13667, 0.63667, 0, 0, 0.77778],
+              8885: [0.13667, 0.63667, 0, 0, 0.77778],
+              8888: [0, 0.54986, 0, 0, 1.11111],
+              8890: [0.19444, 0.43056, 0, 0, 0.55556],
+              8891: [0.19444, 0.69224, 0, 0, 0.61111],
+              8892: [0.19444, 0.69224, 0, 0, 0.61111],
+              8901: [0, 0.54986, 0, 0, 0.27778],
+              8903: [0.08167, 0.58167, 0, 0, 0.77778],
+              8905: [0.08167, 0.58167, 0, 0, 0.77778],
+              8906: [0.08167, 0.58167, 0, 0, 0.77778],
+              8907: [0, 0.69224, 0, 0, 0.77778],
+              8908: [0, 0.69224, 0, 0, 0.77778],
+              8909: [-0.03598, 0.46402, 0, 0, 0.77778],
+              8910: [0, 0.54986, 0, 0, 0.76042],
+              8911: [0, 0.54986, 0, 0, 0.76042],
+              8912: [0.03517, 0.54986, 0, 0, 0.77778],
+              8913: [0.03517, 0.54986, 0, 0, 0.77778],
+              8914: [0, 0.54986, 0, 0, 0.66667],
+              8915: [0, 0.54986, 0, 0, 0.66667],
+              8916: [0, 0.69224, 0, 0, 0.66667],
+              8918: [0.0391, 0.5391, 0, 0, 0.77778],
+              8919: [0.0391, 0.5391, 0, 0, 0.77778],
+              8920: [0.03517, 0.54986, 0, 0, 1.33334],
+              8921: [0.03517, 0.54986, 0, 0, 1.33334],
+              8922: [0.38569, 0.88569, 0, 0, 0.77778],
+              8923: [0.38569, 0.88569, 0, 0, 0.77778],
+              8926: [0.13667, 0.63667, 0, 0, 0.77778],
+              8927: [0.13667, 0.63667, 0, 0, 0.77778],
+              8928: [0.30274, 0.79383, 0, 0, 0.77778],
+              8929: [0.30274, 0.79383, 0, 0, 0.77778],
+              8934: [0.23222, 0.74111, 0, 0, 0.77778],
+              8935: [0.23222, 0.74111, 0, 0, 0.77778],
+              8936: [0.23222, 0.74111, 0, 0, 0.77778],
+              8937: [0.23222, 0.74111, 0, 0, 0.77778],
+              8938: [0.20576, 0.70576, 0, 0, 0.77778],
+              8939: [0.20576, 0.70576, 0, 0, 0.77778],
+              8940: [0.30274, 0.79383, 0, 0, 0.77778],
+              8941: [0.30274, 0.79383, 0, 0, 0.77778],
+              8994: [0.19444, 0.69224, 0, 0, 0.77778],
+              8995: [0.19444, 0.69224, 0, 0, 0.77778],
+              9416: [0.15559, 0.69224, 0, 0, 0.90222],
+              9484: [0, 0.69224, 0, 0, 0.5],
+              9488: [0, 0.69224, 0, 0, 0.5],
+              9492: [0, 0.37788, 0, 0, 0.5],
+              9496: [0, 0.37788, 0, 0, 0.5],
+              9585: [0.19444, 0.68889, 0, 0, 0.88889],
+              9586: [0.19444, 0.74111, 0, 0, 0.88889],
+              9632: [0, 0.675, 0, 0, 0.77778],
+              9633: [0, 0.675, 0, 0, 0.77778],
+              9650: [0, 0.54986, 0, 0, 0.72222],
+              9651: [0, 0.54986, 0, 0, 0.72222],
+              9654: [0.03517, 0.54986, 0, 0, 0.77778],
+              9660: [0, 0.54986, 0, 0, 0.72222],
+              9661: [0, 0.54986, 0, 0, 0.72222],
+              9664: [0.03517, 0.54986, 0, 0, 0.77778],
+              9674: [0.11111, 0.69224, 0, 0, 0.66667],
+              9733: [0.19444, 0.69224, 0, 0, 0.94445],
+              10003: [0, 0.69224, 0, 0, 0.83334],
+              10016: [0, 0.69224, 0, 0, 0.83334],
+              10731: [0.11111, 0.69224, 0, 0, 0.66667],
+              10846: [0.19444, 0.75583, 0, 0, 0.61111],
+              10877: [0.13667, 0.63667, 0, 0, 0.77778],
+              10878: [0.13667, 0.63667, 0, 0, 0.77778],
+              10885: [0.25583, 0.75583, 0, 0, 0.77778],
+              10886: [0.25583, 0.75583, 0, 0, 0.77778],
+              10887: [0.13597, 0.63597, 0, 0, 0.77778],
+              10888: [0.13597, 0.63597, 0, 0, 0.77778],
+              10889: [0.26167, 0.75726, 0, 0, 0.77778],
+              10890: [0.26167, 0.75726, 0, 0, 0.77778],
+              10891: [0.48256, 0.98256, 0, 0, 0.77778],
+              10892: [0.48256, 0.98256, 0, 0, 0.77778],
+              10901: [0.13667, 0.63667, 0, 0, 0.77778],
+              10902: [0.13667, 0.63667, 0, 0, 0.77778],
+              10933: [0.25142, 0.75726, 0, 0, 0.77778],
+              10934: [0.25142, 0.75726, 0, 0, 0.77778],
+              10935: [0.26167, 0.75726, 0, 0, 0.77778],
+              10936: [0.26167, 0.75726, 0, 0, 0.77778],
+              10937: [0.26167, 0.75726, 0, 0, 0.77778],
+              10938: [0.26167, 0.75726, 0, 0, 0.77778],
+              10949: [0.25583, 0.75583, 0, 0, 0.77778],
+              10950: [0.25583, 0.75583, 0, 0, 0.77778],
+              10955: [0.28481, 0.79383, 0, 0, 0.77778],
+              10956: [0.28481, 0.79383, 0, 0, 0.77778],
+              57350: [0.08167, 0.58167, 0, 0, 0.22222],
+              57351: [0.08167, 0.58167, 0, 0, 0.38889],
+              57352: [0.08167, 0.58167, 0, 0, 0.77778],
+              57353: [0, 0.43056, 0.04028, 0, 0.66667],
+              57356: [0.25142, 0.75726, 0, 0, 0.77778],
+              57357: [0.25142, 0.75726, 0, 0, 0.77778],
+              57358: [0.41951, 0.91951, 0, 0, 0.77778],
+              57359: [0.30274, 0.79383, 0, 0, 0.77778],
+              57360: [0.30274, 0.79383, 0, 0, 0.77778],
+              57361: [0.41951, 0.91951, 0, 0, 0.77778],
+              57366: [0.25142, 0.75726, 0, 0, 0.77778],
+              57367: [0.25142, 0.75726, 0, 0, 0.77778],
+              57368: [0.25142, 0.75726, 0, 0, 0.77778],
+              57369: [0.25142, 0.75726, 0, 0, 0.77778],
+              57370: [0.13597, 0.63597, 0, 0, 0.77778],
+              57371: [0.13597, 0.63597, 0, 0, 0.77778],
             },
             "Caligraphic-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "65": [0, 0.68333, 0, 0.19445, 0.79847],
-              "66": [0, 0.68333, 0.03041, 0.13889, 0.65681],
-              "67": [0, 0.68333, 0.05834, 0.13889, 0.52653],
-              "68": [0, 0.68333, 0.02778, 0.08334, 0.77139],
-              "69": [0, 0.68333, 0.08944, 0.11111, 0.52778],
-              "70": [0, 0.68333, 0.09931, 0.11111, 0.71875],
-              "71": [0.09722, 0.68333, 0.0593, 0.11111, 0.59487],
-              "72": [0, 0.68333, 965e-5, 0.11111, 0.84452],
-              "73": [0, 0.68333, 0.07382, 0, 0.54452],
-              "74": [0.09722, 0.68333, 0.18472, 0.16667, 0.67778],
-              "75": [0, 0.68333, 0.01445, 0.05556, 0.76195],
-              "76": [0, 0.68333, 0, 0.13889, 0.68972],
-              "77": [0, 0.68333, 0, 0.13889, 1.2009],
-              "78": [0, 0.68333, 0.14736, 0.08334, 0.82049],
-              "79": [0, 0.68333, 0.02778, 0.11111, 0.79611],
-              "80": [0, 0.68333, 0.08222, 0.08334, 0.69556],
-              "81": [0.09722, 0.68333, 0, 0.11111, 0.81667],
-              "82": [0, 0.68333, 0, 0.08334, 0.8475],
-              "83": [0, 0.68333, 0.075, 0.13889, 0.60556],
-              "84": [0, 0.68333, 0.25417, 0, 0.54464],
-              "85": [0, 0.68333, 0.09931, 0.08334, 0.62583],
-              "86": [0, 0.68333, 0.08222, 0, 0.61278],
-              "87": [0, 0.68333, 0.08222, 0.08334, 0.98778],
-              "88": [0, 0.68333, 0.14643, 0.13889, 0.7133],
-              "89": [0.09722, 0.68333, 0.08222, 0.08334, 0.66834],
-              "90": [0, 0.68333, 0.07944, 0.13889, 0.72473],
-              "160": [0, 0, 0, 0, 0.25]
+              32: [0, 0, 0, 0, 0.25],
+              65: [0, 0.68333, 0, 0.19445, 0.79847],
+              66: [0, 0.68333, 0.03041, 0.13889, 0.65681],
+              67: [0, 0.68333, 0.05834, 0.13889, 0.52653],
+              68: [0, 0.68333, 0.02778, 0.08334, 0.77139],
+              69: [0, 0.68333, 0.08944, 0.11111, 0.52778],
+              70: [0, 0.68333, 0.09931, 0.11111, 0.71875],
+              71: [0.09722, 0.68333, 0.0593, 0.11111, 0.59487],
+              72: [0, 0.68333, 965e-5, 0.11111, 0.84452],
+              73: [0, 0.68333, 0.07382, 0, 0.54452],
+              74: [0.09722, 0.68333, 0.18472, 0.16667, 0.67778],
+              75: [0, 0.68333, 0.01445, 0.05556, 0.76195],
+              76: [0, 0.68333, 0, 0.13889, 0.68972],
+              77: [0, 0.68333, 0, 0.13889, 1.2009],
+              78: [0, 0.68333, 0.14736, 0.08334, 0.82049],
+              79: [0, 0.68333, 0.02778, 0.11111, 0.79611],
+              80: [0, 0.68333, 0.08222, 0.08334, 0.69556],
+              81: [0.09722, 0.68333, 0, 0.11111, 0.81667],
+              82: [0, 0.68333, 0, 0.08334, 0.8475],
+              83: [0, 0.68333, 0.075, 0.13889, 0.60556],
+              84: [0, 0.68333, 0.25417, 0, 0.54464],
+              85: [0, 0.68333, 0.09931, 0.08334, 0.62583],
+              86: [0, 0.68333, 0.08222, 0, 0.61278],
+              87: [0, 0.68333, 0.08222, 0.08334, 0.98778],
+              88: [0, 0.68333, 0.14643, 0.13889, 0.7133],
+              89: [0.09722, 0.68333, 0.08222, 0.08334, 0.66834],
+              90: [0, 0.68333, 0.07944, 0.13889, 0.72473],
+              160: [0, 0, 0, 0, 0.25],
             },
             "Fraktur-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69141, 0, 0, 0.29574],
-              "34": [0, 0.69141, 0, 0, 0.21471],
-              "38": [0, 0.69141, 0, 0, 0.73786],
-              "39": [0, 0.69141, 0, 0, 0.21201],
-              "40": [0.24982, 0.74947, 0, 0, 0.38865],
-              "41": [0.24982, 0.74947, 0, 0, 0.38865],
-              "42": [0, 0.62119, 0, 0, 0.27764],
-              "43": [0.08319, 0.58283, 0, 0, 0.75623],
-              "44": [0, 0.10803, 0, 0, 0.27764],
-              "45": [0.08319, 0.58283, 0, 0, 0.75623],
-              "46": [0, 0.10803, 0, 0, 0.27764],
-              "47": [0.24982, 0.74947, 0, 0, 0.50181],
-              "48": [0, 0.47534, 0, 0, 0.50181],
-              "49": [0, 0.47534, 0, 0, 0.50181],
-              "50": [0, 0.47534, 0, 0, 0.50181],
-              "51": [0.18906, 0.47534, 0, 0, 0.50181],
-              "52": [0.18906, 0.47534, 0, 0, 0.50181],
-              "53": [0.18906, 0.47534, 0, 0, 0.50181],
-              "54": [0, 0.69141, 0, 0, 0.50181],
-              "55": [0.18906, 0.47534, 0, 0, 0.50181],
-              "56": [0, 0.69141, 0, 0, 0.50181],
-              "57": [0.18906, 0.47534, 0, 0, 0.50181],
-              "58": [0, 0.47534, 0, 0, 0.21606],
-              "59": [0.12604, 0.47534, 0, 0, 0.21606],
-              "61": [-0.13099, 0.36866, 0, 0, 0.75623],
-              "63": [0, 0.69141, 0, 0, 0.36245],
-              "65": [0, 0.69141, 0, 0, 0.7176],
-              "66": [0, 0.69141, 0, 0, 0.88397],
-              "67": [0, 0.69141, 0, 0, 0.61254],
-              "68": [0, 0.69141, 0, 0, 0.83158],
-              "69": [0, 0.69141, 0, 0, 0.66278],
-              "70": [0.12604, 0.69141, 0, 0, 0.61119],
-              "71": [0, 0.69141, 0, 0, 0.78539],
-              "72": [0.06302, 0.69141, 0, 0, 0.7203],
-              "73": [0, 0.69141, 0, 0, 0.55448],
-              "74": [0.12604, 0.69141, 0, 0, 0.55231],
-              "75": [0, 0.69141, 0, 0, 0.66845],
-              "76": [0, 0.69141, 0, 0, 0.66602],
-              "77": [0, 0.69141, 0, 0, 1.04953],
-              "78": [0, 0.69141, 0, 0, 0.83212],
-              "79": [0, 0.69141, 0, 0, 0.82699],
-              "80": [0.18906, 0.69141, 0, 0, 0.82753],
-              "81": [0.03781, 0.69141, 0, 0, 0.82699],
-              "82": [0, 0.69141, 0, 0, 0.82807],
-              "83": [0, 0.69141, 0, 0, 0.82861],
-              "84": [0, 0.69141, 0, 0, 0.66899],
-              "85": [0, 0.69141, 0, 0, 0.64576],
-              "86": [0, 0.69141, 0, 0, 0.83131],
-              "87": [0, 0.69141, 0, 0, 1.04602],
-              "88": [0, 0.69141, 0, 0, 0.71922],
-              "89": [0.18906, 0.69141, 0, 0, 0.83293],
-              "90": [0.12604, 0.69141, 0, 0, 0.60201],
-              "91": [0.24982, 0.74947, 0, 0, 0.27764],
-              "93": [0.24982, 0.74947, 0, 0, 0.27764],
-              "94": [0, 0.69141, 0, 0, 0.49965],
-              "97": [0, 0.47534, 0, 0, 0.50046],
-              "98": [0, 0.69141, 0, 0, 0.51315],
-              "99": [0, 0.47534, 0, 0, 0.38946],
-              "100": [0, 0.62119, 0, 0, 0.49857],
-              "101": [0, 0.47534, 0, 0, 0.40053],
-              "102": [0.18906, 0.69141, 0, 0, 0.32626],
-              "103": [0.18906, 0.47534, 0, 0, 0.5037],
-              "104": [0.18906, 0.69141, 0, 0, 0.52126],
-              "105": [0, 0.69141, 0, 0, 0.27899],
-              "106": [0, 0.69141, 0, 0, 0.28088],
-              "107": [0, 0.69141, 0, 0, 0.38946],
-              "108": [0, 0.69141, 0, 0, 0.27953],
-              "109": [0, 0.47534, 0, 0, 0.76676],
-              "110": [0, 0.47534, 0, 0, 0.52666],
-              "111": [0, 0.47534, 0, 0, 0.48885],
-              "112": [0.18906, 0.52396, 0, 0, 0.50046],
-              "113": [0.18906, 0.47534, 0, 0, 0.48912],
-              "114": [0, 0.47534, 0, 0, 0.38919],
-              "115": [0, 0.47534, 0, 0, 0.44266],
-              "116": [0, 0.62119, 0, 0, 0.33301],
-              "117": [0, 0.47534, 0, 0, 0.5172],
-              "118": [0, 0.52396, 0, 0, 0.5118],
-              "119": [0, 0.52396, 0, 0, 0.77351],
-              "120": [0.18906, 0.47534, 0, 0, 0.38865],
-              "121": [0.18906, 0.47534, 0, 0, 0.49884],
-              "122": [0.18906, 0.47534, 0, 0, 0.39054],
-              "160": [0, 0, 0, 0, 0.25],
-              "8216": [0, 0.69141, 0, 0, 0.21471],
-              "8217": [0, 0.69141, 0, 0, 0.21471],
-              "58112": [0, 0.62119, 0, 0, 0.49749],
-              "58113": [0, 0.62119, 0, 0, 0.4983],
-              "58114": [0.18906, 0.69141, 0, 0, 0.33328],
-              "58115": [0.18906, 0.69141, 0, 0, 0.32923],
-              "58116": [0.18906, 0.47534, 0, 0, 0.50343],
-              "58117": [0, 0.69141, 0, 0, 0.33301],
-              "58118": [0, 0.62119, 0, 0, 0.33409],
-              "58119": [0, 0.47534, 0, 0, 0.50073]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69141, 0, 0, 0.29574],
+              34: [0, 0.69141, 0, 0, 0.21471],
+              38: [0, 0.69141, 0, 0, 0.73786],
+              39: [0, 0.69141, 0, 0, 0.21201],
+              40: [0.24982, 0.74947, 0, 0, 0.38865],
+              41: [0.24982, 0.74947, 0, 0, 0.38865],
+              42: [0, 0.62119, 0, 0, 0.27764],
+              43: [0.08319, 0.58283, 0, 0, 0.75623],
+              44: [0, 0.10803, 0, 0, 0.27764],
+              45: [0.08319, 0.58283, 0, 0, 0.75623],
+              46: [0, 0.10803, 0, 0, 0.27764],
+              47: [0.24982, 0.74947, 0, 0, 0.50181],
+              48: [0, 0.47534, 0, 0, 0.50181],
+              49: [0, 0.47534, 0, 0, 0.50181],
+              50: [0, 0.47534, 0, 0, 0.50181],
+              51: [0.18906, 0.47534, 0, 0, 0.50181],
+              52: [0.18906, 0.47534, 0, 0, 0.50181],
+              53: [0.18906, 0.47534, 0, 0, 0.50181],
+              54: [0, 0.69141, 0, 0, 0.50181],
+              55: [0.18906, 0.47534, 0, 0, 0.50181],
+              56: [0, 0.69141, 0, 0, 0.50181],
+              57: [0.18906, 0.47534, 0, 0, 0.50181],
+              58: [0, 0.47534, 0, 0, 0.21606],
+              59: [0.12604, 0.47534, 0, 0, 0.21606],
+              61: [-0.13099, 0.36866, 0, 0, 0.75623],
+              63: [0, 0.69141, 0, 0, 0.36245],
+              65: [0, 0.69141, 0, 0, 0.7176],
+              66: [0, 0.69141, 0, 0, 0.88397],
+              67: [0, 0.69141, 0, 0, 0.61254],
+              68: [0, 0.69141, 0, 0, 0.83158],
+              69: [0, 0.69141, 0, 0, 0.66278],
+              70: [0.12604, 0.69141, 0, 0, 0.61119],
+              71: [0, 0.69141, 0, 0, 0.78539],
+              72: [0.06302, 0.69141, 0, 0, 0.7203],
+              73: [0, 0.69141, 0, 0, 0.55448],
+              74: [0.12604, 0.69141, 0, 0, 0.55231],
+              75: [0, 0.69141, 0, 0, 0.66845],
+              76: [0, 0.69141, 0, 0, 0.66602],
+              77: [0, 0.69141, 0, 0, 1.04953],
+              78: [0, 0.69141, 0, 0, 0.83212],
+              79: [0, 0.69141, 0, 0, 0.82699],
+              80: [0.18906, 0.69141, 0, 0, 0.82753],
+              81: [0.03781, 0.69141, 0, 0, 0.82699],
+              82: [0, 0.69141, 0, 0, 0.82807],
+              83: [0, 0.69141, 0, 0, 0.82861],
+              84: [0, 0.69141, 0, 0, 0.66899],
+              85: [0, 0.69141, 0, 0, 0.64576],
+              86: [0, 0.69141, 0, 0, 0.83131],
+              87: [0, 0.69141, 0, 0, 1.04602],
+              88: [0, 0.69141, 0, 0, 0.71922],
+              89: [0.18906, 0.69141, 0, 0, 0.83293],
+              90: [0.12604, 0.69141, 0, 0, 0.60201],
+              91: [0.24982, 0.74947, 0, 0, 0.27764],
+              93: [0.24982, 0.74947, 0, 0, 0.27764],
+              94: [0, 0.69141, 0, 0, 0.49965],
+              97: [0, 0.47534, 0, 0, 0.50046],
+              98: [0, 0.69141, 0, 0, 0.51315],
+              99: [0, 0.47534, 0, 0, 0.38946],
+              100: [0, 0.62119, 0, 0, 0.49857],
+              101: [0, 0.47534, 0, 0, 0.40053],
+              102: [0.18906, 0.69141, 0, 0, 0.32626],
+              103: [0.18906, 0.47534, 0, 0, 0.5037],
+              104: [0.18906, 0.69141, 0, 0, 0.52126],
+              105: [0, 0.69141, 0, 0, 0.27899],
+              106: [0, 0.69141, 0, 0, 0.28088],
+              107: [0, 0.69141, 0, 0, 0.38946],
+              108: [0, 0.69141, 0, 0, 0.27953],
+              109: [0, 0.47534, 0, 0, 0.76676],
+              110: [0, 0.47534, 0, 0, 0.52666],
+              111: [0, 0.47534, 0, 0, 0.48885],
+              112: [0.18906, 0.52396, 0, 0, 0.50046],
+              113: [0.18906, 0.47534, 0, 0, 0.48912],
+              114: [0, 0.47534, 0, 0, 0.38919],
+              115: [0, 0.47534, 0, 0, 0.44266],
+              116: [0, 0.62119, 0, 0, 0.33301],
+              117: [0, 0.47534, 0, 0, 0.5172],
+              118: [0, 0.52396, 0, 0, 0.5118],
+              119: [0, 0.52396, 0, 0, 0.77351],
+              120: [0.18906, 0.47534, 0, 0, 0.38865],
+              121: [0.18906, 0.47534, 0, 0, 0.49884],
+              122: [0.18906, 0.47534, 0, 0, 0.39054],
+              160: [0, 0, 0, 0, 0.25],
+              8216: [0, 0.69141, 0, 0, 0.21471],
+              8217: [0, 0.69141, 0, 0, 0.21471],
+              58112: [0, 0.62119, 0, 0, 0.49749],
+              58113: [0, 0.62119, 0, 0, 0.4983],
+              58114: [0.18906, 0.69141, 0, 0, 0.33328],
+              58115: [0.18906, 0.69141, 0, 0, 0.32923],
+              58116: [0.18906, 0.47534, 0, 0, 0.50343],
+              58117: [0, 0.69141, 0, 0, 0.33301],
+              58118: [0, 0.62119, 0, 0, 0.33409],
+              58119: [0, 0.47534, 0, 0, 0.50073],
             },
             "Main-Bold": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0, 0, 0.35],
-              "34": [0, 0.69444, 0, 0, 0.60278],
-              "35": [0.19444, 0.69444, 0, 0, 0.95833],
-              "36": [0.05556, 0.75, 0, 0, 0.575],
-              "37": [0.05556, 0.75, 0, 0, 0.95833],
-              "38": [0, 0.69444, 0, 0, 0.89444],
-              "39": [0, 0.69444, 0, 0, 0.31944],
-              "40": [0.25, 0.75, 0, 0, 0.44722],
-              "41": [0.25, 0.75, 0, 0, 0.44722],
-              "42": [0, 0.75, 0, 0, 0.575],
-              "43": [0.13333, 0.63333, 0, 0, 0.89444],
-              "44": [0.19444, 0.15556, 0, 0, 0.31944],
-              "45": [0, 0.44444, 0, 0, 0.38333],
-              "46": [0, 0.15556, 0, 0, 0.31944],
-              "47": [0.25, 0.75, 0, 0, 0.575],
-              "48": [0, 0.64444, 0, 0, 0.575],
-              "49": [0, 0.64444, 0, 0, 0.575],
-              "50": [0, 0.64444, 0, 0, 0.575],
-              "51": [0, 0.64444, 0, 0, 0.575],
-              "52": [0, 0.64444, 0, 0, 0.575],
-              "53": [0, 0.64444, 0, 0, 0.575],
-              "54": [0, 0.64444, 0, 0, 0.575],
-              "55": [0, 0.64444, 0, 0, 0.575],
-              "56": [0, 0.64444, 0, 0, 0.575],
-              "57": [0, 0.64444, 0, 0, 0.575],
-              "58": [0, 0.44444, 0, 0, 0.31944],
-              "59": [0.19444, 0.44444, 0, 0, 0.31944],
-              "60": [0.08556, 0.58556, 0, 0, 0.89444],
-              "61": [-0.10889, 0.39111, 0, 0, 0.89444],
-              "62": [0.08556, 0.58556, 0, 0, 0.89444],
-              "63": [0, 0.69444, 0, 0, 0.54305],
-              "64": [0, 0.69444, 0, 0, 0.89444],
-              "65": [0, 0.68611, 0, 0, 0.86944],
-              "66": [0, 0.68611, 0, 0, 0.81805],
-              "67": [0, 0.68611, 0, 0, 0.83055],
-              "68": [0, 0.68611, 0, 0, 0.88194],
-              "69": [0, 0.68611, 0, 0, 0.75555],
-              "70": [0, 0.68611, 0, 0, 0.72361],
-              "71": [0, 0.68611, 0, 0, 0.90416],
-              "72": [0, 0.68611, 0, 0, 0.9],
-              "73": [0, 0.68611, 0, 0, 0.43611],
-              "74": [0, 0.68611, 0, 0, 0.59444],
-              "75": [0, 0.68611, 0, 0, 0.90138],
-              "76": [0, 0.68611, 0, 0, 0.69166],
-              "77": [0, 0.68611, 0, 0, 1.09166],
-              "78": [0, 0.68611, 0, 0, 0.9],
-              "79": [0, 0.68611, 0, 0, 0.86388],
-              "80": [0, 0.68611, 0, 0, 0.78611],
-              "81": [0.19444, 0.68611, 0, 0, 0.86388],
-              "82": [0, 0.68611, 0, 0, 0.8625],
-              "83": [0, 0.68611, 0, 0, 0.63889],
-              "84": [0, 0.68611, 0, 0, 0.8],
-              "85": [0, 0.68611, 0, 0, 0.88472],
-              "86": [0, 0.68611, 0.01597, 0, 0.86944],
-              "87": [0, 0.68611, 0.01597, 0, 1.18888],
-              "88": [0, 0.68611, 0, 0, 0.86944],
-              "89": [0, 0.68611, 0.02875, 0, 0.86944],
-              "90": [0, 0.68611, 0, 0, 0.70277],
-              "91": [0.25, 0.75, 0, 0, 0.31944],
-              "92": [0.25, 0.75, 0, 0, 0.575],
-              "93": [0.25, 0.75, 0, 0, 0.31944],
-              "94": [0, 0.69444, 0, 0, 0.575],
-              "95": [0.31, 0.13444, 0.03194, 0, 0.575],
-              "97": [0, 0.44444, 0, 0, 0.55902],
-              "98": [0, 0.69444, 0, 0, 0.63889],
-              "99": [0, 0.44444, 0, 0, 0.51111],
-              "100": [0, 0.69444, 0, 0, 0.63889],
-              "101": [0, 0.44444, 0, 0, 0.52708],
-              "102": [0, 0.69444, 0.10903, 0, 0.35139],
-              "103": [0.19444, 0.44444, 0.01597, 0, 0.575],
-              "104": [0, 0.69444, 0, 0, 0.63889],
-              "105": [0, 0.69444, 0, 0, 0.31944],
-              "106": [0.19444, 0.69444, 0, 0, 0.35139],
-              "107": [0, 0.69444, 0, 0, 0.60694],
-              "108": [0, 0.69444, 0, 0, 0.31944],
-              "109": [0, 0.44444, 0, 0, 0.95833],
-              "110": [0, 0.44444, 0, 0, 0.63889],
-              "111": [0, 0.44444, 0, 0, 0.575],
-              "112": [0.19444, 0.44444, 0, 0, 0.63889],
-              "113": [0.19444, 0.44444, 0, 0, 0.60694],
-              "114": [0, 0.44444, 0, 0, 0.47361],
-              "115": [0, 0.44444, 0, 0, 0.45361],
-              "116": [0, 0.63492, 0, 0, 0.44722],
-              "117": [0, 0.44444, 0, 0, 0.63889],
-              "118": [0, 0.44444, 0.01597, 0, 0.60694],
-              "119": [0, 0.44444, 0.01597, 0, 0.83055],
-              "120": [0, 0.44444, 0, 0, 0.60694],
-              "121": [0.19444, 0.44444, 0.01597, 0, 0.60694],
-              "122": [0, 0.44444, 0, 0, 0.51111],
-              "123": [0.25, 0.75, 0, 0, 0.575],
-              "124": [0.25, 0.75, 0, 0, 0.31944],
-              "125": [0.25, 0.75, 0, 0, 0.575],
-              "126": [0.35, 0.34444, 0, 0, 0.575],
-              "160": [0, 0, 0, 0, 0.25],
-              "163": [0, 0.69444, 0, 0, 0.86853],
-              "168": [0, 0.69444, 0, 0, 0.575],
-              "172": [0, 0.44444, 0, 0, 0.76666],
-              "176": [0, 0.69444, 0, 0, 0.86944],
-              "177": [0.13333, 0.63333, 0, 0, 0.89444],
-              "184": [0.17014, 0, 0, 0, 0.51111],
-              "198": [0, 0.68611, 0, 0, 1.04166],
-              "215": [0.13333, 0.63333, 0, 0, 0.89444],
-              "216": [0.04861, 0.73472, 0, 0, 0.89444],
-              "223": [0, 0.69444, 0, 0, 0.59722],
-              "230": [0, 0.44444, 0, 0, 0.83055],
-              "247": [0.13333, 0.63333, 0, 0, 0.89444],
-              "248": [0.09722, 0.54167, 0, 0, 0.575],
-              "305": [0, 0.44444, 0, 0, 0.31944],
-              "338": [0, 0.68611, 0, 0, 1.16944],
-              "339": [0, 0.44444, 0, 0, 0.89444],
-              "567": [0.19444, 0.44444, 0, 0, 0.35139],
-              "710": [0, 0.69444, 0, 0, 0.575],
-              "711": [0, 0.63194, 0, 0, 0.575],
-              "713": [0, 0.59611, 0, 0, 0.575],
-              "714": [0, 0.69444, 0, 0, 0.575],
-              "715": [0, 0.69444, 0, 0, 0.575],
-              "728": [0, 0.69444, 0, 0, 0.575],
-              "729": [0, 0.69444, 0, 0, 0.31944],
-              "730": [0, 0.69444, 0, 0, 0.86944],
-              "732": [0, 0.69444, 0, 0, 0.575],
-              "733": [0, 0.69444, 0, 0, 0.575],
-              "915": [0, 0.68611, 0, 0, 0.69166],
-              "916": [0, 0.68611, 0, 0, 0.95833],
-              "920": [0, 0.68611, 0, 0, 0.89444],
-              "923": [0, 0.68611, 0, 0, 0.80555],
-              "926": [0, 0.68611, 0, 0, 0.76666],
-              "928": [0, 0.68611, 0, 0, 0.9],
-              "931": [0, 0.68611, 0, 0, 0.83055],
-              "933": [0, 0.68611, 0, 0, 0.89444],
-              "934": [0, 0.68611, 0, 0, 0.83055],
-              "936": [0, 0.68611, 0, 0, 0.89444],
-              "937": [0, 0.68611, 0, 0, 0.83055],
-              "8211": [0, 0.44444, 0.03194, 0, 0.575],
-              "8212": [0, 0.44444, 0.03194, 0, 1.14999],
-              "8216": [0, 0.69444, 0, 0, 0.31944],
-              "8217": [0, 0.69444, 0, 0, 0.31944],
-              "8220": [0, 0.69444, 0, 0, 0.60278],
-              "8221": [0, 0.69444, 0, 0, 0.60278],
-              "8224": [0.19444, 0.69444, 0, 0, 0.51111],
-              "8225": [0.19444, 0.69444, 0, 0, 0.51111],
-              "8242": [0, 0.55556, 0, 0, 0.34444],
-              "8407": [0, 0.72444, 0.15486, 0, 0.575],
-              "8463": [0, 0.69444, 0, 0, 0.66759],
-              "8465": [0, 0.69444, 0, 0, 0.83055],
-              "8467": [0, 0.69444, 0, 0, 0.47361],
-              "8472": [0.19444, 0.44444, 0, 0, 0.74027],
-              "8476": [0, 0.69444, 0, 0, 0.83055],
-              "8501": [0, 0.69444, 0, 0, 0.70277],
-              "8592": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8593": [0.19444, 0.69444, 0, 0, 0.575],
-              "8594": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8595": [0.19444, 0.69444, 0, 0, 0.575],
-              "8596": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8597": [0.25, 0.75, 0, 0, 0.575],
-              "8598": [0.19444, 0.69444, 0, 0, 1.14999],
-              "8599": [0.19444, 0.69444, 0, 0, 1.14999],
-              "8600": [0.19444, 0.69444, 0, 0, 1.14999],
-              "8601": [0.19444, 0.69444, 0, 0, 1.14999],
-              "8636": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8637": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8640": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8641": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8656": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8657": [0.19444, 0.69444, 0, 0, 0.70277],
-              "8658": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8659": [0.19444, 0.69444, 0, 0, 0.70277],
-              "8660": [-0.10889, 0.39111, 0, 0, 1.14999],
-              "8661": [0.25, 0.75, 0, 0, 0.70277],
-              "8704": [0, 0.69444, 0, 0, 0.63889],
-              "8706": [0, 0.69444, 0.06389, 0, 0.62847],
-              "8707": [0, 0.69444, 0, 0, 0.63889],
-              "8709": [0.05556, 0.75, 0, 0, 0.575],
-              "8711": [0, 0.68611, 0, 0, 0.95833],
-              "8712": [0.08556, 0.58556, 0, 0, 0.76666],
-              "8715": [0.08556, 0.58556, 0, 0, 0.76666],
-              "8722": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8723": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8725": [0.25, 0.75, 0, 0, 0.575],
-              "8726": [0.25, 0.75, 0, 0, 0.575],
-              "8727": [-0.02778, 0.47222, 0, 0, 0.575],
-              "8728": [-0.02639, 0.47361, 0, 0, 0.575],
-              "8729": [-0.02639, 0.47361, 0, 0, 0.575],
-              "8730": [0.18, 0.82, 0, 0, 0.95833],
-              "8733": [0, 0.44444, 0, 0, 0.89444],
-              "8734": [0, 0.44444, 0, 0, 1.14999],
-              "8736": [0, 0.69224, 0, 0, 0.72222],
-              "8739": [0.25, 0.75, 0, 0, 0.31944],
-              "8741": [0.25, 0.75, 0, 0, 0.575],
-              "8743": [0, 0.55556, 0, 0, 0.76666],
-              "8744": [0, 0.55556, 0, 0, 0.76666],
-              "8745": [0, 0.55556, 0, 0, 0.76666],
-              "8746": [0, 0.55556, 0, 0, 0.76666],
-              "8747": [0.19444, 0.69444, 0.12778, 0, 0.56875],
-              "8764": [-0.10889, 0.39111, 0, 0, 0.89444],
-              "8768": [0.19444, 0.69444, 0, 0, 0.31944],
-              "8771": [222e-5, 0.50222, 0, 0, 0.89444],
-              "8773": [0.027, 0.638, 0, 0, 0.894],
-              "8776": [0.02444, 0.52444, 0, 0, 0.89444],
-              "8781": [222e-5, 0.50222, 0, 0, 0.89444],
-              "8801": [222e-5, 0.50222, 0, 0, 0.89444],
-              "8804": [0.19667, 0.69667, 0, 0, 0.89444],
-              "8805": [0.19667, 0.69667, 0, 0, 0.89444],
-              "8810": [0.08556, 0.58556, 0, 0, 1.14999],
-              "8811": [0.08556, 0.58556, 0, 0, 1.14999],
-              "8826": [0.08556, 0.58556, 0, 0, 0.89444],
-              "8827": [0.08556, 0.58556, 0, 0, 0.89444],
-              "8834": [0.08556, 0.58556, 0, 0, 0.89444],
-              "8835": [0.08556, 0.58556, 0, 0, 0.89444],
-              "8838": [0.19667, 0.69667, 0, 0, 0.89444],
-              "8839": [0.19667, 0.69667, 0, 0, 0.89444],
-              "8846": [0, 0.55556, 0, 0, 0.76666],
-              "8849": [0.19667, 0.69667, 0, 0, 0.89444],
-              "8850": [0.19667, 0.69667, 0, 0, 0.89444],
-              "8851": [0, 0.55556, 0, 0, 0.76666],
-              "8852": [0, 0.55556, 0, 0, 0.76666],
-              "8853": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8854": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8855": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8856": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8857": [0.13333, 0.63333, 0, 0, 0.89444],
-              "8866": [0, 0.69444, 0, 0, 0.70277],
-              "8867": [0, 0.69444, 0, 0, 0.70277],
-              "8868": [0, 0.69444, 0, 0, 0.89444],
-              "8869": [0, 0.69444, 0, 0, 0.89444],
-              "8900": [-0.02639, 0.47361, 0, 0, 0.575],
-              "8901": [-0.02639, 0.47361, 0, 0, 0.31944],
-              "8902": [-0.02778, 0.47222, 0, 0, 0.575],
-              "8968": [0.25, 0.75, 0, 0, 0.51111],
-              "8969": [0.25, 0.75, 0, 0, 0.51111],
-              "8970": [0.25, 0.75, 0, 0, 0.51111],
-              "8971": [0.25, 0.75, 0, 0, 0.51111],
-              "8994": [-0.13889, 0.36111, 0, 0, 1.14999],
-              "8995": [-0.13889, 0.36111, 0, 0, 1.14999],
-              "9651": [0.19444, 0.69444, 0, 0, 1.02222],
-              "9657": [-0.02778, 0.47222, 0, 0, 0.575],
-              "9661": [0.19444, 0.69444, 0, 0, 1.02222],
-              "9667": [-0.02778, 0.47222, 0, 0, 0.575],
-              "9711": [0.19444, 0.69444, 0, 0, 1.14999],
-              "9824": [0.12963, 0.69444, 0, 0, 0.89444],
-              "9825": [0.12963, 0.69444, 0, 0, 0.89444],
-              "9826": [0.12963, 0.69444, 0, 0, 0.89444],
-              "9827": [0.12963, 0.69444, 0, 0, 0.89444],
-              "9837": [0, 0.75, 0, 0, 0.44722],
-              "9838": [0.19444, 0.69444, 0, 0, 0.44722],
-              "9839": [0.19444, 0.69444, 0, 0, 0.44722],
-              "10216": [0.25, 0.75, 0, 0, 0.44722],
-              "10217": [0.25, 0.75, 0, 0, 0.44722],
-              "10815": [0, 0.68611, 0, 0, 0.9],
-              "10927": [0.19667, 0.69667, 0, 0, 0.89444],
-              "10928": [0.19667, 0.69667, 0, 0, 0.89444],
-              "57376": [0.19444, 0.69444, 0, 0, 0]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0, 0, 0.35],
+              34: [0, 0.69444, 0, 0, 0.60278],
+              35: [0.19444, 0.69444, 0, 0, 0.95833],
+              36: [0.05556, 0.75, 0, 0, 0.575],
+              37: [0.05556, 0.75, 0, 0, 0.95833],
+              38: [0, 0.69444, 0, 0, 0.89444],
+              39: [0, 0.69444, 0, 0, 0.31944],
+              40: [0.25, 0.75, 0, 0, 0.44722],
+              41: [0.25, 0.75, 0, 0, 0.44722],
+              42: [0, 0.75, 0, 0, 0.575],
+              43: [0.13333, 0.63333, 0, 0, 0.89444],
+              44: [0.19444, 0.15556, 0, 0, 0.31944],
+              45: [0, 0.44444, 0, 0, 0.38333],
+              46: [0, 0.15556, 0, 0, 0.31944],
+              47: [0.25, 0.75, 0, 0, 0.575],
+              48: [0, 0.64444, 0, 0, 0.575],
+              49: [0, 0.64444, 0, 0, 0.575],
+              50: [0, 0.64444, 0, 0, 0.575],
+              51: [0, 0.64444, 0, 0, 0.575],
+              52: [0, 0.64444, 0, 0, 0.575],
+              53: [0, 0.64444, 0, 0, 0.575],
+              54: [0, 0.64444, 0, 0, 0.575],
+              55: [0, 0.64444, 0, 0, 0.575],
+              56: [0, 0.64444, 0, 0, 0.575],
+              57: [0, 0.64444, 0, 0, 0.575],
+              58: [0, 0.44444, 0, 0, 0.31944],
+              59: [0.19444, 0.44444, 0, 0, 0.31944],
+              60: [0.08556, 0.58556, 0, 0, 0.89444],
+              61: [-0.10889, 0.39111, 0, 0, 0.89444],
+              62: [0.08556, 0.58556, 0, 0, 0.89444],
+              63: [0, 0.69444, 0, 0, 0.54305],
+              64: [0, 0.69444, 0, 0, 0.89444],
+              65: [0, 0.68611, 0, 0, 0.86944],
+              66: [0, 0.68611, 0, 0, 0.81805],
+              67: [0, 0.68611, 0, 0, 0.83055],
+              68: [0, 0.68611, 0, 0, 0.88194],
+              69: [0, 0.68611, 0, 0, 0.75555],
+              70: [0, 0.68611, 0, 0, 0.72361],
+              71: [0, 0.68611, 0, 0, 0.90416],
+              72: [0, 0.68611, 0, 0, 0.9],
+              73: [0, 0.68611, 0, 0, 0.43611],
+              74: [0, 0.68611, 0, 0, 0.59444],
+              75: [0, 0.68611, 0, 0, 0.90138],
+              76: [0, 0.68611, 0, 0, 0.69166],
+              77: [0, 0.68611, 0, 0, 1.09166],
+              78: [0, 0.68611, 0, 0, 0.9],
+              79: [0, 0.68611, 0, 0, 0.86388],
+              80: [0, 0.68611, 0, 0, 0.78611],
+              81: [0.19444, 0.68611, 0, 0, 0.86388],
+              82: [0, 0.68611, 0, 0, 0.8625],
+              83: [0, 0.68611, 0, 0, 0.63889],
+              84: [0, 0.68611, 0, 0, 0.8],
+              85: [0, 0.68611, 0, 0, 0.88472],
+              86: [0, 0.68611, 0.01597, 0, 0.86944],
+              87: [0, 0.68611, 0.01597, 0, 1.18888],
+              88: [0, 0.68611, 0, 0, 0.86944],
+              89: [0, 0.68611, 0.02875, 0, 0.86944],
+              90: [0, 0.68611, 0, 0, 0.70277],
+              91: [0.25, 0.75, 0, 0, 0.31944],
+              92: [0.25, 0.75, 0, 0, 0.575],
+              93: [0.25, 0.75, 0, 0, 0.31944],
+              94: [0, 0.69444, 0, 0, 0.575],
+              95: [0.31, 0.13444, 0.03194, 0, 0.575],
+              97: [0, 0.44444, 0, 0, 0.55902],
+              98: [0, 0.69444, 0, 0, 0.63889],
+              99: [0, 0.44444, 0, 0, 0.51111],
+              100: [0, 0.69444, 0, 0, 0.63889],
+              101: [0, 0.44444, 0, 0, 0.52708],
+              102: [0, 0.69444, 0.10903, 0, 0.35139],
+              103: [0.19444, 0.44444, 0.01597, 0, 0.575],
+              104: [0, 0.69444, 0, 0, 0.63889],
+              105: [0, 0.69444, 0, 0, 0.31944],
+              106: [0.19444, 0.69444, 0, 0, 0.35139],
+              107: [0, 0.69444, 0, 0, 0.60694],
+              108: [0, 0.69444, 0, 0, 0.31944],
+              109: [0, 0.44444, 0, 0, 0.95833],
+              110: [0, 0.44444, 0, 0, 0.63889],
+              111: [0, 0.44444, 0, 0, 0.575],
+              112: [0.19444, 0.44444, 0, 0, 0.63889],
+              113: [0.19444, 0.44444, 0, 0, 0.60694],
+              114: [0, 0.44444, 0, 0, 0.47361],
+              115: [0, 0.44444, 0, 0, 0.45361],
+              116: [0, 0.63492, 0, 0, 0.44722],
+              117: [0, 0.44444, 0, 0, 0.63889],
+              118: [0, 0.44444, 0.01597, 0, 0.60694],
+              119: [0, 0.44444, 0.01597, 0, 0.83055],
+              120: [0, 0.44444, 0, 0, 0.60694],
+              121: [0.19444, 0.44444, 0.01597, 0, 0.60694],
+              122: [0, 0.44444, 0, 0, 0.51111],
+              123: [0.25, 0.75, 0, 0, 0.575],
+              124: [0.25, 0.75, 0, 0, 0.31944],
+              125: [0.25, 0.75, 0, 0, 0.575],
+              126: [0.35, 0.34444, 0, 0, 0.575],
+              160: [0, 0, 0, 0, 0.25],
+              163: [0, 0.69444, 0, 0, 0.86853],
+              168: [0, 0.69444, 0, 0, 0.575],
+              172: [0, 0.44444, 0, 0, 0.76666],
+              176: [0, 0.69444, 0, 0, 0.86944],
+              177: [0.13333, 0.63333, 0, 0, 0.89444],
+              184: [0.17014, 0, 0, 0, 0.51111],
+              198: [0, 0.68611, 0, 0, 1.04166],
+              215: [0.13333, 0.63333, 0, 0, 0.89444],
+              216: [0.04861, 0.73472, 0, 0, 0.89444],
+              223: [0, 0.69444, 0, 0, 0.59722],
+              230: [0, 0.44444, 0, 0, 0.83055],
+              247: [0.13333, 0.63333, 0, 0, 0.89444],
+              248: [0.09722, 0.54167, 0, 0, 0.575],
+              305: [0, 0.44444, 0, 0, 0.31944],
+              338: [0, 0.68611, 0, 0, 1.16944],
+              339: [0, 0.44444, 0, 0, 0.89444],
+              567: [0.19444, 0.44444, 0, 0, 0.35139],
+              710: [0, 0.69444, 0, 0, 0.575],
+              711: [0, 0.63194, 0, 0, 0.575],
+              713: [0, 0.59611, 0, 0, 0.575],
+              714: [0, 0.69444, 0, 0, 0.575],
+              715: [0, 0.69444, 0, 0, 0.575],
+              728: [0, 0.69444, 0, 0, 0.575],
+              729: [0, 0.69444, 0, 0, 0.31944],
+              730: [0, 0.69444, 0, 0, 0.86944],
+              732: [0, 0.69444, 0, 0, 0.575],
+              733: [0, 0.69444, 0, 0, 0.575],
+              915: [0, 0.68611, 0, 0, 0.69166],
+              916: [0, 0.68611, 0, 0, 0.95833],
+              920: [0, 0.68611, 0, 0, 0.89444],
+              923: [0, 0.68611, 0, 0, 0.80555],
+              926: [0, 0.68611, 0, 0, 0.76666],
+              928: [0, 0.68611, 0, 0, 0.9],
+              931: [0, 0.68611, 0, 0, 0.83055],
+              933: [0, 0.68611, 0, 0, 0.89444],
+              934: [0, 0.68611, 0, 0, 0.83055],
+              936: [0, 0.68611, 0, 0, 0.89444],
+              937: [0, 0.68611, 0, 0, 0.83055],
+              8211: [0, 0.44444, 0.03194, 0, 0.575],
+              8212: [0, 0.44444, 0.03194, 0, 1.14999],
+              8216: [0, 0.69444, 0, 0, 0.31944],
+              8217: [0, 0.69444, 0, 0, 0.31944],
+              8220: [0, 0.69444, 0, 0, 0.60278],
+              8221: [0, 0.69444, 0, 0, 0.60278],
+              8224: [0.19444, 0.69444, 0, 0, 0.51111],
+              8225: [0.19444, 0.69444, 0, 0, 0.51111],
+              8242: [0, 0.55556, 0, 0, 0.34444],
+              8407: [0, 0.72444, 0.15486, 0, 0.575],
+              8463: [0, 0.69444, 0, 0, 0.66759],
+              8465: [0, 0.69444, 0, 0, 0.83055],
+              8467: [0, 0.69444, 0, 0, 0.47361],
+              8472: [0.19444, 0.44444, 0, 0, 0.74027],
+              8476: [0, 0.69444, 0, 0, 0.83055],
+              8501: [0, 0.69444, 0, 0, 0.70277],
+              8592: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8593: [0.19444, 0.69444, 0, 0, 0.575],
+              8594: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8595: [0.19444, 0.69444, 0, 0, 0.575],
+              8596: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8597: [0.25, 0.75, 0, 0, 0.575],
+              8598: [0.19444, 0.69444, 0, 0, 1.14999],
+              8599: [0.19444, 0.69444, 0, 0, 1.14999],
+              8600: [0.19444, 0.69444, 0, 0, 1.14999],
+              8601: [0.19444, 0.69444, 0, 0, 1.14999],
+              8636: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8637: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8640: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8641: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8656: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8657: [0.19444, 0.69444, 0, 0, 0.70277],
+              8658: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8659: [0.19444, 0.69444, 0, 0, 0.70277],
+              8660: [-0.10889, 0.39111, 0, 0, 1.14999],
+              8661: [0.25, 0.75, 0, 0, 0.70277],
+              8704: [0, 0.69444, 0, 0, 0.63889],
+              8706: [0, 0.69444, 0.06389, 0, 0.62847],
+              8707: [0, 0.69444, 0, 0, 0.63889],
+              8709: [0.05556, 0.75, 0, 0, 0.575],
+              8711: [0, 0.68611, 0, 0, 0.95833],
+              8712: [0.08556, 0.58556, 0, 0, 0.76666],
+              8715: [0.08556, 0.58556, 0, 0, 0.76666],
+              8722: [0.13333, 0.63333, 0, 0, 0.89444],
+              8723: [0.13333, 0.63333, 0, 0, 0.89444],
+              8725: [0.25, 0.75, 0, 0, 0.575],
+              8726: [0.25, 0.75, 0, 0, 0.575],
+              8727: [-0.02778, 0.47222, 0, 0, 0.575],
+              8728: [-0.02639, 0.47361, 0, 0, 0.575],
+              8729: [-0.02639, 0.47361, 0, 0, 0.575],
+              8730: [0.18, 0.82, 0, 0, 0.95833],
+              8733: [0, 0.44444, 0, 0, 0.89444],
+              8734: [0, 0.44444, 0, 0, 1.14999],
+              8736: [0, 0.69224, 0, 0, 0.72222],
+              8739: [0.25, 0.75, 0, 0, 0.31944],
+              8741: [0.25, 0.75, 0, 0, 0.575],
+              8743: [0, 0.55556, 0, 0, 0.76666],
+              8744: [0, 0.55556, 0, 0, 0.76666],
+              8745: [0, 0.55556, 0, 0, 0.76666],
+              8746: [0, 0.55556, 0, 0, 0.76666],
+              8747: [0.19444, 0.69444, 0.12778, 0, 0.56875],
+              8764: [-0.10889, 0.39111, 0, 0, 0.89444],
+              8768: [0.19444, 0.69444, 0, 0, 0.31944],
+              8771: [222e-5, 0.50222, 0, 0, 0.89444],
+              8773: [0.027, 0.638, 0, 0, 0.894],
+              8776: [0.02444, 0.52444, 0, 0, 0.89444],
+              8781: [222e-5, 0.50222, 0, 0, 0.89444],
+              8801: [222e-5, 0.50222, 0, 0, 0.89444],
+              8804: [0.19667, 0.69667, 0, 0, 0.89444],
+              8805: [0.19667, 0.69667, 0, 0, 0.89444],
+              8810: [0.08556, 0.58556, 0, 0, 1.14999],
+              8811: [0.08556, 0.58556, 0, 0, 1.14999],
+              8826: [0.08556, 0.58556, 0, 0, 0.89444],
+              8827: [0.08556, 0.58556, 0, 0, 0.89444],
+              8834: [0.08556, 0.58556, 0, 0, 0.89444],
+              8835: [0.08556, 0.58556, 0, 0, 0.89444],
+              8838: [0.19667, 0.69667, 0, 0, 0.89444],
+              8839: [0.19667, 0.69667, 0, 0, 0.89444],
+              8846: [0, 0.55556, 0, 0, 0.76666],
+              8849: [0.19667, 0.69667, 0, 0, 0.89444],
+              8850: [0.19667, 0.69667, 0, 0, 0.89444],
+              8851: [0, 0.55556, 0, 0, 0.76666],
+              8852: [0, 0.55556, 0, 0, 0.76666],
+              8853: [0.13333, 0.63333, 0, 0, 0.89444],
+              8854: [0.13333, 0.63333, 0, 0, 0.89444],
+              8855: [0.13333, 0.63333, 0, 0, 0.89444],
+              8856: [0.13333, 0.63333, 0, 0, 0.89444],
+              8857: [0.13333, 0.63333, 0, 0, 0.89444],
+              8866: [0, 0.69444, 0, 0, 0.70277],
+              8867: [0, 0.69444, 0, 0, 0.70277],
+              8868: [0, 0.69444, 0, 0, 0.89444],
+              8869: [0, 0.69444, 0, 0, 0.89444],
+              8900: [-0.02639, 0.47361, 0, 0, 0.575],
+              8901: [-0.02639, 0.47361, 0, 0, 0.31944],
+              8902: [-0.02778, 0.47222, 0, 0, 0.575],
+              8968: [0.25, 0.75, 0, 0, 0.51111],
+              8969: [0.25, 0.75, 0, 0, 0.51111],
+              8970: [0.25, 0.75, 0, 0, 0.51111],
+              8971: [0.25, 0.75, 0, 0, 0.51111],
+              8994: [-0.13889, 0.36111, 0, 0, 1.14999],
+              8995: [-0.13889, 0.36111, 0, 0, 1.14999],
+              9651: [0.19444, 0.69444, 0, 0, 1.02222],
+              9657: [-0.02778, 0.47222, 0, 0, 0.575],
+              9661: [0.19444, 0.69444, 0, 0, 1.02222],
+              9667: [-0.02778, 0.47222, 0, 0, 0.575],
+              9711: [0.19444, 0.69444, 0, 0, 1.14999],
+              9824: [0.12963, 0.69444, 0, 0, 0.89444],
+              9825: [0.12963, 0.69444, 0, 0, 0.89444],
+              9826: [0.12963, 0.69444, 0, 0, 0.89444],
+              9827: [0.12963, 0.69444, 0, 0, 0.89444],
+              9837: [0, 0.75, 0, 0, 0.44722],
+              9838: [0.19444, 0.69444, 0, 0, 0.44722],
+              9839: [0.19444, 0.69444, 0, 0, 0.44722],
+              10216: [0.25, 0.75, 0, 0, 0.44722],
+              10217: [0.25, 0.75, 0, 0, 0.44722],
+              10815: [0, 0.68611, 0, 0, 0.9],
+              10927: [0.19667, 0.69667, 0, 0, 0.89444],
+              10928: [0.19667, 0.69667, 0, 0, 0.89444],
+              57376: [0.19444, 0.69444, 0, 0, 0],
             },
             "Main-BoldItalic": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0.11417, 0, 0.38611],
-              "34": [0, 0.69444, 0.07939, 0, 0.62055],
-              "35": [0.19444, 0.69444, 0.06833, 0, 0.94444],
-              "37": [0.05556, 0.75, 0.12861, 0, 0.94444],
-              "38": [0, 0.69444, 0.08528, 0, 0.88555],
-              "39": [0, 0.69444, 0.12945, 0, 0.35555],
-              "40": [0.25, 0.75, 0.15806, 0, 0.47333],
-              "41": [0.25, 0.75, 0.03306, 0, 0.47333],
-              "42": [0, 0.75, 0.14333, 0, 0.59111],
-              "43": [0.10333, 0.60333, 0.03306, 0, 0.88555],
-              "44": [0.19444, 0.14722, 0, 0, 0.35555],
-              "45": [0, 0.44444, 0.02611, 0, 0.41444],
-              "46": [0, 0.14722, 0, 0, 0.35555],
-              "47": [0.25, 0.75, 0.15806, 0, 0.59111],
-              "48": [0, 0.64444, 0.13167, 0, 0.59111],
-              "49": [0, 0.64444, 0.13167, 0, 0.59111],
-              "50": [0, 0.64444, 0.13167, 0, 0.59111],
-              "51": [0, 0.64444, 0.13167, 0, 0.59111],
-              "52": [0.19444, 0.64444, 0.13167, 0, 0.59111],
-              "53": [0, 0.64444, 0.13167, 0, 0.59111],
-              "54": [0, 0.64444, 0.13167, 0, 0.59111],
-              "55": [0.19444, 0.64444, 0.13167, 0, 0.59111],
-              "56": [0, 0.64444, 0.13167, 0, 0.59111],
-              "57": [0, 0.64444, 0.13167, 0, 0.59111],
-              "58": [0, 0.44444, 0.06695, 0, 0.35555],
-              "59": [0.19444, 0.44444, 0.06695, 0, 0.35555],
-              "61": [-0.10889, 0.39111, 0.06833, 0, 0.88555],
-              "63": [0, 0.69444, 0.11472, 0, 0.59111],
-              "64": [0, 0.69444, 0.09208, 0, 0.88555],
-              "65": [0, 0.68611, 0, 0, 0.86555],
-              "66": [0, 0.68611, 0.0992, 0, 0.81666],
-              "67": [0, 0.68611, 0.14208, 0, 0.82666],
-              "68": [0, 0.68611, 0.09062, 0, 0.87555],
-              "69": [0, 0.68611, 0.11431, 0, 0.75666],
-              "70": [0, 0.68611, 0.12903, 0, 0.72722],
-              "71": [0, 0.68611, 0.07347, 0, 0.89527],
-              "72": [0, 0.68611, 0.17208, 0, 0.8961],
-              "73": [0, 0.68611, 0.15681, 0, 0.47166],
-              "74": [0, 0.68611, 0.145, 0, 0.61055],
-              "75": [0, 0.68611, 0.14208, 0, 0.89499],
-              "76": [0, 0.68611, 0, 0, 0.69777],
-              "77": [0, 0.68611, 0.17208, 0, 1.07277],
-              "78": [0, 0.68611, 0.17208, 0, 0.8961],
-              "79": [0, 0.68611, 0.09062, 0, 0.85499],
-              "80": [0, 0.68611, 0.0992, 0, 0.78721],
-              "81": [0.19444, 0.68611, 0.09062, 0, 0.85499],
-              "82": [0, 0.68611, 0.02559, 0, 0.85944],
-              "83": [0, 0.68611, 0.11264, 0, 0.64999],
-              "84": [0, 0.68611, 0.12903, 0, 0.7961],
-              "85": [0, 0.68611, 0.17208, 0, 0.88083],
-              "86": [0, 0.68611, 0.18625, 0, 0.86555],
-              "87": [0, 0.68611, 0.18625, 0, 1.15999],
-              "88": [0, 0.68611, 0.15681, 0, 0.86555],
-              "89": [0, 0.68611, 0.19803, 0, 0.86555],
-              "90": [0, 0.68611, 0.14208, 0, 0.70888],
-              "91": [0.25, 0.75, 0.1875, 0, 0.35611],
-              "93": [0.25, 0.75, 0.09972, 0, 0.35611],
-              "94": [0, 0.69444, 0.06709, 0, 0.59111],
-              "95": [0.31, 0.13444, 0.09811, 0, 0.59111],
-              "97": [0, 0.44444, 0.09426, 0, 0.59111],
-              "98": [0, 0.69444, 0.07861, 0, 0.53222],
-              "99": [0, 0.44444, 0.05222, 0, 0.53222],
-              "100": [0, 0.69444, 0.10861, 0, 0.59111],
-              "101": [0, 0.44444, 0.085, 0, 0.53222],
-              "102": [0.19444, 0.69444, 0.21778, 0, 0.4],
-              "103": [0.19444, 0.44444, 0.105, 0, 0.53222],
-              "104": [0, 0.69444, 0.09426, 0, 0.59111],
-              "105": [0, 0.69326, 0.11387, 0, 0.35555],
-              "106": [0.19444, 0.69326, 0.1672, 0, 0.35555],
-              "107": [0, 0.69444, 0.11111, 0, 0.53222],
-              "108": [0, 0.69444, 0.10861, 0, 0.29666],
-              "109": [0, 0.44444, 0.09426, 0, 0.94444],
-              "110": [0, 0.44444, 0.09426, 0, 0.64999],
-              "111": [0, 0.44444, 0.07861, 0, 0.59111],
-              "112": [0.19444, 0.44444, 0.07861, 0, 0.59111],
-              "113": [0.19444, 0.44444, 0.105, 0, 0.53222],
-              "114": [0, 0.44444, 0.11111, 0, 0.50167],
-              "115": [0, 0.44444, 0.08167, 0, 0.48694],
-              "116": [0, 0.63492, 0.09639, 0, 0.385],
-              "117": [0, 0.44444, 0.09426, 0, 0.62055],
-              "118": [0, 0.44444, 0.11111, 0, 0.53222],
-              "119": [0, 0.44444, 0.11111, 0, 0.76777],
-              "120": [0, 0.44444, 0.12583, 0, 0.56055],
-              "121": [0.19444, 0.44444, 0.105, 0, 0.56166],
-              "122": [0, 0.44444, 0.13889, 0, 0.49055],
-              "126": [0.35, 0.34444, 0.11472, 0, 0.59111],
-              "160": [0, 0, 0, 0, 0.25],
-              "168": [0, 0.69444, 0.11473, 0, 0.59111],
-              "176": [0, 0.69444, 0, 0, 0.94888],
-              "184": [0.17014, 0, 0, 0, 0.53222],
-              "198": [0, 0.68611, 0.11431, 0, 1.02277],
-              "216": [0.04861, 0.73472, 0.09062, 0, 0.88555],
-              "223": [0.19444, 0.69444, 0.09736, 0, 0.665],
-              "230": [0, 0.44444, 0.085, 0, 0.82666],
-              "248": [0.09722, 0.54167, 0.09458, 0, 0.59111],
-              "305": [0, 0.44444, 0.09426, 0, 0.35555],
-              "338": [0, 0.68611, 0.11431, 0, 1.14054],
-              "339": [0, 0.44444, 0.085, 0, 0.82666],
-              "567": [0.19444, 0.44444, 0.04611, 0, 0.385],
-              "710": [0, 0.69444, 0.06709, 0, 0.59111],
-              "711": [0, 0.63194, 0.08271, 0, 0.59111],
-              "713": [0, 0.59444, 0.10444, 0, 0.59111],
-              "714": [0, 0.69444, 0.08528, 0, 0.59111],
-              "715": [0, 0.69444, 0, 0, 0.59111],
-              "728": [0, 0.69444, 0.10333, 0, 0.59111],
-              "729": [0, 0.69444, 0.12945, 0, 0.35555],
-              "730": [0, 0.69444, 0, 0, 0.94888],
-              "732": [0, 0.69444, 0.11472, 0, 0.59111],
-              "733": [0, 0.69444, 0.11472, 0, 0.59111],
-              "915": [0, 0.68611, 0.12903, 0, 0.69777],
-              "916": [0, 0.68611, 0, 0, 0.94444],
-              "920": [0, 0.68611, 0.09062, 0, 0.88555],
-              "923": [0, 0.68611, 0, 0, 0.80666],
-              "926": [0, 0.68611, 0.15092, 0, 0.76777],
-              "928": [0, 0.68611, 0.17208, 0, 0.8961],
-              "931": [0, 0.68611, 0.11431, 0, 0.82666],
-              "933": [0, 0.68611, 0.10778, 0, 0.88555],
-              "934": [0, 0.68611, 0.05632, 0, 0.82666],
-              "936": [0, 0.68611, 0.10778, 0, 0.88555],
-              "937": [0, 0.68611, 0.0992, 0, 0.82666],
-              "8211": [0, 0.44444, 0.09811, 0, 0.59111],
-              "8212": [0, 0.44444, 0.09811, 0, 1.18221],
-              "8216": [0, 0.69444, 0.12945, 0, 0.35555],
-              "8217": [0, 0.69444, 0.12945, 0, 0.35555],
-              "8220": [0, 0.69444, 0.16772, 0, 0.62055],
-              "8221": [0, 0.69444, 0.07939, 0, 0.62055]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0.11417, 0, 0.38611],
+              34: [0, 0.69444, 0.07939, 0, 0.62055],
+              35: [0.19444, 0.69444, 0.06833, 0, 0.94444],
+              37: [0.05556, 0.75, 0.12861, 0, 0.94444],
+              38: [0, 0.69444, 0.08528, 0, 0.88555],
+              39: [0, 0.69444, 0.12945, 0, 0.35555],
+              40: [0.25, 0.75, 0.15806, 0, 0.47333],
+              41: [0.25, 0.75, 0.03306, 0, 0.47333],
+              42: [0, 0.75, 0.14333, 0, 0.59111],
+              43: [0.10333, 0.60333, 0.03306, 0, 0.88555],
+              44: [0.19444, 0.14722, 0, 0, 0.35555],
+              45: [0, 0.44444, 0.02611, 0, 0.41444],
+              46: [0, 0.14722, 0, 0, 0.35555],
+              47: [0.25, 0.75, 0.15806, 0, 0.59111],
+              48: [0, 0.64444, 0.13167, 0, 0.59111],
+              49: [0, 0.64444, 0.13167, 0, 0.59111],
+              50: [0, 0.64444, 0.13167, 0, 0.59111],
+              51: [0, 0.64444, 0.13167, 0, 0.59111],
+              52: [0.19444, 0.64444, 0.13167, 0, 0.59111],
+              53: [0, 0.64444, 0.13167, 0, 0.59111],
+              54: [0, 0.64444, 0.13167, 0, 0.59111],
+              55: [0.19444, 0.64444, 0.13167, 0, 0.59111],
+              56: [0, 0.64444, 0.13167, 0, 0.59111],
+              57: [0, 0.64444, 0.13167, 0, 0.59111],
+              58: [0, 0.44444, 0.06695, 0, 0.35555],
+              59: [0.19444, 0.44444, 0.06695, 0, 0.35555],
+              61: [-0.10889, 0.39111, 0.06833, 0, 0.88555],
+              63: [0, 0.69444, 0.11472, 0, 0.59111],
+              64: [0, 0.69444, 0.09208, 0, 0.88555],
+              65: [0, 0.68611, 0, 0, 0.86555],
+              66: [0, 0.68611, 0.0992, 0, 0.81666],
+              67: [0, 0.68611, 0.14208, 0, 0.82666],
+              68: [0, 0.68611, 0.09062, 0, 0.87555],
+              69: [0, 0.68611, 0.11431, 0, 0.75666],
+              70: [0, 0.68611, 0.12903, 0, 0.72722],
+              71: [0, 0.68611, 0.07347, 0, 0.89527],
+              72: [0, 0.68611, 0.17208, 0, 0.8961],
+              73: [0, 0.68611, 0.15681, 0, 0.47166],
+              74: [0, 0.68611, 0.145, 0, 0.61055],
+              75: [0, 0.68611, 0.14208, 0, 0.89499],
+              76: [0, 0.68611, 0, 0, 0.69777],
+              77: [0, 0.68611, 0.17208, 0, 1.07277],
+              78: [0, 0.68611, 0.17208, 0, 0.8961],
+              79: [0, 0.68611, 0.09062, 0, 0.85499],
+              80: [0, 0.68611, 0.0992, 0, 0.78721],
+              81: [0.19444, 0.68611, 0.09062, 0, 0.85499],
+              82: [0, 0.68611, 0.02559, 0, 0.85944],
+              83: [0, 0.68611, 0.11264, 0, 0.64999],
+              84: [0, 0.68611, 0.12903, 0, 0.7961],
+              85: [0, 0.68611, 0.17208, 0, 0.88083],
+              86: [0, 0.68611, 0.18625, 0, 0.86555],
+              87: [0, 0.68611, 0.18625, 0, 1.15999],
+              88: [0, 0.68611, 0.15681, 0, 0.86555],
+              89: [0, 0.68611, 0.19803, 0, 0.86555],
+              90: [0, 0.68611, 0.14208, 0, 0.70888],
+              91: [0.25, 0.75, 0.1875, 0, 0.35611],
+              93: [0.25, 0.75, 0.09972, 0, 0.35611],
+              94: [0, 0.69444, 0.06709, 0, 0.59111],
+              95: [0.31, 0.13444, 0.09811, 0, 0.59111],
+              97: [0, 0.44444, 0.09426, 0, 0.59111],
+              98: [0, 0.69444, 0.07861, 0, 0.53222],
+              99: [0, 0.44444, 0.05222, 0, 0.53222],
+              100: [0, 0.69444, 0.10861, 0, 0.59111],
+              101: [0, 0.44444, 0.085, 0, 0.53222],
+              102: [0.19444, 0.69444, 0.21778, 0, 0.4],
+              103: [0.19444, 0.44444, 0.105, 0, 0.53222],
+              104: [0, 0.69444, 0.09426, 0, 0.59111],
+              105: [0, 0.69326, 0.11387, 0, 0.35555],
+              106: [0.19444, 0.69326, 0.1672, 0, 0.35555],
+              107: [0, 0.69444, 0.11111, 0, 0.53222],
+              108: [0, 0.69444, 0.10861, 0, 0.29666],
+              109: [0, 0.44444, 0.09426, 0, 0.94444],
+              110: [0, 0.44444, 0.09426, 0, 0.64999],
+              111: [0, 0.44444, 0.07861, 0, 0.59111],
+              112: [0.19444, 0.44444, 0.07861, 0, 0.59111],
+              113: [0.19444, 0.44444, 0.105, 0, 0.53222],
+              114: [0, 0.44444, 0.11111, 0, 0.50167],
+              115: [0, 0.44444, 0.08167, 0, 0.48694],
+              116: [0, 0.63492, 0.09639, 0, 0.385],
+              117: [0, 0.44444, 0.09426, 0, 0.62055],
+              118: [0, 0.44444, 0.11111, 0, 0.53222],
+              119: [0, 0.44444, 0.11111, 0, 0.76777],
+              120: [0, 0.44444, 0.12583, 0, 0.56055],
+              121: [0.19444, 0.44444, 0.105, 0, 0.56166],
+              122: [0, 0.44444, 0.13889, 0, 0.49055],
+              126: [0.35, 0.34444, 0.11472, 0, 0.59111],
+              160: [0, 0, 0, 0, 0.25],
+              168: [0, 0.69444, 0.11473, 0, 0.59111],
+              176: [0, 0.69444, 0, 0, 0.94888],
+              184: [0.17014, 0, 0, 0, 0.53222],
+              198: [0, 0.68611, 0.11431, 0, 1.02277],
+              216: [0.04861, 0.73472, 0.09062, 0, 0.88555],
+              223: [0.19444, 0.69444, 0.09736, 0, 0.665],
+              230: [0, 0.44444, 0.085, 0, 0.82666],
+              248: [0.09722, 0.54167, 0.09458, 0, 0.59111],
+              305: [0, 0.44444, 0.09426, 0, 0.35555],
+              338: [0, 0.68611, 0.11431, 0, 1.14054],
+              339: [0, 0.44444, 0.085, 0, 0.82666],
+              567: [0.19444, 0.44444, 0.04611, 0, 0.385],
+              710: [0, 0.69444, 0.06709, 0, 0.59111],
+              711: [0, 0.63194, 0.08271, 0, 0.59111],
+              713: [0, 0.59444, 0.10444, 0, 0.59111],
+              714: [0, 0.69444, 0.08528, 0, 0.59111],
+              715: [0, 0.69444, 0, 0, 0.59111],
+              728: [0, 0.69444, 0.10333, 0, 0.59111],
+              729: [0, 0.69444, 0.12945, 0, 0.35555],
+              730: [0, 0.69444, 0, 0, 0.94888],
+              732: [0, 0.69444, 0.11472, 0, 0.59111],
+              733: [0, 0.69444, 0.11472, 0, 0.59111],
+              915: [0, 0.68611, 0.12903, 0, 0.69777],
+              916: [0, 0.68611, 0, 0, 0.94444],
+              920: [0, 0.68611, 0.09062, 0, 0.88555],
+              923: [0, 0.68611, 0, 0, 0.80666],
+              926: [0, 0.68611, 0.15092, 0, 0.76777],
+              928: [0, 0.68611, 0.17208, 0, 0.8961],
+              931: [0, 0.68611, 0.11431, 0, 0.82666],
+              933: [0, 0.68611, 0.10778, 0, 0.88555],
+              934: [0, 0.68611, 0.05632, 0, 0.82666],
+              936: [0, 0.68611, 0.10778, 0, 0.88555],
+              937: [0, 0.68611, 0.0992, 0, 0.82666],
+              8211: [0, 0.44444, 0.09811, 0, 0.59111],
+              8212: [0, 0.44444, 0.09811, 0, 1.18221],
+              8216: [0, 0.69444, 0.12945, 0, 0.35555],
+              8217: [0, 0.69444, 0.12945, 0, 0.35555],
+              8220: [0, 0.69444, 0.16772, 0, 0.62055],
+              8221: [0, 0.69444, 0.07939, 0, 0.62055],
             },
             "Main-Italic": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0.12417, 0, 0.30667],
-              "34": [0, 0.69444, 0.06961, 0, 0.51444],
-              "35": [0.19444, 0.69444, 0.06616, 0, 0.81777],
-              "37": [0.05556, 0.75, 0.13639, 0, 0.81777],
-              "38": [0, 0.69444, 0.09694, 0, 0.76666],
-              "39": [0, 0.69444, 0.12417, 0, 0.30667],
-              "40": [0.25, 0.75, 0.16194, 0, 0.40889],
-              "41": [0.25, 0.75, 0.03694, 0, 0.40889],
-              "42": [0, 0.75, 0.14917, 0, 0.51111],
-              "43": [0.05667, 0.56167, 0.03694, 0, 0.76666],
-              "44": [0.19444, 0.10556, 0, 0, 0.30667],
-              "45": [0, 0.43056, 0.02826, 0, 0.35778],
-              "46": [0, 0.10556, 0, 0, 0.30667],
-              "47": [0.25, 0.75, 0.16194, 0, 0.51111],
-              "48": [0, 0.64444, 0.13556, 0, 0.51111],
-              "49": [0, 0.64444, 0.13556, 0, 0.51111],
-              "50": [0, 0.64444, 0.13556, 0, 0.51111],
-              "51": [0, 0.64444, 0.13556, 0, 0.51111],
-              "52": [0.19444, 0.64444, 0.13556, 0, 0.51111],
-              "53": [0, 0.64444, 0.13556, 0, 0.51111],
-              "54": [0, 0.64444, 0.13556, 0, 0.51111],
-              "55": [0.19444, 0.64444, 0.13556, 0, 0.51111],
-              "56": [0, 0.64444, 0.13556, 0, 0.51111],
-              "57": [0, 0.64444, 0.13556, 0, 0.51111],
-              "58": [0, 0.43056, 0.0582, 0, 0.30667],
-              "59": [0.19444, 0.43056, 0.0582, 0, 0.30667],
-              "61": [-0.13313, 0.36687, 0.06616, 0, 0.76666],
-              "63": [0, 0.69444, 0.1225, 0, 0.51111],
-              "64": [0, 0.69444, 0.09597, 0, 0.76666],
-              "65": [0, 0.68333, 0, 0, 0.74333],
-              "66": [0, 0.68333, 0.10257, 0, 0.70389],
-              "67": [0, 0.68333, 0.14528, 0, 0.71555],
-              "68": [0, 0.68333, 0.09403, 0, 0.755],
-              "69": [0, 0.68333, 0.12028, 0, 0.67833],
-              "70": [0, 0.68333, 0.13305, 0, 0.65277],
-              "71": [0, 0.68333, 0.08722, 0, 0.77361],
-              "72": [0, 0.68333, 0.16389, 0, 0.74333],
-              "73": [0, 0.68333, 0.15806, 0, 0.38555],
-              "74": [0, 0.68333, 0.14028, 0, 0.525],
-              "75": [0, 0.68333, 0.14528, 0, 0.76888],
-              "76": [0, 0.68333, 0, 0, 0.62722],
-              "77": [0, 0.68333, 0.16389, 0, 0.89666],
-              "78": [0, 0.68333, 0.16389, 0, 0.74333],
-              "79": [0, 0.68333, 0.09403, 0, 0.76666],
-              "80": [0, 0.68333, 0.10257, 0, 0.67833],
-              "81": [0.19444, 0.68333, 0.09403, 0, 0.76666],
-              "82": [0, 0.68333, 0.03868, 0, 0.72944],
-              "83": [0, 0.68333, 0.11972, 0, 0.56222],
-              "84": [0, 0.68333, 0.13305, 0, 0.71555],
-              "85": [0, 0.68333, 0.16389, 0, 0.74333],
-              "86": [0, 0.68333, 0.18361, 0, 0.74333],
-              "87": [0, 0.68333, 0.18361, 0, 0.99888],
-              "88": [0, 0.68333, 0.15806, 0, 0.74333],
-              "89": [0, 0.68333, 0.19383, 0, 0.74333],
-              "90": [0, 0.68333, 0.14528, 0, 0.61333],
-              "91": [0.25, 0.75, 0.1875, 0, 0.30667],
-              "93": [0.25, 0.75, 0.10528, 0, 0.30667],
-              "94": [0, 0.69444, 0.06646, 0, 0.51111],
-              "95": [0.31, 0.12056, 0.09208, 0, 0.51111],
-              "97": [0, 0.43056, 0.07671, 0, 0.51111],
-              "98": [0, 0.69444, 0.06312, 0, 0.46],
-              "99": [0, 0.43056, 0.05653, 0, 0.46],
-              "100": [0, 0.69444, 0.10333, 0, 0.51111],
-              "101": [0, 0.43056, 0.07514, 0, 0.46],
-              "102": [0.19444, 0.69444, 0.21194, 0, 0.30667],
-              "103": [0.19444, 0.43056, 0.08847, 0, 0.46],
-              "104": [0, 0.69444, 0.07671, 0, 0.51111],
-              "105": [0, 0.65536, 0.1019, 0, 0.30667],
-              "106": [0.19444, 0.65536, 0.14467, 0, 0.30667],
-              "107": [0, 0.69444, 0.10764, 0, 0.46],
-              "108": [0, 0.69444, 0.10333, 0, 0.25555],
-              "109": [0, 0.43056, 0.07671, 0, 0.81777],
-              "110": [0, 0.43056, 0.07671, 0, 0.56222],
-              "111": [0, 0.43056, 0.06312, 0, 0.51111],
-              "112": [0.19444, 0.43056, 0.06312, 0, 0.51111],
-              "113": [0.19444, 0.43056, 0.08847, 0, 0.46],
-              "114": [0, 0.43056, 0.10764, 0, 0.42166],
-              "115": [0, 0.43056, 0.08208, 0, 0.40889],
-              "116": [0, 0.61508, 0.09486, 0, 0.33222],
-              "117": [0, 0.43056, 0.07671, 0, 0.53666],
-              "118": [0, 0.43056, 0.10764, 0, 0.46],
-              "119": [0, 0.43056, 0.10764, 0, 0.66444],
-              "120": [0, 0.43056, 0.12042, 0, 0.46389],
-              "121": [0.19444, 0.43056, 0.08847, 0, 0.48555],
-              "122": [0, 0.43056, 0.12292, 0, 0.40889],
-              "126": [0.35, 0.31786, 0.11585, 0, 0.51111],
-              "160": [0, 0, 0, 0, 0.25],
-              "168": [0, 0.66786, 0.10474, 0, 0.51111],
-              "176": [0, 0.69444, 0, 0, 0.83129],
-              "184": [0.17014, 0, 0, 0, 0.46],
-              "198": [0, 0.68333, 0.12028, 0, 0.88277],
-              "216": [0.04861, 0.73194, 0.09403, 0, 0.76666],
-              "223": [0.19444, 0.69444, 0.10514, 0, 0.53666],
-              "230": [0, 0.43056, 0.07514, 0, 0.71555],
-              "248": [0.09722, 0.52778, 0.09194, 0, 0.51111],
-              "338": [0, 0.68333, 0.12028, 0, 0.98499],
-              "339": [0, 0.43056, 0.07514, 0, 0.71555],
-              "710": [0, 0.69444, 0.06646, 0, 0.51111],
-              "711": [0, 0.62847, 0.08295, 0, 0.51111],
-              "713": [0, 0.56167, 0.10333, 0, 0.51111],
-              "714": [0, 0.69444, 0.09694, 0, 0.51111],
-              "715": [0, 0.69444, 0, 0, 0.51111],
-              "728": [0, 0.69444, 0.10806, 0, 0.51111],
-              "729": [0, 0.66786, 0.11752, 0, 0.30667],
-              "730": [0, 0.69444, 0, 0, 0.83129],
-              "732": [0, 0.66786, 0.11585, 0, 0.51111],
-              "733": [0, 0.69444, 0.1225, 0, 0.51111],
-              "915": [0, 0.68333, 0.13305, 0, 0.62722],
-              "916": [0, 0.68333, 0, 0, 0.81777],
-              "920": [0, 0.68333, 0.09403, 0, 0.76666],
-              "923": [0, 0.68333, 0, 0, 0.69222],
-              "926": [0, 0.68333, 0.15294, 0, 0.66444],
-              "928": [0, 0.68333, 0.16389, 0, 0.74333],
-              "931": [0, 0.68333, 0.12028, 0, 0.71555],
-              "933": [0, 0.68333, 0.11111, 0, 0.76666],
-              "934": [0, 0.68333, 0.05986, 0, 0.71555],
-              "936": [0, 0.68333, 0.11111, 0, 0.76666],
-              "937": [0, 0.68333, 0.10257, 0, 0.71555],
-              "8211": [0, 0.43056, 0.09208, 0, 0.51111],
-              "8212": [0, 0.43056, 0.09208, 0, 1.02222],
-              "8216": [0, 0.69444, 0.12417, 0, 0.30667],
-              "8217": [0, 0.69444, 0.12417, 0, 0.30667],
-              "8220": [0, 0.69444, 0.1685, 0, 0.51444],
-              "8221": [0, 0.69444, 0.06961, 0, 0.51444],
-              "8463": [0, 0.68889, 0, 0, 0.54028]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0.12417, 0, 0.30667],
+              34: [0, 0.69444, 0.06961, 0, 0.51444],
+              35: [0.19444, 0.69444, 0.06616, 0, 0.81777],
+              37: [0.05556, 0.75, 0.13639, 0, 0.81777],
+              38: [0, 0.69444, 0.09694, 0, 0.76666],
+              39: [0, 0.69444, 0.12417, 0, 0.30667],
+              40: [0.25, 0.75, 0.16194, 0, 0.40889],
+              41: [0.25, 0.75, 0.03694, 0, 0.40889],
+              42: [0, 0.75, 0.14917, 0, 0.51111],
+              43: [0.05667, 0.56167, 0.03694, 0, 0.76666],
+              44: [0.19444, 0.10556, 0, 0, 0.30667],
+              45: [0, 0.43056, 0.02826, 0, 0.35778],
+              46: [0, 0.10556, 0, 0, 0.30667],
+              47: [0.25, 0.75, 0.16194, 0, 0.51111],
+              48: [0, 0.64444, 0.13556, 0, 0.51111],
+              49: [0, 0.64444, 0.13556, 0, 0.51111],
+              50: [0, 0.64444, 0.13556, 0, 0.51111],
+              51: [0, 0.64444, 0.13556, 0, 0.51111],
+              52: [0.19444, 0.64444, 0.13556, 0, 0.51111],
+              53: [0, 0.64444, 0.13556, 0, 0.51111],
+              54: [0, 0.64444, 0.13556, 0, 0.51111],
+              55: [0.19444, 0.64444, 0.13556, 0, 0.51111],
+              56: [0, 0.64444, 0.13556, 0, 0.51111],
+              57: [0, 0.64444, 0.13556, 0, 0.51111],
+              58: [0, 0.43056, 0.0582, 0, 0.30667],
+              59: [0.19444, 0.43056, 0.0582, 0, 0.30667],
+              61: [-0.13313, 0.36687, 0.06616, 0, 0.76666],
+              63: [0, 0.69444, 0.1225, 0, 0.51111],
+              64: [0, 0.69444, 0.09597, 0, 0.76666],
+              65: [0, 0.68333, 0, 0, 0.74333],
+              66: [0, 0.68333, 0.10257, 0, 0.70389],
+              67: [0, 0.68333, 0.14528, 0, 0.71555],
+              68: [0, 0.68333, 0.09403, 0, 0.755],
+              69: [0, 0.68333, 0.12028, 0, 0.67833],
+              70: [0, 0.68333, 0.13305, 0, 0.65277],
+              71: [0, 0.68333, 0.08722, 0, 0.77361],
+              72: [0, 0.68333, 0.16389, 0, 0.74333],
+              73: [0, 0.68333, 0.15806, 0, 0.38555],
+              74: [0, 0.68333, 0.14028, 0, 0.525],
+              75: [0, 0.68333, 0.14528, 0, 0.76888],
+              76: [0, 0.68333, 0, 0, 0.62722],
+              77: [0, 0.68333, 0.16389, 0, 0.89666],
+              78: [0, 0.68333, 0.16389, 0, 0.74333],
+              79: [0, 0.68333, 0.09403, 0, 0.76666],
+              80: [0, 0.68333, 0.10257, 0, 0.67833],
+              81: [0.19444, 0.68333, 0.09403, 0, 0.76666],
+              82: [0, 0.68333, 0.03868, 0, 0.72944],
+              83: [0, 0.68333, 0.11972, 0, 0.56222],
+              84: [0, 0.68333, 0.13305, 0, 0.71555],
+              85: [0, 0.68333, 0.16389, 0, 0.74333],
+              86: [0, 0.68333, 0.18361, 0, 0.74333],
+              87: [0, 0.68333, 0.18361, 0, 0.99888],
+              88: [0, 0.68333, 0.15806, 0, 0.74333],
+              89: [0, 0.68333, 0.19383, 0, 0.74333],
+              90: [0, 0.68333, 0.14528, 0, 0.61333],
+              91: [0.25, 0.75, 0.1875, 0, 0.30667],
+              93: [0.25, 0.75, 0.10528, 0, 0.30667],
+              94: [0, 0.69444, 0.06646, 0, 0.51111],
+              95: [0.31, 0.12056, 0.09208, 0, 0.51111],
+              97: [0, 0.43056, 0.07671, 0, 0.51111],
+              98: [0, 0.69444, 0.06312, 0, 0.46],
+              99: [0, 0.43056, 0.05653, 0, 0.46],
+              100: [0, 0.69444, 0.10333, 0, 0.51111],
+              101: [0, 0.43056, 0.07514, 0, 0.46],
+              102: [0.19444, 0.69444, 0.21194, 0, 0.30667],
+              103: [0.19444, 0.43056, 0.08847, 0, 0.46],
+              104: [0, 0.69444, 0.07671, 0, 0.51111],
+              105: [0, 0.65536, 0.1019, 0, 0.30667],
+              106: [0.19444, 0.65536, 0.14467, 0, 0.30667],
+              107: [0, 0.69444, 0.10764, 0, 0.46],
+              108: [0, 0.69444, 0.10333, 0, 0.25555],
+              109: [0, 0.43056, 0.07671, 0, 0.81777],
+              110: [0, 0.43056, 0.07671, 0, 0.56222],
+              111: [0, 0.43056, 0.06312, 0, 0.51111],
+              112: [0.19444, 0.43056, 0.06312, 0, 0.51111],
+              113: [0.19444, 0.43056, 0.08847, 0, 0.46],
+              114: [0, 0.43056, 0.10764, 0, 0.42166],
+              115: [0, 0.43056, 0.08208, 0, 0.40889],
+              116: [0, 0.61508, 0.09486, 0, 0.33222],
+              117: [0, 0.43056, 0.07671, 0, 0.53666],
+              118: [0, 0.43056, 0.10764, 0, 0.46],
+              119: [0, 0.43056, 0.10764, 0, 0.66444],
+              120: [0, 0.43056, 0.12042, 0, 0.46389],
+              121: [0.19444, 0.43056, 0.08847, 0, 0.48555],
+              122: [0, 0.43056, 0.12292, 0, 0.40889],
+              126: [0.35, 0.31786, 0.11585, 0, 0.51111],
+              160: [0, 0, 0, 0, 0.25],
+              168: [0, 0.66786, 0.10474, 0, 0.51111],
+              176: [0, 0.69444, 0, 0, 0.83129],
+              184: [0.17014, 0, 0, 0, 0.46],
+              198: [0, 0.68333, 0.12028, 0, 0.88277],
+              216: [0.04861, 0.73194, 0.09403, 0, 0.76666],
+              223: [0.19444, 0.69444, 0.10514, 0, 0.53666],
+              230: [0, 0.43056, 0.07514, 0, 0.71555],
+              248: [0.09722, 0.52778, 0.09194, 0, 0.51111],
+              338: [0, 0.68333, 0.12028, 0, 0.98499],
+              339: [0, 0.43056, 0.07514, 0, 0.71555],
+              710: [0, 0.69444, 0.06646, 0, 0.51111],
+              711: [0, 0.62847, 0.08295, 0, 0.51111],
+              713: [0, 0.56167, 0.10333, 0, 0.51111],
+              714: [0, 0.69444, 0.09694, 0, 0.51111],
+              715: [0, 0.69444, 0, 0, 0.51111],
+              728: [0, 0.69444, 0.10806, 0, 0.51111],
+              729: [0, 0.66786, 0.11752, 0, 0.30667],
+              730: [0, 0.69444, 0, 0, 0.83129],
+              732: [0, 0.66786, 0.11585, 0, 0.51111],
+              733: [0, 0.69444, 0.1225, 0, 0.51111],
+              915: [0, 0.68333, 0.13305, 0, 0.62722],
+              916: [0, 0.68333, 0, 0, 0.81777],
+              920: [0, 0.68333, 0.09403, 0, 0.76666],
+              923: [0, 0.68333, 0, 0, 0.69222],
+              926: [0, 0.68333, 0.15294, 0, 0.66444],
+              928: [0, 0.68333, 0.16389, 0, 0.74333],
+              931: [0, 0.68333, 0.12028, 0, 0.71555],
+              933: [0, 0.68333, 0.11111, 0, 0.76666],
+              934: [0, 0.68333, 0.05986, 0, 0.71555],
+              936: [0, 0.68333, 0.11111, 0, 0.76666],
+              937: [0, 0.68333, 0.10257, 0, 0.71555],
+              8211: [0, 0.43056, 0.09208, 0, 0.51111],
+              8212: [0, 0.43056, 0.09208, 0, 1.02222],
+              8216: [0, 0.69444, 0.12417, 0, 0.30667],
+              8217: [0, 0.69444, 0.12417, 0, 0.30667],
+              8220: [0, 0.69444, 0.1685, 0, 0.51444],
+              8221: [0, 0.69444, 0.06961, 0, 0.51444],
+              8463: [0, 0.68889, 0, 0, 0.54028],
             },
             "Main-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0, 0, 0.27778],
-              "34": [0, 0.69444, 0, 0, 0.5],
-              "35": [0.19444, 0.69444, 0, 0, 0.83334],
-              "36": [0.05556, 0.75, 0, 0, 0.5],
-              "37": [0.05556, 0.75, 0, 0, 0.83334],
-              "38": [0, 0.69444, 0, 0, 0.77778],
-              "39": [0, 0.69444, 0, 0, 0.27778],
-              "40": [0.25, 0.75, 0, 0, 0.38889],
-              "41": [0.25, 0.75, 0, 0, 0.38889],
-              "42": [0, 0.75, 0, 0, 0.5],
-              "43": [0.08333, 0.58333, 0, 0, 0.77778],
-              "44": [0.19444, 0.10556, 0, 0, 0.27778],
-              "45": [0, 0.43056, 0, 0, 0.33333],
-              "46": [0, 0.10556, 0, 0, 0.27778],
-              "47": [0.25, 0.75, 0, 0, 0.5],
-              "48": [0, 0.64444, 0, 0, 0.5],
-              "49": [0, 0.64444, 0, 0, 0.5],
-              "50": [0, 0.64444, 0, 0, 0.5],
-              "51": [0, 0.64444, 0, 0, 0.5],
-              "52": [0, 0.64444, 0, 0, 0.5],
-              "53": [0, 0.64444, 0, 0, 0.5],
-              "54": [0, 0.64444, 0, 0, 0.5],
-              "55": [0, 0.64444, 0, 0, 0.5],
-              "56": [0, 0.64444, 0, 0, 0.5],
-              "57": [0, 0.64444, 0, 0, 0.5],
-              "58": [0, 0.43056, 0, 0, 0.27778],
-              "59": [0.19444, 0.43056, 0, 0, 0.27778],
-              "60": [0.0391, 0.5391, 0, 0, 0.77778],
-              "61": [-0.13313, 0.36687, 0, 0, 0.77778],
-              "62": [0.0391, 0.5391, 0, 0, 0.77778],
-              "63": [0, 0.69444, 0, 0, 0.47222],
-              "64": [0, 0.69444, 0, 0, 0.77778],
-              "65": [0, 0.68333, 0, 0, 0.75],
-              "66": [0, 0.68333, 0, 0, 0.70834],
-              "67": [0, 0.68333, 0, 0, 0.72222],
-              "68": [0, 0.68333, 0, 0, 0.76389],
-              "69": [0, 0.68333, 0, 0, 0.68056],
-              "70": [0, 0.68333, 0, 0, 0.65278],
-              "71": [0, 0.68333, 0, 0, 0.78472],
-              "72": [0, 0.68333, 0, 0, 0.75],
-              "73": [0, 0.68333, 0, 0, 0.36111],
-              "74": [0, 0.68333, 0, 0, 0.51389],
-              "75": [0, 0.68333, 0, 0, 0.77778],
-              "76": [0, 0.68333, 0, 0, 0.625],
-              "77": [0, 0.68333, 0, 0, 0.91667],
-              "78": [0, 0.68333, 0, 0, 0.75],
-              "79": [0, 0.68333, 0, 0, 0.77778],
-              "80": [0, 0.68333, 0, 0, 0.68056],
-              "81": [0.19444, 0.68333, 0, 0, 0.77778],
-              "82": [0, 0.68333, 0, 0, 0.73611],
-              "83": [0, 0.68333, 0, 0, 0.55556],
-              "84": [0, 0.68333, 0, 0, 0.72222],
-              "85": [0, 0.68333, 0, 0, 0.75],
-              "86": [0, 0.68333, 0.01389, 0, 0.75],
-              "87": [0, 0.68333, 0.01389, 0, 1.02778],
-              "88": [0, 0.68333, 0, 0, 0.75],
-              "89": [0, 0.68333, 0.025, 0, 0.75],
-              "90": [0, 0.68333, 0, 0, 0.61111],
-              "91": [0.25, 0.75, 0, 0, 0.27778],
-              "92": [0.25, 0.75, 0, 0, 0.5],
-              "93": [0.25, 0.75, 0, 0, 0.27778],
-              "94": [0, 0.69444, 0, 0, 0.5],
-              "95": [0.31, 0.12056, 0.02778, 0, 0.5],
-              "97": [0, 0.43056, 0, 0, 0.5],
-              "98": [0, 0.69444, 0, 0, 0.55556],
-              "99": [0, 0.43056, 0, 0, 0.44445],
-              "100": [0, 0.69444, 0, 0, 0.55556],
-              "101": [0, 0.43056, 0, 0, 0.44445],
-              "102": [0, 0.69444, 0.07778, 0, 0.30556],
-              "103": [0.19444, 0.43056, 0.01389, 0, 0.5],
-              "104": [0, 0.69444, 0, 0, 0.55556],
-              "105": [0, 0.66786, 0, 0, 0.27778],
-              "106": [0.19444, 0.66786, 0, 0, 0.30556],
-              "107": [0, 0.69444, 0, 0, 0.52778],
-              "108": [0, 0.69444, 0, 0, 0.27778],
-              "109": [0, 0.43056, 0, 0, 0.83334],
-              "110": [0, 0.43056, 0, 0, 0.55556],
-              "111": [0, 0.43056, 0, 0, 0.5],
-              "112": [0.19444, 0.43056, 0, 0, 0.55556],
-              "113": [0.19444, 0.43056, 0, 0, 0.52778],
-              "114": [0, 0.43056, 0, 0, 0.39167],
-              "115": [0, 0.43056, 0, 0, 0.39445],
-              "116": [0, 0.61508, 0, 0, 0.38889],
-              "117": [0, 0.43056, 0, 0, 0.55556],
-              "118": [0, 0.43056, 0.01389, 0, 0.52778],
-              "119": [0, 0.43056, 0.01389, 0, 0.72222],
-              "120": [0, 0.43056, 0, 0, 0.52778],
-              "121": [0.19444, 0.43056, 0.01389, 0, 0.52778],
-              "122": [0, 0.43056, 0, 0, 0.44445],
-              "123": [0.25, 0.75, 0, 0, 0.5],
-              "124": [0.25, 0.75, 0, 0, 0.27778],
-              "125": [0.25, 0.75, 0, 0, 0.5],
-              "126": [0.35, 0.31786, 0, 0, 0.5],
-              "160": [0, 0, 0, 0, 0.25],
-              "163": [0, 0.69444, 0, 0, 0.76909],
-              "167": [0.19444, 0.69444, 0, 0, 0.44445],
-              "168": [0, 0.66786, 0, 0, 0.5],
-              "172": [0, 0.43056, 0, 0, 0.66667],
-              "176": [0, 0.69444, 0, 0, 0.75],
-              "177": [0.08333, 0.58333, 0, 0, 0.77778],
-              "182": [0.19444, 0.69444, 0, 0, 0.61111],
-              "184": [0.17014, 0, 0, 0, 0.44445],
-              "198": [0, 0.68333, 0, 0, 0.90278],
-              "215": [0.08333, 0.58333, 0, 0, 0.77778],
-              "216": [0.04861, 0.73194, 0, 0, 0.77778],
-              "223": [0, 0.69444, 0, 0, 0.5],
-              "230": [0, 0.43056, 0, 0, 0.72222],
-              "247": [0.08333, 0.58333, 0, 0, 0.77778],
-              "248": [0.09722, 0.52778, 0, 0, 0.5],
-              "305": [0, 0.43056, 0, 0, 0.27778],
-              "338": [0, 0.68333, 0, 0, 1.01389],
-              "339": [0, 0.43056, 0, 0, 0.77778],
-              "567": [0.19444, 0.43056, 0, 0, 0.30556],
-              "710": [0, 0.69444, 0, 0, 0.5],
-              "711": [0, 0.62847, 0, 0, 0.5],
-              "713": [0, 0.56778, 0, 0, 0.5],
-              "714": [0, 0.69444, 0, 0, 0.5],
-              "715": [0, 0.69444, 0, 0, 0.5],
-              "728": [0, 0.69444, 0, 0, 0.5],
-              "729": [0, 0.66786, 0, 0, 0.27778],
-              "730": [0, 0.69444, 0, 0, 0.75],
-              "732": [0, 0.66786, 0, 0, 0.5],
-              "733": [0, 0.69444, 0, 0, 0.5],
-              "915": [0, 0.68333, 0, 0, 0.625],
-              "916": [0, 0.68333, 0, 0, 0.83334],
-              "920": [0, 0.68333, 0, 0, 0.77778],
-              "923": [0, 0.68333, 0, 0, 0.69445],
-              "926": [0, 0.68333, 0, 0, 0.66667],
-              "928": [0, 0.68333, 0, 0, 0.75],
-              "931": [0, 0.68333, 0, 0, 0.72222],
-              "933": [0, 0.68333, 0, 0, 0.77778],
-              "934": [0, 0.68333, 0, 0, 0.72222],
-              "936": [0, 0.68333, 0, 0, 0.77778],
-              "937": [0, 0.68333, 0, 0, 0.72222],
-              "8211": [0, 0.43056, 0.02778, 0, 0.5],
-              "8212": [0, 0.43056, 0.02778, 0, 1],
-              "8216": [0, 0.69444, 0, 0, 0.27778],
-              "8217": [0, 0.69444, 0, 0, 0.27778],
-              "8220": [0, 0.69444, 0, 0, 0.5],
-              "8221": [0, 0.69444, 0, 0, 0.5],
-              "8224": [0.19444, 0.69444, 0, 0, 0.44445],
-              "8225": [0.19444, 0.69444, 0, 0, 0.44445],
-              "8230": [0, 0.123, 0, 0, 1.172],
-              "8242": [0, 0.55556, 0, 0, 0.275],
-              "8407": [0, 0.71444, 0.15382, 0, 0.5],
-              "8463": [0, 0.68889, 0, 0, 0.54028],
-              "8465": [0, 0.69444, 0, 0, 0.72222],
-              "8467": [0, 0.69444, 0, 0.11111, 0.41667],
-              "8472": [0.19444, 0.43056, 0, 0.11111, 0.63646],
-              "8476": [0, 0.69444, 0, 0, 0.72222],
-              "8501": [0, 0.69444, 0, 0, 0.61111],
-              "8592": [-0.13313, 0.36687, 0, 0, 1],
-              "8593": [0.19444, 0.69444, 0, 0, 0.5],
-              "8594": [-0.13313, 0.36687, 0, 0, 1],
-              "8595": [0.19444, 0.69444, 0, 0, 0.5],
-              "8596": [-0.13313, 0.36687, 0, 0, 1],
-              "8597": [0.25, 0.75, 0, 0, 0.5],
-              "8598": [0.19444, 0.69444, 0, 0, 1],
-              "8599": [0.19444, 0.69444, 0, 0, 1],
-              "8600": [0.19444, 0.69444, 0, 0, 1],
-              "8601": [0.19444, 0.69444, 0, 0, 1],
-              "8614": [0.011, 0.511, 0, 0, 1],
-              "8617": [0.011, 0.511, 0, 0, 1.126],
-              "8618": [0.011, 0.511, 0, 0, 1.126],
-              "8636": [-0.13313, 0.36687, 0, 0, 1],
-              "8637": [-0.13313, 0.36687, 0, 0, 1],
-              "8640": [-0.13313, 0.36687, 0, 0, 1],
-              "8641": [-0.13313, 0.36687, 0, 0, 1],
-              "8652": [0.011, 0.671, 0, 0, 1],
-              "8656": [-0.13313, 0.36687, 0, 0, 1],
-              "8657": [0.19444, 0.69444, 0, 0, 0.61111],
-              "8658": [-0.13313, 0.36687, 0, 0, 1],
-              "8659": [0.19444, 0.69444, 0, 0, 0.61111],
-              "8660": [-0.13313, 0.36687, 0, 0, 1],
-              "8661": [0.25, 0.75, 0, 0, 0.61111],
-              "8704": [0, 0.69444, 0, 0, 0.55556],
-              "8706": [0, 0.69444, 0.05556, 0.08334, 0.5309],
-              "8707": [0, 0.69444, 0, 0, 0.55556],
-              "8709": [0.05556, 0.75, 0, 0, 0.5],
-              "8711": [0, 0.68333, 0, 0, 0.83334],
-              "8712": [0.0391, 0.5391, 0, 0, 0.66667],
-              "8715": [0.0391, 0.5391, 0, 0, 0.66667],
-              "8722": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8723": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8725": [0.25, 0.75, 0, 0, 0.5],
-              "8726": [0.25, 0.75, 0, 0, 0.5],
-              "8727": [-0.03472, 0.46528, 0, 0, 0.5],
-              "8728": [-0.05555, 0.44445, 0, 0, 0.5],
-              "8729": [-0.05555, 0.44445, 0, 0, 0.5],
-              "8730": [0.2, 0.8, 0, 0, 0.83334],
-              "8733": [0, 0.43056, 0, 0, 0.77778],
-              "8734": [0, 0.43056, 0, 0, 1],
-              "8736": [0, 0.69224, 0, 0, 0.72222],
-              "8739": [0.25, 0.75, 0, 0, 0.27778],
-              "8741": [0.25, 0.75, 0, 0, 0.5],
-              "8743": [0, 0.55556, 0, 0, 0.66667],
-              "8744": [0, 0.55556, 0, 0, 0.66667],
-              "8745": [0, 0.55556, 0, 0, 0.66667],
-              "8746": [0, 0.55556, 0, 0, 0.66667],
-              "8747": [0.19444, 0.69444, 0.11111, 0, 0.41667],
-              "8764": [-0.13313, 0.36687, 0, 0, 0.77778],
-              "8768": [0.19444, 0.69444, 0, 0, 0.27778],
-              "8771": [-0.03625, 0.46375, 0, 0, 0.77778],
-              "8773": [-0.022, 0.589, 0, 0, 0.778],
-              "8776": [-0.01688, 0.48312, 0, 0, 0.77778],
-              "8781": [-0.03625, 0.46375, 0, 0, 0.77778],
-              "8784": [-0.133, 0.673, 0, 0, 0.778],
-              "8801": [-0.03625, 0.46375, 0, 0, 0.77778],
-              "8804": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8805": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8810": [0.0391, 0.5391, 0, 0, 1],
-              "8811": [0.0391, 0.5391, 0, 0, 1],
-              "8826": [0.0391, 0.5391, 0, 0, 0.77778],
-              "8827": [0.0391, 0.5391, 0, 0, 0.77778],
-              "8834": [0.0391, 0.5391, 0, 0, 0.77778],
-              "8835": [0.0391, 0.5391, 0, 0, 0.77778],
-              "8838": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8839": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8846": [0, 0.55556, 0, 0, 0.66667],
-              "8849": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8850": [0.13597, 0.63597, 0, 0, 0.77778],
-              "8851": [0, 0.55556, 0, 0, 0.66667],
-              "8852": [0, 0.55556, 0, 0, 0.66667],
-              "8853": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8854": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8855": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8856": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8857": [0.08333, 0.58333, 0, 0, 0.77778],
-              "8866": [0, 0.69444, 0, 0, 0.61111],
-              "8867": [0, 0.69444, 0, 0, 0.61111],
-              "8868": [0, 0.69444, 0, 0, 0.77778],
-              "8869": [0, 0.69444, 0, 0, 0.77778],
-              "8872": [0.249, 0.75, 0, 0, 0.867],
-              "8900": [-0.05555, 0.44445, 0, 0, 0.5],
-              "8901": [-0.05555, 0.44445, 0, 0, 0.27778],
-              "8902": [-0.03472, 0.46528, 0, 0, 0.5],
-              "8904": [5e-3, 0.505, 0, 0, 0.9],
-              "8942": [0.03, 0.903, 0, 0, 0.278],
-              "8943": [-0.19, 0.313, 0, 0, 1.172],
-              "8945": [-0.1, 0.823, 0, 0, 1.282],
-              "8968": [0.25, 0.75, 0, 0, 0.44445],
-              "8969": [0.25, 0.75, 0, 0, 0.44445],
-              "8970": [0.25, 0.75, 0, 0, 0.44445],
-              "8971": [0.25, 0.75, 0, 0, 0.44445],
-              "8994": [-0.14236, 0.35764, 0, 0, 1],
-              "8995": [-0.14236, 0.35764, 0, 0, 1],
-              "9136": [0.244, 0.744, 0, 0, 0.412],
-              "9137": [0.244, 0.745, 0, 0, 0.412],
-              "9651": [0.19444, 0.69444, 0, 0, 0.88889],
-              "9657": [-0.03472, 0.46528, 0, 0, 0.5],
-              "9661": [0.19444, 0.69444, 0, 0, 0.88889],
-              "9667": [-0.03472, 0.46528, 0, 0, 0.5],
-              "9711": [0.19444, 0.69444, 0, 0, 1],
-              "9824": [0.12963, 0.69444, 0, 0, 0.77778],
-              "9825": [0.12963, 0.69444, 0, 0, 0.77778],
-              "9826": [0.12963, 0.69444, 0, 0, 0.77778],
-              "9827": [0.12963, 0.69444, 0, 0, 0.77778],
-              "9837": [0, 0.75, 0, 0, 0.38889],
-              "9838": [0.19444, 0.69444, 0, 0, 0.38889],
-              "9839": [0.19444, 0.69444, 0, 0, 0.38889],
-              "10216": [0.25, 0.75, 0, 0, 0.38889],
-              "10217": [0.25, 0.75, 0, 0, 0.38889],
-              "10222": [0.244, 0.744, 0, 0, 0.412],
-              "10223": [0.244, 0.745, 0, 0, 0.412],
-              "10229": [0.011, 0.511, 0, 0, 1.609],
-              "10230": [0.011, 0.511, 0, 0, 1.638],
-              "10231": [0.011, 0.511, 0, 0, 1.859],
-              "10232": [0.024, 0.525, 0, 0, 1.609],
-              "10233": [0.024, 0.525, 0, 0, 1.638],
-              "10234": [0.024, 0.525, 0, 0, 1.858],
-              "10236": [0.011, 0.511, 0, 0, 1.638],
-              "10815": [0, 0.68333, 0, 0, 0.75],
-              "10927": [0.13597, 0.63597, 0, 0, 0.77778],
-              "10928": [0.13597, 0.63597, 0, 0, 0.77778],
-              "57376": [0.19444, 0.69444, 0, 0, 0]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0, 0, 0.27778],
+              34: [0, 0.69444, 0, 0, 0.5],
+              35: [0.19444, 0.69444, 0, 0, 0.83334],
+              36: [0.05556, 0.75, 0, 0, 0.5],
+              37: [0.05556, 0.75, 0, 0, 0.83334],
+              38: [0, 0.69444, 0, 0, 0.77778],
+              39: [0, 0.69444, 0, 0, 0.27778],
+              40: [0.25, 0.75, 0, 0, 0.38889],
+              41: [0.25, 0.75, 0, 0, 0.38889],
+              42: [0, 0.75, 0, 0, 0.5],
+              43: [0.08333, 0.58333, 0, 0, 0.77778],
+              44: [0.19444, 0.10556, 0, 0, 0.27778],
+              45: [0, 0.43056, 0, 0, 0.33333],
+              46: [0, 0.10556, 0, 0, 0.27778],
+              47: [0.25, 0.75, 0, 0, 0.5],
+              48: [0, 0.64444, 0, 0, 0.5],
+              49: [0, 0.64444, 0, 0, 0.5],
+              50: [0, 0.64444, 0, 0, 0.5],
+              51: [0, 0.64444, 0, 0, 0.5],
+              52: [0, 0.64444, 0, 0, 0.5],
+              53: [0, 0.64444, 0, 0, 0.5],
+              54: [0, 0.64444, 0, 0, 0.5],
+              55: [0, 0.64444, 0, 0, 0.5],
+              56: [0, 0.64444, 0, 0, 0.5],
+              57: [0, 0.64444, 0, 0, 0.5],
+              58: [0, 0.43056, 0, 0, 0.27778],
+              59: [0.19444, 0.43056, 0, 0, 0.27778],
+              60: [0.0391, 0.5391, 0, 0, 0.77778],
+              61: [-0.13313, 0.36687, 0, 0, 0.77778],
+              62: [0.0391, 0.5391, 0, 0, 0.77778],
+              63: [0, 0.69444, 0, 0, 0.47222],
+              64: [0, 0.69444, 0, 0, 0.77778],
+              65: [0, 0.68333, 0, 0, 0.75],
+              66: [0, 0.68333, 0, 0, 0.70834],
+              67: [0, 0.68333, 0, 0, 0.72222],
+              68: [0, 0.68333, 0, 0, 0.76389],
+              69: [0, 0.68333, 0, 0, 0.68056],
+              70: [0, 0.68333, 0, 0, 0.65278],
+              71: [0, 0.68333, 0, 0, 0.78472],
+              72: [0, 0.68333, 0, 0, 0.75],
+              73: [0, 0.68333, 0, 0, 0.36111],
+              74: [0, 0.68333, 0, 0, 0.51389],
+              75: [0, 0.68333, 0, 0, 0.77778],
+              76: [0, 0.68333, 0, 0, 0.625],
+              77: [0, 0.68333, 0, 0, 0.91667],
+              78: [0, 0.68333, 0, 0, 0.75],
+              79: [0, 0.68333, 0, 0, 0.77778],
+              80: [0, 0.68333, 0, 0, 0.68056],
+              81: [0.19444, 0.68333, 0, 0, 0.77778],
+              82: [0, 0.68333, 0, 0, 0.73611],
+              83: [0, 0.68333, 0, 0, 0.55556],
+              84: [0, 0.68333, 0, 0, 0.72222],
+              85: [0, 0.68333, 0, 0, 0.75],
+              86: [0, 0.68333, 0.01389, 0, 0.75],
+              87: [0, 0.68333, 0.01389, 0, 1.02778],
+              88: [0, 0.68333, 0, 0, 0.75],
+              89: [0, 0.68333, 0.025, 0, 0.75],
+              90: [0, 0.68333, 0, 0, 0.61111],
+              91: [0.25, 0.75, 0, 0, 0.27778],
+              92: [0.25, 0.75, 0, 0, 0.5],
+              93: [0.25, 0.75, 0, 0, 0.27778],
+              94: [0, 0.69444, 0, 0, 0.5],
+              95: [0.31, 0.12056, 0.02778, 0, 0.5],
+              97: [0, 0.43056, 0, 0, 0.5],
+              98: [0, 0.69444, 0, 0, 0.55556],
+              99: [0, 0.43056, 0, 0, 0.44445],
+              100: [0, 0.69444, 0, 0, 0.55556],
+              101: [0, 0.43056, 0, 0, 0.44445],
+              102: [0, 0.69444, 0.07778, 0, 0.30556],
+              103: [0.19444, 0.43056, 0.01389, 0, 0.5],
+              104: [0, 0.69444, 0, 0, 0.55556],
+              105: [0, 0.66786, 0, 0, 0.27778],
+              106: [0.19444, 0.66786, 0, 0, 0.30556],
+              107: [0, 0.69444, 0, 0, 0.52778],
+              108: [0, 0.69444, 0, 0, 0.27778],
+              109: [0, 0.43056, 0, 0, 0.83334],
+              110: [0, 0.43056, 0, 0, 0.55556],
+              111: [0, 0.43056, 0, 0, 0.5],
+              112: [0.19444, 0.43056, 0, 0, 0.55556],
+              113: [0.19444, 0.43056, 0, 0, 0.52778],
+              114: [0, 0.43056, 0, 0, 0.39167],
+              115: [0, 0.43056, 0, 0, 0.39445],
+              116: [0, 0.61508, 0, 0, 0.38889],
+              117: [0, 0.43056, 0, 0, 0.55556],
+              118: [0, 0.43056, 0.01389, 0, 0.52778],
+              119: [0, 0.43056, 0.01389, 0, 0.72222],
+              120: [0, 0.43056, 0, 0, 0.52778],
+              121: [0.19444, 0.43056, 0.01389, 0, 0.52778],
+              122: [0, 0.43056, 0, 0, 0.44445],
+              123: [0.25, 0.75, 0, 0, 0.5],
+              124: [0.25, 0.75, 0, 0, 0.27778],
+              125: [0.25, 0.75, 0, 0, 0.5],
+              126: [0.35, 0.31786, 0, 0, 0.5],
+              160: [0, 0, 0, 0, 0.25],
+              163: [0, 0.69444, 0, 0, 0.76909],
+              167: [0.19444, 0.69444, 0, 0, 0.44445],
+              168: [0, 0.66786, 0, 0, 0.5],
+              172: [0, 0.43056, 0, 0, 0.66667],
+              176: [0, 0.69444, 0, 0, 0.75],
+              177: [0.08333, 0.58333, 0, 0, 0.77778],
+              182: [0.19444, 0.69444, 0, 0, 0.61111],
+              184: [0.17014, 0, 0, 0, 0.44445],
+              198: [0, 0.68333, 0, 0, 0.90278],
+              215: [0.08333, 0.58333, 0, 0, 0.77778],
+              216: [0.04861, 0.73194, 0, 0, 0.77778],
+              223: [0, 0.69444, 0, 0, 0.5],
+              230: [0, 0.43056, 0, 0, 0.72222],
+              247: [0.08333, 0.58333, 0, 0, 0.77778],
+              248: [0.09722, 0.52778, 0, 0, 0.5],
+              305: [0, 0.43056, 0, 0, 0.27778],
+              338: [0, 0.68333, 0, 0, 1.01389],
+              339: [0, 0.43056, 0, 0, 0.77778],
+              567: [0.19444, 0.43056, 0, 0, 0.30556],
+              710: [0, 0.69444, 0, 0, 0.5],
+              711: [0, 0.62847, 0, 0, 0.5],
+              713: [0, 0.56778, 0, 0, 0.5],
+              714: [0, 0.69444, 0, 0, 0.5],
+              715: [0, 0.69444, 0, 0, 0.5],
+              728: [0, 0.69444, 0, 0, 0.5],
+              729: [0, 0.66786, 0, 0, 0.27778],
+              730: [0, 0.69444, 0, 0, 0.75],
+              732: [0, 0.66786, 0, 0, 0.5],
+              733: [0, 0.69444, 0, 0, 0.5],
+              915: [0, 0.68333, 0, 0, 0.625],
+              916: [0, 0.68333, 0, 0, 0.83334],
+              920: [0, 0.68333, 0, 0, 0.77778],
+              923: [0, 0.68333, 0, 0, 0.69445],
+              926: [0, 0.68333, 0, 0, 0.66667],
+              928: [0, 0.68333, 0, 0, 0.75],
+              931: [0, 0.68333, 0, 0, 0.72222],
+              933: [0, 0.68333, 0, 0, 0.77778],
+              934: [0, 0.68333, 0, 0, 0.72222],
+              936: [0, 0.68333, 0, 0, 0.77778],
+              937: [0, 0.68333, 0, 0, 0.72222],
+              8211: [0, 0.43056, 0.02778, 0, 0.5],
+              8212: [0, 0.43056, 0.02778, 0, 1],
+              8216: [0, 0.69444, 0, 0, 0.27778],
+              8217: [0, 0.69444, 0, 0, 0.27778],
+              8220: [0, 0.69444, 0, 0, 0.5],
+              8221: [0, 0.69444, 0, 0, 0.5],
+              8224: [0.19444, 0.69444, 0, 0, 0.44445],
+              8225: [0.19444, 0.69444, 0, 0, 0.44445],
+              8230: [0, 0.123, 0, 0, 1.172],
+              8242: [0, 0.55556, 0, 0, 0.275],
+              8407: [0, 0.71444, 0.15382, 0, 0.5],
+              8463: [0, 0.68889, 0, 0, 0.54028],
+              8465: [0, 0.69444, 0, 0, 0.72222],
+              8467: [0, 0.69444, 0, 0.11111, 0.41667],
+              8472: [0.19444, 0.43056, 0, 0.11111, 0.63646],
+              8476: [0, 0.69444, 0, 0, 0.72222],
+              8501: [0, 0.69444, 0, 0, 0.61111],
+              8592: [-0.13313, 0.36687, 0, 0, 1],
+              8593: [0.19444, 0.69444, 0, 0, 0.5],
+              8594: [-0.13313, 0.36687, 0, 0, 1],
+              8595: [0.19444, 0.69444, 0, 0, 0.5],
+              8596: [-0.13313, 0.36687, 0, 0, 1],
+              8597: [0.25, 0.75, 0, 0, 0.5],
+              8598: [0.19444, 0.69444, 0, 0, 1],
+              8599: [0.19444, 0.69444, 0, 0, 1],
+              8600: [0.19444, 0.69444, 0, 0, 1],
+              8601: [0.19444, 0.69444, 0, 0, 1],
+              8614: [0.011, 0.511, 0, 0, 1],
+              8617: [0.011, 0.511, 0, 0, 1.126],
+              8618: [0.011, 0.511, 0, 0, 1.126],
+              8636: [-0.13313, 0.36687, 0, 0, 1],
+              8637: [-0.13313, 0.36687, 0, 0, 1],
+              8640: [-0.13313, 0.36687, 0, 0, 1],
+              8641: [-0.13313, 0.36687, 0, 0, 1],
+              8652: [0.011, 0.671, 0, 0, 1],
+              8656: [-0.13313, 0.36687, 0, 0, 1],
+              8657: [0.19444, 0.69444, 0, 0, 0.61111],
+              8658: [-0.13313, 0.36687, 0, 0, 1],
+              8659: [0.19444, 0.69444, 0, 0, 0.61111],
+              8660: [-0.13313, 0.36687, 0, 0, 1],
+              8661: [0.25, 0.75, 0, 0, 0.61111],
+              8704: [0, 0.69444, 0, 0, 0.55556],
+              8706: [0, 0.69444, 0.05556, 0.08334, 0.5309],
+              8707: [0, 0.69444, 0, 0, 0.55556],
+              8709: [0.05556, 0.75, 0, 0, 0.5],
+              8711: [0, 0.68333, 0, 0, 0.83334],
+              8712: [0.0391, 0.5391, 0, 0, 0.66667],
+              8715: [0.0391, 0.5391, 0, 0, 0.66667],
+              8722: [0.08333, 0.58333, 0, 0, 0.77778],
+              8723: [0.08333, 0.58333, 0, 0, 0.77778],
+              8725: [0.25, 0.75, 0, 0, 0.5],
+              8726: [0.25, 0.75, 0, 0, 0.5],
+              8727: [-0.03472, 0.46528, 0, 0, 0.5],
+              8728: [-0.05555, 0.44445, 0, 0, 0.5],
+              8729: [-0.05555, 0.44445, 0, 0, 0.5],
+              8730: [0.2, 0.8, 0, 0, 0.83334],
+              8733: [0, 0.43056, 0, 0, 0.77778],
+              8734: [0, 0.43056, 0, 0, 1],
+              8736: [0, 0.69224, 0, 0, 0.72222],
+              8739: [0.25, 0.75, 0, 0, 0.27778],
+              8741: [0.25, 0.75, 0, 0, 0.5],
+              8743: [0, 0.55556, 0, 0, 0.66667],
+              8744: [0, 0.55556, 0, 0, 0.66667],
+              8745: [0, 0.55556, 0, 0, 0.66667],
+              8746: [0, 0.55556, 0, 0, 0.66667],
+              8747: [0.19444, 0.69444, 0.11111, 0, 0.41667],
+              8764: [-0.13313, 0.36687, 0, 0, 0.77778],
+              8768: [0.19444, 0.69444, 0, 0, 0.27778],
+              8771: [-0.03625, 0.46375, 0, 0, 0.77778],
+              8773: [-0.022, 0.589, 0, 0, 0.778],
+              8776: [-0.01688, 0.48312, 0, 0, 0.77778],
+              8781: [-0.03625, 0.46375, 0, 0, 0.77778],
+              8784: [-0.133, 0.673, 0, 0, 0.778],
+              8801: [-0.03625, 0.46375, 0, 0, 0.77778],
+              8804: [0.13597, 0.63597, 0, 0, 0.77778],
+              8805: [0.13597, 0.63597, 0, 0, 0.77778],
+              8810: [0.0391, 0.5391, 0, 0, 1],
+              8811: [0.0391, 0.5391, 0, 0, 1],
+              8826: [0.0391, 0.5391, 0, 0, 0.77778],
+              8827: [0.0391, 0.5391, 0, 0, 0.77778],
+              8834: [0.0391, 0.5391, 0, 0, 0.77778],
+              8835: [0.0391, 0.5391, 0, 0, 0.77778],
+              8838: [0.13597, 0.63597, 0, 0, 0.77778],
+              8839: [0.13597, 0.63597, 0, 0, 0.77778],
+              8846: [0, 0.55556, 0, 0, 0.66667],
+              8849: [0.13597, 0.63597, 0, 0, 0.77778],
+              8850: [0.13597, 0.63597, 0, 0, 0.77778],
+              8851: [0, 0.55556, 0, 0, 0.66667],
+              8852: [0, 0.55556, 0, 0, 0.66667],
+              8853: [0.08333, 0.58333, 0, 0, 0.77778],
+              8854: [0.08333, 0.58333, 0, 0, 0.77778],
+              8855: [0.08333, 0.58333, 0, 0, 0.77778],
+              8856: [0.08333, 0.58333, 0, 0, 0.77778],
+              8857: [0.08333, 0.58333, 0, 0, 0.77778],
+              8866: [0, 0.69444, 0, 0, 0.61111],
+              8867: [0, 0.69444, 0, 0, 0.61111],
+              8868: [0, 0.69444, 0, 0, 0.77778],
+              8869: [0, 0.69444, 0, 0, 0.77778],
+              8872: [0.249, 0.75, 0, 0, 0.867],
+              8900: [-0.05555, 0.44445, 0, 0, 0.5],
+              8901: [-0.05555, 0.44445, 0, 0, 0.27778],
+              8902: [-0.03472, 0.46528, 0, 0, 0.5],
+              8904: [5e-3, 0.505, 0, 0, 0.9],
+              8942: [0.03, 0.903, 0, 0, 0.278],
+              8943: [-0.19, 0.313, 0, 0, 1.172],
+              8945: [-0.1, 0.823, 0, 0, 1.282],
+              8968: [0.25, 0.75, 0, 0, 0.44445],
+              8969: [0.25, 0.75, 0, 0, 0.44445],
+              8970: [0.25, 0.75, 0, 0, 0.44445],
+              8971: [0.25, 0.75, 0, 0, 0.44445],
+              8994: [-0.14236, 0.35764, 0, 0, 1],
+              8995: [-0.14236, 0.35764, 0, 0, 1],
+              9136: [0.244, 0.744, 0, 0, 0.412],
+              9137: [0.244, 0.745, 0, 0, 0.412],
+              9651: [0.19444, 0.69444, 0, 0, 0.88889],
+              9657: [-0.03472, 0.46528, 0, 0, 0.5],
+              9661: [0.19444, 0.69444, 0, 0, 0.88889],
+              9667: [-0.03472, 0.46528, 0, 0, 0.5],
+              9711: [0.19444, 0.69444, 0, 0, 1],
+              9824: [0.12963, 0.69444, 0, 0, 0.77778],
+              9825: [0.12963, 0.69444, 0, 0, 0.77778],
+              9826: [0.12963, 0.69444, 0, 0, 0.77778],
+              9827: [0.12963, 0.69444, 0, 0, 0.77778],
+              9837: [0, 0.75, 0, 0, 0.38889],
+              9838: [0.19444, 0.69444, 0, 0, 0.38889],
+              9839: [0.19444, 0.69444, 0, 0, 0.38889],
+              10216: [0.25, 0.75, 0, 0, 0.38889],
+              10217: [0.25, 0.75, 0, 0, 0.38889],
+              10222: [0.244, 0.744, 0, 0, 0.412],
+              10223: [0.244, 0.745, 0, 0, 0.412],
+              10229: [0.011, 0.511, 0, 0, 1.609],
+              10230: [0.011, 0.511, 0, 0, 1.638],
+              10231: [0.011, 0.511, 0, 0, 1.859],
+              10232: [0.024, 0.525, 0, 0, 1.609],
+              10233: [0.024, 0.525, 0, 0, 1.638],
+              10234: [0.024, 0.525, 0, 0, 1.858],
+              10236: [0.011, 0.511, 0, 0, 1.638],
+              10815: [0, 0.68333, 0, 0, 0.75],
+              10927: [0.13597, 0.63597, 0, 0, 0.77778],
+              10928: [0.13597, 0.63597, 0, 0, 0.77778],
+              57376: [0.19444, 0.69444, 0, 0, 0],
             },
             "Math-BoldItalic": {
-              "32": [0, 0, 0, 0, 0.25],
-              "48": [0, 0.44444, 0, 0, 0.575],
-              "49": [0, 0.44444, 0, 0, 0.575],
-              "50": [0, 0.44444, 0, 0, 0.575],
-              "51": [0.19444, 0.44444, 0, 0, 0.575],
-              "52": [0.19444, 0.44444, 0, 0, 0.575],
-              "53": [0.19444, 0.44444, 0, 0, 0.575],
-              "54": [0, 0.64444, 0, 0, 0.575],
-              "55": [0.19444, 0.44444, 0, 0, 0.575],
-              "56": [0, 0.64444, 0, 0, 0.575],
-              "57": [0.19444, 0.44444, 0, 0, 0.575],
-              "65": [0, 0.68611, 0, 0, 0.86944],
-              "66": [0, 0.68611, 0.04835, 0, 0.8664],
-              "67": [0, 0.68611, 0.06979, 0, 0.81694],
-              "68": [0, 0.68611, 0.03194, 0, 0.93812],
-              "69": [0, 0.68611, 0.05451, 0, 0.81007],
-              "70": [0, 0.68611, 0.15972, 0, 0.68889],
-              "71": [0, 0.68611, 0, 0, 0.88673],
-              "72": [0, 0.68611, 0.08229, 0, 0.98229],
-              "73": [0, 0.68611, 0.07778, 0, 0.51111],
-              "74": [0, 0.68611, 0.10069, 0, 0.63125],
-              "75": [0, 0.68611, 0.06979, 0, 0.97118],
-              "76": [0, 0.68611, 0, 0, 0.75555],
-              "77": [0, 0.68611, 0.11424, 0, 1.14201],
-              "78": [0, 0.68611, 0.11424, 0, 0.95034],
-              "79": [0, 0.68611, 0.03194, 0, 0.83666],
-              "80": [0, 0.68611, 0.15972, 0, 0.72309],
-              "81": [0.19444, 0.68611, 0, 0, 0.86861],
-              "82": [0, 0.68611, 421e-5, 0, 0.87235],
-              "83": [0, 0.68611, 0.05382, 0, 0.69271],
-              "84": [0, 0.68611, 0.15972, 0, 0.63663],
-              "85": [0, 0.68611, 0.11424, 0, 0.80027],
-              "86": [0, 0.68611, 0.25555, 0, 0.67778],
-              "87": [0, 0.68611, 0.15972, 0, 1.09305],
-              "88": [0, 0.68611, 0.07778, 0, 0.94722],
-              "89": [0, 0.68611, 0.25555, 0, 0.67458],
-              "90": [0, 0.68611, 0.06979, 0, 0.77257],
-              "97": [0, 0.44444, 0, 0, 0.63287],
-              "98": [0, 0.69444, 0, 0, 0.52083],
-              "99": [0, 0.44444, 0, 0, 0.51342],
-              "100": [0, 0.69444, 0, 0, 0.60972],
-              "101": [0, 0.44444, 0, 0, 0.55361],
-              "102": [0.19444, 0.69444, 0.11042, 0, 0.56806],
-              "103": [0.19444, 0.44444, 0.03704, 0, 0.5449],
-              "104": [0, 0.69444, 0, 0, 0.66759],
-              "105": [0, 0.69326, 0, 0, 0.4048],
-              "106": [0.19444, 0.69326, 0.0622, 0, 0.47083],
-              "107": [0, 0.69444, 0.01852, 0, 0.6037],
-              "108": [0, 0.69444, 88e-4, 0, 0.34815],
-              "109": [0, 0.44444, 0, 0, 1.0324],
-              "110": [0, 0.44444, 0, 0, 0.71296],
-              "111": [0, 0.44444, 0, 0, 0.58472],
-              "112": [0.19444, 0.44444, 0, 0, 0.60092],
-              "113": [0.19444, 0.44444, 0.03704, 0, 0.54213],
-              "114": [0, 0.44444, 0.03194, 0, 0.5287],
-              "115": [0, 0.44444, 0, 0, 0.53125],
-              "116": [0, 0.63492, 0, 0, 0.41528],
-              "117": [0, 0.44444, 0, 0, 0.68102],
-              "118": [0, 0.44444, 0.03704, 0, 0.56666],
-              "119": [0, 0.44444, 0.02778, 0, 0.83148],
-              "120": [0, 0.44444, 0, 0, 0.65903],
-              "121": [0.19444, 0.44444, 0.03704, 0, 0.59028],
-              "122": [0, 0.44444, 0.04213, 0, 0.55509],
-              "160": [0, 0, 0, 0, 0.25],
-              "915": [0, 0.68611, 0.15972, 0, 0.65694],
-              "916": [0, 0.68611, 0, 0, 0.95833],
-              "920": [0, 0.68611, 0.03194, 0, 0.86722],
-              "923": [0, 0.68611, 0, 0, 0.80555],
-              "926": [0, 0.68611, 0.07458, 0, 0.84125],
-              "928": [0, 0.68611, 0.08229, 0, 0.98229],
-              "931": [0, 0.68611, 0.05451, 0, 0.88507],
-              "933": [0, 0.68611, 0.15972, 0, 0.67083],
-              "934": [0, 0.68611, 0, 0, 0.76666],
-              "936": [0, 0.68611, 0.11653, 0, 0.71402],
-              "937": [0, 0.68611, 0.04835, 0, 0.8789],
-              "945": [0, 0.44444, 0, 0, 0.76064],
-              "946": [0.19444, 0.69444, 0.03403, 0, 0.65972],
-              "947": [0.19444, 0.44444, 0.06389, 0, 0.59003],
-              "948": [0, 0.69444, 0.03819, 0, 0.52222],
-              "949": [0, 0.44444, 0, 0, 0.52882],
-              "950": [0.19444, 0.69444, 0.06215, 0, 0.50833],
-              "951": [0.19444, 0.44444, 0.03704, 0, 0.6],
-              "952": [0, 0.69444, 0.03194, 0, 0.5618],
-              "953": [0, 0.44444, 0, 0, 0.41204],
-              "954": [0, 0.44444, 0, 0, 0.66759],
-              "955": [0, 0.69444, 0, 0, 0.67083],
-              "956": [0.19444, 0.44444, 0, 0, 0.70787],
-              "957": [0, 0.44444, 0.06898, 0, 0.57685],
-              "958": [0.19444, 0.69444, 0.03021, 0, 0.50833],
-              "959": [0, 0.44444, 0, 0, 0.58472],
-              "960": [0, 0.44444, 0.03704, 0, 0.68241],
-              "961": [0.19444, 0.44444, 0, 0, 0.6118],
-              "962": [0.09722, 0.44444, 0.07917, 0, 0.42361],
-              "963": [0, 0.44444, 0.03704, 0, 0.68588],
-              "964": [0, 0.44444, 0.13472, 0, 0.52083],
-              "965": [0, 0.44444, 0.03704, 0, 0.63055],
-              "966": [0.19444, 0.44444, 0, 0, 0.74722],
-              "967": [0.19444, 0.44444, 0, 0, 0.71805],
-              "968": [0.19444, 0.69444, 0.03704, 0, 0.75833],
-              "969": [0, 0.44444, 0.03704, 0, 0.71782],
-              "977": [0, 0.69444, 0, 0, 0.69155],
-              "981": [0.19444, 0.69444, 0, 0, 0.7125],
-              "982": [0, 0.44444, 0.03194, 0, 0.975],
-              "1009": [0.19444, 0.44444, 0, 0, 0.6118],
-              "1013": [0, 0.44444, 0, 0, 0.48333],
-              "57649": [0, 0.44444, 0, 0, 0.39352],
-              "57911": [0.19444, 0.44444, 0, 0, 0.43889]
+              32: [0, 0, 0, 0, 0.25],
+              48: [0, 0.44444, 0, 0, 0.575],
+              49: [0, 0.44444, 0, 0, 0.575],
+              50: [0, 0.44444, 0, 0, 0.575],
+              51: [0.19444, 0.44444, 0, 0, 0.575],
+              52: [0.19444, 0.44444, 0, 0, 0.575],
+              53: [0.19444, 0.44444, 0, 0, 0.575],
+              54: [0, 0.64444, 0, 0, 0.575],
+              55: [0.19444, 0.44444, 0, 0, 0.575],
+              56: [0, 0.64444, 0, 0, 0.575],
+              57: [0.19444, 0.44444, 0, 0, 0.575],
+              65: [0, 0.68611, 0, 0, 0.86944],
+              66: [0, 0.68611, 0.04835, 0, 0.8664],
+              67: [0, 0.68611, 0.06979, 0, 0.81694],
+              68: [0, 0.68611, 0.03194, 0, 0.93812],
+              69: [0, 0.68611, 0.05451, 0, 0.81007],
+              70: [0, 0.68611, 0.15972, 0, 0.68889],
+              71: [0, 0.68611, 0, 0, 0.88673],
+              72: [0, 0.68611, 0.08229, 0, 0.98229],
+              73: [0, 0.68611, 0.07778, 0, 0.51111],
+              74: [0, 0.68611, 0.10069, 0, 0.63125],
+              75: [0, 0.68611, 0.06979, 0, 0.97118],
+              76: [0, 0.68611, 0, 0, 0.75555],
+              77: [0, 0.68611, 0.11424, 0, 1.14201],
+              78: [0, 0.68611, 0.11424, 0, 0.95034],
+              79: [0, 0.68611, 0.03194, 0, 0.83666],
+              80: [0, 0.68611, 0.15972, 0, 0.72309],
+              81: [0.19444, 0.68611, 0, 0, 0.86861],
+              82: [0, 0.68611, 421e-5, 0, 0.87235],
+              83: [0, 0.68611, 0.05382, 0, 0.69271],
+              84: [0, 0.68611, 0.15972, 0, 0.63663],
+              85: [0, 0.68611, 0.11424, 0, 0.80027],
+              86: [0, 0.68611, 0.25555, 0, 0.67778],
+              87: [0, 0.68611, 0.15972, 0, 1.09305],
+              88: [0, 0.68611, 0.07778, 0, 0.94722],
+              89: [0, 0.68611, 0.25555, 0, 0.67458],
+              90: [0, 0.68611, 0.06979, 0, 0.77257],
+              97: [0, 0.44444, 0, 0, 0.63287],
+              98: [0, 0.69444, 0, 0, 0.52083],
+              99: [0, 0.44444, 0, 0, 0.51342],
+              100: [0, 0.69444, 0, 0, 0.60972],
+              101: [0, 0.44444, 0, 0, 0.55361],
+              102: [0.19444, 0.69444, 0.11042, 0, 0.56806],
+              103: [0.19444, 0.44444, 0.03704, 0, 0.5449],
+              104: [0, 0.69444, 0, 0, 0.66759],
+              105: [0, 0.69326, 0, 0, 0.4048],
+              106: [0.19444, 0.69326, 0.0622, 0, 0.47083],
+              107: [0, 0.69444, 0.01852, 0, 0.6037],
+              108: [0, 0.69444, 88e-4, 0, 0.34815],
+              109: [0, 0.44444, 0, 0, 1.0324],
+              110: [0, 0.44444, 0, 0, 0.71296],
+              111: [0, 0.44444, 0, 0, 0.58472],
+              112: [0.19444, 0.44444, 0, 0, 0.60092],
+              113: [0.19444, 0.44444, 0.03704, 0, 0.54213],
+              114: [0, 0.44444, 0.03194, 0, 0.5287],
+              115: [0, 0.44444, 0, 0, 0.53125],
+              116: [0, 0.63492, 0, 0, 0.41528],
+              117: [0, 0.44444, 0, 0, 0.68102],
+              118: [0, 0.44444, 0.03704, 0, 0.56666],
+              119: [0, 0.44444, 0.02778, 0, 0.83148],
+              120: [0, 0.44444, 0, 0, 0.65903],
+              121: [0.19444, 0.44444, 0.03704, 0, 0.59028],
+              122: [0, 0.44444, 0.04213, 0, 0.55509],
+              160: [0, 0, 0, 0, 0.25],
+              915: [0, 0.68611, 0.15972, 0, 0.65694],
+              916: [0, 0.68611, 0, 0, 0.95833],
+              920: [0, 0.68611, 0.03194, 0, 0.86722],
+              923: [0, 0.68611, 0, 0, 0.80555],
+              926: [0, 0.68611, 0.07458, 0, 0.84125],
+              928: [0, 0.68611, 0.08229, 0, 0.98229],
+              931: [0, 0.68611, 0.05451, 0, 0.88507],
+              933: [0, 0.68611, 0.15972, 0, 0.67083],
+              934: [0, 0.68611, 0, 0, 0.76666],
+              936: [0, 0.68611, 0.11653, 0, 0.71402],
+              937: [0, 0.68611, 0.04835, 0, 0.8789],
+              945: [0, 0.44444, 0, 0, 0.76064],
+              946: [0.19444, 0.69444, 0.03403, 0, 0.65972],
+              947: [0.19444, 0.44444, 0.06389, 0, 0.59003],
+              948: [0, 0.69444, 0.03819, 0, 0.52222],
+              949: [0, 0.44444, 0, 0, 0.52882],
+              950: [0.19444, 0.69444, 0.06215, 0, 0.50833],
+              951: [0.19444, 0.44444, 0.03704, 0, 0.6],
+              952: [0, 0.69444, 0.03194, 0, 0.5618],
+              953: [0, 0.44444, 0, 0, 0.41204],
+              954: [0, 0.44444, 0, 0, 0.66759],
+              955: [0, 0.69444, 0, 0, 0.67083],
+              956: [0.19444, 0.44444, 0, 0, 0.70787],
+              957: [0, 0.44444, 0.06898, 0, 0.57685],
+              958: [0.19444, 0.69444, 0.03021, 0, 0.50833],
+              959: [0, 0.44444, 0, 0, 0.58472],
+              960: [0, 0.44444, 0.03704, 0, 0.68241],
+              961: [0.19444, 0.44444, 0, 0, 0.6118],
+              962: [0.09722, 0.44444, 0.07917, 0, 0.42361],
+              963: [0, 0.44444, 0.03704, 0, 0.68588],
+              964: [0, 0.44444, 0.13472, 0, 0.52083],
+              965: [0, 0.44444, 0.03704, 0, 0.63055],
+              966: [0.19444, 0.44444, 0, 0, 0.74722],
+              967: [0.19444, 0.44444, 0, 0, 0.71805],
+              968: [0.19444, 0.69444, 0.03704, 0, 0.75833],
+              969: [0, 0.44444, 0.03704, 0, 0.71782],
+              977: [0, 0.69444, 0, 0, 0.69155],
+              981: [0.19444, 0.69444, 0, 0, 0.7125],
+              982: [0, 0.44444, 0.03194, 0, 0.975],
+              1009: [0.19444, 0.44444, 0, 0, 0.6118],
+              1013: [0, 0.44444, 0, 0, 0.48333],
+              57649: [0, 0.44444, 0, 0, 0.39352],
+              57911: [0.19444, 0.44444, 0, 0, 0.43889],
             },
             "Math-Italic": {
-              "32": [0, 0, 0, 0, 0.25],
-              "48": [0, 0.43056, 0, 0, 0.5],
-              "49": [0, 0.43056, 0, 0, 0.5],
-              "50": [0, 0.43056, 0, 0, 0.5],
-              "51": [0.19444, 0.43056, 0, 0, 0.5],
-              "52": [0.19444, 0.43056, 0, 0, 0.5],
-              "53": [0.19444, 0.43056, 0, 0, 0.5],
-              "54": [0, 0.64444, 0, 0, 0.5],
-              "55": [0.19444, 0.43056, 0, 0, 0.5],
-              "56": [0, 0.64444, 0, 0, 0.5],
-              "57": [0.19444, 0.43056, 0, 0, 0.5],
-              "65": [0, 0.68333, 0, 0.13889, 0.75],
-              "66": [0, 0.68333, 0.05017, 0.08334, 0.75851],
-              "67": [0, 0.68333, 0.07153, 0.08334, 0.71472],
-              "68": [0, 0.68333, 0.02778, 0.05556, 0.82792],
-              "69": [0, 0.68333, 0.05764, 0.08334, 0.7382],
-              "70": [0, 0.68333, 0.13889, 0.08334, 0.64306],
-              "71": [0, 0.68333, 0, 0.08334, 0.78625],
-              "72": [0, 0.68333, 0.08125, 0.05556, 0.83125],
-              "73": [0, 0.68333, 0.07847, 0.11111, 0.43958],
-              "74": [0, 0.68333, 0.09618, 0.16667, 0.55451],
-              "75": [0, 0.68333, 0.07153, 0.05556, 0.84931],
-              "76": [0, 0.68333, 0, 0.02778, 0.68056],
-              "77": [0, 0.68333, 0.10903, 0.08334, 0.97014],
-              "78": [0, 0.68333, 0.10903, 0.08334, 0.80347],
-              "79": [0, 0.68333, 0.02778, 0.08334, 0.76278],
-              "80": [0, 0.68333, 0.13889, 0.08334, 0.64201],
-              "81": [0.19444, 0.68333, 0, 0.08334, 0.79056],
-              "82": [0, 0.68333, 773e-5, 0.08334, 0.75929],
-              "83": [0, 0.68333, 0.05764, 0.08334, 0.6132],
-              "84": [0, 0.68333, 0.13889, 0.08334, 0.58438],
-              "85": [0, 0.68333, 0.10903, 0.02778, 0.68278],
-              "86": [0, 0.68333, 0.22222, 0, 0.58333],
-              "87": [0, 0.68333, 0.13889, 0, 0.94445],
-              "88": [0, 0.68333, 0.07847, 0.08334, 0.82847],
-              "89": [0, 0.68333, 0.22222, 0, 0.58056],
-              "90": [0, 0.68333, 0.07153, 0.08334, 0.68264],
-              "97": [0, 0.43056, 0, 0, 0.52859],
-              "98": [0, 0.69444, 0, 0, 0.42917],
-              "99": [0, 0.43056, 0, 0.05556, 0.43276],
-              "100": [0, 0.69444, 0, 0.16667, 0.52049],
-              "101": [0, 0.43056, 0, 0.05556, 0.46563],
-              "102": [0.19444, 0.69444, 0.10764, 0.16667, 0.48959],
-              "103": [0.19444, 0.43056, 0.03588, 0.02778, 0.47697],
-              "104": [0, 0.69444, 0, 0, 0.57616],
-              "105": [0, 0.65952, 0, 0, 0.34451],
-              "106": [0.19444, 0.65952, 0.05724, 0, 0.41181],
-              "107": [0, 0.69444, 0.03148, 0, 0.5206],
-              "108": [0, 0.69444, 0.01968, 0.08334, 0.29838],
-              "109": [0, 0.43056, 0, 0, 0.87801],
-              "110": [0, 0.43056, 0, 0, 0.60023],
-              "111": [0, 0.43056, 0, 0.05556, 0.48472],
-              "112": [0.19444, 0.43056, 0, 0.08334, 0.50313],
-              "113": [0.19444, 0.43056, 0.03588, 0.08334, 0.44641],
-              "114": [0, 0.43056, 0.02778, 0.05556, 0.45116],
-              "115": [0, 0.43056, 0, 0.05556, 0.46875],
-              "116": [0, 0.61508, 0, 0.08334, 0.36111],
-              "117": [0, 0.43056, 0, 0.02778, 0.57246],
-              "118": [0, 0.43056, 0.03588, 0.02778, 0.48472],
-              "119": [0, 0.43056, 0.02691, 0.08334, 0.71592],
-              "120": [0, 0.43056, 0, 0.02778, 0.57153],
-              "121": [0.19444, 0.43056, 0.03588, 0.05556, 0.49028],
-              "122": [0, 0.43056, 0.04398, 0.05556, 0.46505],
-              "160": [0, 0, 0, 0, 0.25],
-              "915": [0, 0.68333, 0.13889, 0.08334, 0.61528],
-              "916": [0, 0.68333, 0, 0.16667, 0.83334],
-              "920": [0, 0.68333, 0.02778, 0.08334, 0.76278],
-              "923": [0, 0.68333, 0, 0.16667, 0.69445],
-              "926": [0, 0.68333, 0.07569, 0.08334, 0.74236],
-              "928": [0, 0.68333, 0.08125, 0.05556, 0.83125],
-              "931": [0, 0.68333, 0.05764, 0.08334, 0.77986],
-              "933": [0, 0.68333, 0.13889, 0.05556, 0.58333],
-              "934": [0, 0.68333, 0, 0.08334, 0.66667],
-              "936": [0, 0.68333, 0.11, 0.05556, 0.61222],
-              "937": [0, 0.68333, 0.05017, 0.08334, 0.7724],
-              "945": [0, 0.43056, 37e-4, 0.02778, 0.6397],
-              "946": [0.19444, 0.69444, 0.05278, 0.08334, 0.56563],
-              "947": [0.19444, 0.43056, 0.05556, 0, 0.51773],
-              "948": [0, 0.69444, 0.03785, 0.05556, 0.44444],
-              "949": [0, 0.43056, 0, 0.08334, 0.46632],
-              "950": [0.19444, 0.69444, 0.07378, 0.08334, 0.4375],
-              "951": [0.19444, 0.43056, 0.03588, 0.05556, 0.49653],
-              "952": [0, 0.69444, 0.02778, 0.08334, 0.46944],
-              "953": [0, 0.43056, 0, 0.05556, 0.35394],
-              "954": [0, 0.43056, 0, 0, 0.57616],
-              "955": [0, 0.69444, 0, 0, 0.58334],
-              "956": [0.19444, 0.43056, 0, 0.02778, 0.60255],
-              "957": [0, 0.43056, 0.06366, 0.02778, 0.49398],
-              "958": [0.19444, 0.69444, 0.04601, 0.11111, 0.4375],
-              "959": [0, 0.43056, 0, 0.05556, 0.48472],
-              "960": [0, 0.43056, 0.03588, 0, 0.57003],
-              "961": [0.19444, 0.43056, 0, 0.08334, 0.51702],
-              "962": [0.09722, 0.43056, 0.07986, 0.08334, 0.36285],
-              "963": [0, 0.43056, 0.03588, 0, 0.57141],
-              "964": [0, 0.43056, 0.1132, 0.02778, 0.43715],
-              "965": [0, 0.43056, 0.03588, 0.02778, 0.54028],
-              "966": [0.19444, 0.43056, 0, 0.08334, 0.65417],
-              "967": [0.19444, 0.43056, 0, 0.05556, 0.62569],
-              "968": [0.19444, 0.69444, 0.03588, 0.11111, 0.65139],
-              "969": [0, 0.43056, 0.03588, 0, 0.62245],
-              "977": [0, 0.69444, 0, 0.08334, 0.59144],
-              "981": [0.19444, 0.69444, 0, 0.08334, 0.59583],
-              "982": [0, 0.43056, 0.02778, 0, 0.82813],
-              "1009": [0.19444, 0.43056, 0, 0.08334, 0.51702],
-              "1013": [0, 0.43056, 0, 0.05556, 0.4059],
-              "57649": [0, 0.43056, 0, 0.02778, 0.32246],
-              "57911": [0.19444, 0.43056, 0, 0.08334, 0.38403]
+              32: [0, 0, 0, 0, 0.25],
+              48: [0, 0.43056, 0, 0, 0.5],
+              49: [0, 0.43056, 0, 0, 0.5],
+              50: [0, 0.43056, 0, 0, 0.5],
+              51: [0.19444, 0.43056, 0, 0, 0.5],
+              52: [0.19444, 0.43056, 0, 0, 0.5],
+              53: [0.19444, 0.43056, 0, 0, 0.5],
+              54: [0, 0.64444, 0, 0, 0.5],
+              55: [0.19444, 0.43056, 0, 0, 0.5],
+              56: [0, 0.64444, 0, 0, 0.5],
+              57: [0.19444, 0.43056, 0, 0, 0.5],
+              65: [0, 0.68333, 0, 0.13889, 0.75],
+              66: [0, 0.68333, 0.05017, 0.08334, 0.75851],
+              67: [0, 0.68333, 0.07153, 0.08334, 0.71472],
+              68: [0, 0.68333, 0.02778, 0.05556, 0.82792],
+              69: [0, 0.68333, 0.05764, 0.08334, 0.7382],
+              70: [0, 0.68333, 0.13889, 0.08334, 0.64306],
+              71: [0, 0.68333, 0, 0.08334, 0.78625],
+              72: [0, 0.68333, 0.08125, 0.05556, 0.83125],
+              73: [0, 0.68333, 0.07847, 0.11111, 0.43958],
+              74: [0, 0.68333, 0.09618, 0.16667, 0.55451],
+              75: [0, 0.68333, 0.07153, 0.05556, 0.84931],
+              76: [0, 0.68333, 0, 0.02778, 0.68056],
+              77: [0, 0.68333, 0.10903, 0.08334, 0.97014],
+              78: [0, 0.68333, 0.10903, 0.08334, 0.80347],
+              79: [0, 0.68333, 0.02778, 0.08334, 0.76278],
+              80: [0, 0.68333, 0.13889, 0.08334, 0.64201],
+              81: [0.19444, 0.68333, 0, 0.08334, 0.79056],
+              82: [0, 0.68333, 773e-5, 0.08334, 0.75929],
+              83: [0, 0.68333, 0.05764, 0.08334, 0.6132],
+              84: [0, 0.68333, 0.13889, 0.08334, 0.58438],
+              85: [0, 0.68333, 0.10903, 0.02778, 0.68278],
+              86: [0, 0.68333, 0.22222, 0, 0.58333],
+              87: [0, 0.68333, 0.13889, 0, 0.94445],
+              88: [0, 0.68333, 0.07847, 0.08334, 0.82847],
+              89: [0, 0.68333, 0.22222, 0, 0.58056],
+              90: [0, 0.68333, 0.07153, 0.08334, 0.68264],
+              97: [0, 0.43056, 0, 0, 0.52859],
+              98: [0, 0.69444, 0, 0, 0.42917],
+              99: [0, 0.43056, 0, 0.05556, 0.43276],
+              100: [0, 0.69444, 0, 0.16667, 0.52049],
+              101: [0, 0.43056, 0, 0.05556, 0.46563],
+              102: [0.19444, 0.69444, 0.10764, 0.16667, 0.48959],
+              103: [0.19444, 0.43056, 0.03588, 0.02778, 0.47697],
+              104: [0, 0.69444, 0, 0, 0.57616],
+              105: [0, 0.65952, 0, 0, 0.34451],
+              106: [0.19444, 0.65952, 0.05724, 0, 0.41181],
+              107: [0, 0.69444, 0.03148, 0, 0.5206],
+              108: [0, 0.69444, 0.01968, 0.08334, 0.29838],
+              109: [0, 0.43056, 0, 0, 0.87801],
+              110: [0, 0.43056, 0, 0, 0.60023],
+              111: [0, 0.43056, 0, 0.05556, 0.48472],
+              112: [0.19444, 0.43056, 0, 0.08334, 0.50313],
+              113: [0.19444, 0.43056, 0.03588, 0.08334, 0.44641],
+              114: [0, 0.43056, 0.02778, 0.05556, 0.45116],
+              115: [0, 0.43056, 0, 0.05556, 0.46875],
+              116: [0, 0.61508, 0, 0.08334, 0.36111],
+              117: [0, 0.43056, 0, 0.02778, 0.57246],
+              118: [0, 0.43056, 0.03588, 0.02778, 0.48472],
+              119: [0, 0.43056, 0.02691, 0.08334, 0.71592],
+              120: [0, 0.43056, 0, 0.02778, 0.57153],
+              121: [0.19444, 0.43056, 0.03588, 0.05556, 0.49028],
+              122: [0, 0.43056, 0.04398, 0.05556, 0.46505],
+              160: [0, 0, 0, 0, 0.25],
+              915: [0, 0.68333, 0.13889, 0.08334, 0.61528],
+              916: [0, 0.68333, 0, 0.16667, 0.83334],
+              920: [0, 0.68333, 0.02778, 0.08334, 0.76278],
+              923: [0, 0.68333, 0, 0.16667, 0.69445],
+              926: [0, 0.68333, 0.07569, 0.08334, 0.74236],
+              928: [0, 0.68333, 0.08125, 0.05556, 0.83125],
+              931: [0, 0.68333, 0.05764, 0.08334, 0.77986],
+              933: [0, 0.68333, 0.13889, 0.05556, 0.58333],
+              934: [0, 0.68333, 0, 0.08334, 0.66667],
+              936: [0, 0.68333, 0.11, 0.05556, 0.61222],
+              937: [0, 0.68333, 0.05017, 0.08334, 0.7724],
+              945: [0, 0.43056, 37e-4, 0.02778, 0.6397],
+              946: [0.19444, 0.69444, 0.05278, 0.08334, 0.56563],
+              947: [0.19444, 0.43056, 0.05556, 0, 0.51773],
+              948: [0, 0.69444, 0.03785, 0.05556, 0.44444],
+              949: [0, 0.43056, 0, 0.08334, 0.46632],
+              950: [0.19444, 0.69444, 0.07378, 0.08334, 0.4375],
+              951: [0.19444, 0.43056, 0.03588, 0.05556, 0.49653],
+              952: [0, 0.69444, 0.02778, 0.08334, 0.46944],
+              953: [0, 0.43056, 0, 0.05556, 0.35394],
+              954: [0, 0.43056, 0, 0, 0.57616],
+              955: [0, 0.69444, 0, 0, 0.58334],
+              956: [0.19444, 0.43056, 0, 0.02778, 0.60255],
+              957: [0, 0.43056, 0.06366, 0.02778, 0.49398],
+              958: [0.19444, 0.69444, 0.04601, 0.11111, 0.4375],
+              959: [0, 0.43056, 0, 0.05556, 0.48472],
+              960: [0, 0.43056, 0.03588, 0, 0.57003],
+              961: [0.19444, 0.43056, 0, 0.08334, 0.51702],
+              962: [0.09722, 0.43056, 0.07986, 0.08334, 0.36285],
+              963: [0, 0.43056, 0.03588, 0, 0.57141],
+              964: [0, 0.43056, 0.1132, 0.02778, 0.43715],
+              965: [0, 0.43056, 0.03588, 0.02778, 0.54028],
+              966: [0.19444, 0.43056, 0, 0.08334, 0.65417],
+              967: [0.19444, 0.43056, 0, 0.05556, 0.62569],
+              968: [0.19444, 0.69444, 0.03588, 0.11111, 0.65139],
+              969: [0, 0.43056, 0.03588, 0, 0.62245],
+              977: [0, 0.69444, 0, 0.08334, 0.59144],
+              981: [0.19444, 0.69444, 0, 0.08334, 0.59583],
+              982: [0, 0.43056, 0.02778, 0, 0.82813],
+              1009: [0.19444, 0.43056, 0, 0.08334, 0.51702],
+              1013: [0, 0.43056, 0, 0.05556, 0.4059],
+              57649: [0, 0.43056, 0, 0.02778, 0.32246],
+              57911: [0.19444, 0.43056, 0, 0.08334, 0.38403],
             },
             "SansSerif-Bold": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0, 0, 0.36667],
-              "34": [0, 0.69444, 0, 0, 0.55834],
-              "35": [0.19444, 0.69444, 0, 0, 0.91667],
-              "36": [0.05556, 0.75, 0, 0, 0.55],
-              "37": [0.05556, 0.75, 0, 0, 1.02912],
-              "38": [0, 0.69444, 0, 0, 0.83056],
-              "39": [0, 0.69444, 0, 0, 0.30556],
-              "40": [0.25, 0.75, 0, 0, 0.42778],
-              "41": [0.25, 0.75, 0, 0, 0.42778],
-              "42": [0, 0.75, 0, 0, 0.55],
-              "43": [0.11667, 0.61667, 0, 0, 0.85556],
-              "44": [0.10556, 0.13056, 0, 0, 0.30556],
-              "45": [0, 0.45833, 0, 0, 0.36667],
-              "46": [0, 0.13056, 0, 0, 0.30556],
-              "47": [0.25, 0.75, 0, 0, 0.55],
-              "48": [0, 0.69444, 0, 0, 0.55],
-              "49": [0, 0.69444, 0, 0, 0.55],
-              "50": [0, 0.69444, 0, 0, 0.55],
-              "51": [0, 0.69444, 0, 0, 0.55],
-              "52": [0, 0.69444, 0, 0, 0.55],
-              "53": [0, 0.69444, 0, 0, 0.55],
-              "54": [0, 0.69444, 0, 0, 0.55],
-              "55": [0, 0.69444, 0, 0, 0.55],
-              "56": [0, 0.69444, 0, 0, 0.55],
-              "57": [0, 0.69444, 0, 0, 0.55],
-              "58": [0, 0.45833, 0, 0, 0.30556],
-              "59": [0.10556, 0.45833, 0, 0, 0.30556],
-              "61": [-0.09375, 0.40625, 0, 0, 0.85556],
-              "63": [0, 0.69444, 0, 0, 0.51945],
-              "64": [0, 0.69444, 0, 0, 0.73334],
-              "65": [0, 0.69444, 0, 0, 0.73334],
-              "66": [0, 0.69444, 0, 0, 0.73334],
-              "67": [0, 0.69444, 0, 0, 0.70278],
-              "68": [0, 0.69444, 0, 0, 0.79445],
-              "69": [0, 0.69444, 0, 0, 0.64167],
-              "70": [0, 0.69444, 0, 0, 0.61111],
-              "71": [0, 0.69444, 0, 0, 0.73334],
-              "72": [0, 0.69444, 0, 0, 0.79445],
-              "73": [0, 0.69444, 0, 0, 0.33056],
-              "74": [0, 0.69444, 0, 0, 0.51945],
-              "75": [0, 0.69444, 0, 0, 0.76389],
-              "76": [0, 0.69444, 0, 0, 0.58056],
-              "77": [0, 0.69444, 0, 0, 0.97778],
-              "78": [0, 0.69444, 0, 0, 0.79445],
-              "79": [0, 0.69444, 0, 0, 0.79445],
-              "80": [0, 0.69444, 0, 0, 0.70278],
-              "81": [0.10556, 0.69444, 0, 0, 0.79445],
-              "82": [0, 0.69444, 0, 0, 0.70278],
-              "83": [0, 0.69444, 0, 0, 0.61111],
-              "84": [0, 0.69444, 0, 0, 0.73334],
-              "85": [0, 0.69444, 0, 0, 0.76389],
-              "86": [0, 0.69444, 0.01528, 0, 0.73334],
-              "87": [0, 0.69444, 0.01528, 0, 1.03889],
-              "88": [0, 0.69444, 0, 0, 0.73334],
-              "89": [0, 0.69444, 0.0275, 0, 0.73334],
-              "90": [0, 0.69444, 0, 0, 0.67223],
-              "91": [0.25, 0.75, 0, 0, 0.34306],
-              "93": [0.25, 0.75, 0, 0, 0.34306],
-              "94": [0, 0.69444, 0, 0, 0.55],
-              "95": [0.35, 0.10833, 0.03056, 0, 0.55],
-              "97": [0, 0.45833, 0, 0, 0.525],
-              "98": [0, 0.69444, 0, 0, 0.56111],
-              "99": [0, 0.45833, 0, 0, 0.48889],
-              "100": [0, 0.69444, 0, 0, 0.56111],
-              "101": [0, 0.45833, 0, 0, 0.51111],
-              "102": [0, 0.69444, 0.07639, 0, 0.33611],
-              "103": [0.19444, 0.45833, 0.01528, 0, 0.55],
-              "104": [0, 0.69444, 0, 0, 0.56111],
-              "105": [0, 0.69444, 0, 0, 0.25556],
-              "106": [0.19444, 0.69444, 0, 0, 0.28611],
-              "107": [0, 0.69444, 0, 0, 0.53056],
-              "108": [0, 0.69444, 0, 0, 0.25556],
-              "109": [0, 0.45833, 0, 0, 0.86667],
-              "110": [0, 0.45833, 0, 0, 0.56111],
-              "111": [0, 0.45833, 0, 0, 0.55],
-              "112": [0.19444, 0.45833, 0, 0, 0.56111],
-              "113": [0.19444, 0.45833, 0, 0, 0.56111],
-              "114": [0, 0.45833, 0.01528, 0, 0.37222],
-              "115": [0, 0.45833, 0, 0, 0.42167],
-              "116": [0, 0.58929, 0, 0, 0.40417],
-              "117": [0, 0.45833, 0, 0, 0.56111],
-              "118": [0, 0.45833, 0.01528, 0, 0.5],
-              "119": [0, 0.45833, 0.01528, 0, 0.74445],
-              "120": [0, 0.45833, 0, 0, 0.5],
-              "121": [0.19444, 0.45833, 0.01528, 0, 0.5],
-              "122": [0, 0.45833, 0, 0, 0.47639],
-              "126": [0.35, 0.34444, 0, 0, 0.55],
-              "160": [0, 0, 0, 0, 0.25],
-              "168": [0, 0.69444, 0, 0, 0.55],
-              "176": [0, 0.69444, 0, 0, 0.73334],
-              "180": [0, 0.69444, 0, 0, 0.55],
-              "184": [0.17014, 0, 0, 0, 0.48889],
-              "305": [0, 0.45833, 0, 0, 0.25556],
-              "567": [0.19444, 0.45833, 0, 0, 0.28611],
-              "710": [0, 0.69444, 0, 0, 0.55],
-              "711": [0, 0.63542, 0, 0, 0.55],
-              "713": [0, 0.63778, 0, 0, 0.55],
-              "728": [0, 0.69444, 0, 0, 0.55],
-              "729": [0, 0.69444, 0, 0, 0.30556],
-              "730": [0, 0.69444, 0, 0, 0.73334],
-              "732": [0, 0.69444, 0, 0, 0.55],
-              "733": [0, 0.69444, 0, 0, 0.55],
-              "915": [0, 0.69444, 0, 0, 0.58056],
-              "916": [0, 0.69444, 0, 0, 0.91667],
-              "920": [0, 0.69444, 0, 0, 0.85556],
-              "923": [0, 0.69444, 0, 0, 0.67223],
-              "926": [0, 0.69444, 0, 0, 0.73334],
-              "928": [0, 0.69444, 0, 0, 0.79445],
-              "931": [0, 0.69444, 0, 0, 0.79445],
-              "933": [0, 0.69444, 0, 0, 0.85556],
-              "934": [0, 0.69444, 0, 0, 0.79445],
-              "936": [0, 0.69444, 0, 0, 0.85556],
-              "937": [0, 0.69444, 0, 0, 0.79445],
-              "8211": [0, 0.45833, 0.03056, 0, 0.55],
-              "8212": [0, 0.45833, 0.03056, 0, 1.10001],
-              "8216": [0, 0.69444, 0, 0, 0.30556],
-              "8217": [0, 0.69444, 0, 0, 0.30556],
-              "8220": [0, 0.69444, 0, 0, 0.55834],
-              "8221": [0, 0.69444, 0, 0, 0.55834]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0, 0, 0.36667],
+              34: [0, 0.69444, 0, 0, 0.55834],
+              35: [0.19444, 0.69444, 0, 0, 0.91667],
+              36: [0.05556, 0.75, 0, 0, 0.55],
+              37: [0.05556, 0.75, 0, 0, 1.02912],
+              38: [0, 0.69444, 0, 0, 0.83056],
+              39: [0, 0.69444, 0, 0, 0.30556],
+              40: [0.25, 0.75, 0, 0, 0.42778],
+              41: [0.25, 0.75, 0, 0, 0.42778],
+              42: [0, 0.75, 0, 0, 0.55],
+              43: [0.11667, 0.61667, 0, 0, 0.85556],
+              44: [0.10556, 0.13056, 0, 0, 0.30556],
+              45: [0, 0.45833, 0, 0, 0.36667],
+              46: [0, 0.13056, 0, 0, 0.30556],
+              47: [0.25, 0.75, 0, 0, 0.55],
+              48: [0, 0.69444, 0, 0, 0.55],
+              49: [0, 0.69444, 0, 0, 0.55],
+              50: [0, 0.69444, 0, 0, 0.55],
+              51: [0, 0.69444, 0, 0, 0.55],
+              52: [0, 0.69444, 0, 0, 0.55],
+              53: [0, 0.69444, 0, 0, 0.55],
+              54: [0, 0.69444, 0, 0, 0.55],
+              55: [0, 0.69444, 0, 0, 0.55],
+              56: [0, 0.69444, 0, 0, 0.55],
+              57: [0, 0.69444, 0, 0, 0.55],
+              58: [0, 0.45833, 0, 0, 0.30556],
+              59: [0.10556, 0.45833, 0, 0, 0.30556],
+              61: [-0.09375, 0.40625, 0, 0, 0.85556],
+              63: [0, 0.69444, 0, 0, 0.51945],
+              64: [0, 0.69444, 0, 0, 0.73334],
+              65: [0, 0.69444, 0, 0, 0.73334],
+              66: [0, 0.69444, 0, 0, 0.73334],
+              67: [0, 0.69444, 0, 0, 0.70278],
+              68: [0, 0.69444, 0, 0, 0.79445],
+              69: [0, 0.69444, 0, 0, 0.64167],
+              70: [0, 0.69444, 0, 0, 0.61111],
+              71: [0, 0.69444, 0, 0, 0.73334],
+              72: [0, 0.69444, 0, 0, 0.79445],
+              73: [0, 0.69444, 0, 0, 0.33056],
+              74: [0, 0.69444, 0, 0, 0.51945],
+              75: [0, 0.69444, 0, 0, 0.76389],
+              76: [0, 0.69444, 0, 0, 0.58056],
+              77: [0, 0.69444, 0, 0, 0.97778],
+              78: [0, 0.69444, 0, 0, 0.79445],
+              79: [0, 0.69444, 0, 0, 0.79445],
+              80: [0, 0.69444, 0, 0, 0.70278],
+              81: [0.10556, 0.69444, 0, 0, 0.79445],
+              82: [0, 0.69444, 0, 0, 0.70278],
+              83: [0, 0.69444, 0, 0, 0.61111],
+              84: [0, 0.69444, 0, 0, 0.73334],
+              85: [0, 0.69444, 0, 0, 0.76389],
+              86: [0, 0.69444, 0.01528, 0, 0.73334],
+              87: [0, 0.69444, 0.01528, 0, 1.03889],
+              88: [0, 0.69444, 0, 0, 0.73334],
+              89: [0, 0.69444, 0.0275, 0, 0.73334],
+              90: [0, 0.69444, 0, 0, 0.67223],
+              91: [0.25, 0.75, 0, 0, 0.34306],
+              93: [0.25, 0.75, 0, 0, 0.34306],
+              94: [0, 0.69444, 0, 0, 0.55],
+              95: [0.35, 0.10833, 0.03056, 0, 0.55],
+              97: [0, 0.45833, 0, 0, 0.525],
+              98: [0, 0.69444, 0, 0, 0.56111],
+              99: [0, 0.45833, 0, 0, 0.48889],
+              100: [0, 0.69444, 0, 0, 0.56111],
+              101: [0, 0.45833, 0, 0, 0.51111],
+              102: [0, 0.69444, 0.07639, 0, 0.33611],
+              103: [0.19444, 0.45833, 0.01528, 0, 0.55],
+              104: [0, 0.69444, 0, 0, 0.56111],
+              105: [0, 0.69444, 0, 0, 0.25556],
+              106: [0.19444, 0.69444, 0, 0, 0.28611],
+              107: [0, 0.69444, 0, 0, 0.53056],
+              108: [0, 0.69444, 0, 0, 0.25556],
+              109: [0, 0.45833, 0, 0, 0.86667],
+              110: [0, 0.45833, 0, 0, 0.56111],
+              111: [0, 0.45833, 0, 0, 0.55],
+              112: [0.19444, 0.45833, 0, 0, 0.56111],
+              113: [0.19444, 0.45833, 0, 0, 0.56111],
+              114: [0, 0.45833, 0.01528, 0, 0.37222],
+              115: [0, 0.45833, 0, 0, 0.42167],
+              116: [0, 0.58929, 0, 0, 0.40417],
+              117: [0, 0.45833, 0, 0, 0.56111],
+              118: [0, 0.45833, 0.01528, 0, 0.5],
+              119: [0, 0.45833, 0.01528, 0, 0.74445],
+              120: [0, 0.45833, 0, 0, 0.5],
+              121: [0.19444, 0.45833, 0.01528, 0, 0.5],
+              122: [0, 0.45833, 0, 0, 0.47639],
+              126: [0.35, 0.34444, 0, 0, 0.55],
+              160: [0, 0, 0, 0, 0.25],
+              168: [0, 0.69444, 0, 0, 0.55],
+              176: [0, 0.69444, 0, 0, 0.73334],
+              180: [0, 0.69444, 0, 0, 0.55],
+              184: [0.17014, 0, 0, 0, 0.48889],
+              305: [0, 0.45833, 0, 0, 0.25556],
+              567: [0.19444, 0.45833, 0, 0, 0.28611],
+              710: [0, 0.69444, 0, 0, 0.55],
+              711: [0, 0.63542, 0, 0, 0.55],
+              713: [0, 0.63778, 0, 0, 0.55],
+              728: [0, 0.69444, 0, 0, 0.55],
+              729: [0, 0.69444, 0, 0, 0.30556],
+              730: [0, 0.69444, 0, 0, 0.73334],
+              732: [0, 0.69444, 0, 0, 0.55],
+              733: [0, 0.69444, 0, 0, 0.55],
+              915: [0, 0.69444, 0, 0, 0.58056],
+              916: [0, 0.69444, 0, 0, 0.91667],
+              920: [0, 0.69444, 0, 0, 0.85556],
+              923: [0, 0.69444, 0, 0, 0.67223],
+              926: [0, 0.69444, 0, 0, 0.73334],
+              928: [0, 0.69444, 0, 0, 0.79445],
+              931: [0, 0.69444, 0, 0, 0.79445],
+              933: [0, 0.69444, 0, 0, 0.85556],
+              934: [0, 0.69444, 0, 0, 0.79445],
+              936: [0, 0.69444, 0, 0, 0.85556],
+              937: [0, 0.69444, 0, 0, 0.79445],
+              8211: [0, 0.45833, 0.03056, 0, 0.55],
+              8212: [0, 0.45833, 0.03056, 0, 1.10001],
+              8216: [0, 0.69444, 0, 0, 0.30556],
+              8217: [0, 0.69444, 0, 0, 0.30556],
+              8220: [0, 0.69444, 0, 0, 0.55834],
+              8221: [0, 0.69444, 0, 0, 0.55834],
             },
             "SansSerif-Italic": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0.05733, 0, 0.31945],
-              "34": [0, 0.69444, 316e-5, 0, 0.5],
-              "35": [0.19444, 0.69444, 0.05087, 0, 0.83334],
-              "36": [0.05556, 0.75, 0.11156, 0, 0.5],
-              "37": [0.05556, 0.75, 0.03126, 0, 0.83334],
-              "38": [0, 0.69444, 0.03058, 0, 0.75834],
-              "39": [0, 0.69444, 0.07816, 0, 0.27778],
-              "40": [0.25, 0.75, 0.13164, 0, 0.38889],
-              "41": [0.25, 0.75, 0.02536, 0, 0.38889],
-              "42": [0, 0.75, 0.11775, 0, 0.5],
-              "43": [0.08333, 0.58333, 0.02536, 0, 0.77778],
-              "44": [0.125, 0.08333, 0, 0, 0.27778],
-              "45": [0, 0.44444, 0.01946, 0, 0.33333],
-              "46": [0, 0.08333, 0, 0, 0.27778],
-              "47": [0.25, 0.75, 0.13164, 0, 0.5],
-              "48": [0, 0.65556, 0.11156, 0, 0.5],
-              "49": [0, 0.65556, 0.11156, 0, 0.5],
-              "50": [0, 0.65556, 0.11156, 0, 0.5],
-              "51": [0, 0.65556, 0.11156, 0, 0.5],
-              "52": [0, 0.65556, 0.11156, 0, 0.5],
-              "53": [0, 0.65556, 0.11156, 0, 0.5],
-              "54": [0, 0.65556, 0.11156, 0, 0.5],
-              "55": [0, 0.65556, 0.11156, 0, 0.5],
-              "56": [0, 0.65556, 0.11156, 0, 0.5],
-              "57": [0, 0.65556, 0.11156, 0, 0.5],
-              "58": [0, 0.44444, 0.02502, 0, 0.27778],
-              "59": [0.125, 0.44444, 0.02502, 0, 0.27778],
-              "61": [-0.13, 0.37, 0.05087, 0, 0.77778],
-              "63": [0, 0.69444, 0.11809, 0, 0.47222],
-              "64": [0, 0.69444, 0.07555, 0, 0.66667],
-              "65": [0, 0.69444, 0, 0, 0.66667],
-              "66": [0, 0.69444, 0.08293, 0, 0.66667],
-              "67": [0, 0.69444, 0.11983, 0, 0.63889],
-              "68": [0, 0.69444, 0.07555, 0, 0.72223],
-              "69": [0, 0.69444, 0.11983, 0, 0.59722],
-              "70": [0, 0.69444, 0.13372, 0, 0.56945],
-              "71": [0, 0.69444, 0.11983, 0, 0.66667],
-              "72": [0, 0.69444, 0.08094, 0, 0.70834],
-              "73": [0, 0.69444, 0.13372, 0, 0.27778],
-              "74": [0, 0.69444, 0.08094, 0, 0.47222],
-              "75": [0, 0.69444, 0.11983, 0, 0.69445],
-              "76": [0, 0.69444, 0, 0, 0.54167],
-              "77": [0, 0.69444, 0.08094, 0, 0.875],
-              "78": [0, 0.69444, 0.08094, 0, 0.70834],
-              "79": [0, 0.69444, 0.07555, 0, 0.73611],
-              "80": [0, 0.69444, 0.08293, 0, 0.63889],
-              "81": [0.125, 0.69444, 0.07555, 0, 0.73611],
-              "82": [0, 0.69444, 0.08293, 0, 0.64584],
-              "83": [0, 0.69444, 0.09205, 0, 0.55556],
-              "84": [0, 0.69444, 0.13372, 0, 0.68056],
-              "85": [0, 0.69444, 0.08094, 0, 0.6875],
-              "86": [0, 0.69444, 0.1615, 0, 0.66667],
-              "87": [0, 0.69444, 0.1615, 0, 0.94445],
-              "88": [0, 0.69444, 0.13372, 0, 0.66667],
-              "89": [0, 0.69444, 0.17261, 0, 0.66667],
-              "90": [0, 0.69444, 0.11983, 0, 0.61111],
-              "91": [0.25, 0.75, 0.15942, 0, 0.28889],
-              "93": [0.25, 0.75, 0.08719, 0, 0.28889],
-              "94": [0, 0.69444, 0.0799, 0, 0.5],
-              "95": [0.35, 0.09444, 0.08616, 0, 0.5],
-              "97": [0, 0.44444, 981e-5, 0, 0.48056],
-              "98": [0, 0.69444, 0.03057, 0, 0.51667],
-              "99": [0, 0.44444, 0.08336, 0, 0.44445],
-              "100": [0, 0.69444, 0.09483, 0, 0.51667],
-              "101": [0, 0.44444, 0.06778, 0, 0.44445],
-              "102": [0, 0.69444, 0.21705, 0, 0.30556],
-              "103": [0.19444, 0.44444, 0.10836, 0, 0.5],
-              "104": [0, 0.69444, 0.01778, 0, 0.51667],
-              "105": [0, 0.67937, 0.09718, 0, 0.23889],
-              "106": [0.19444, 0.67937, 0.09162, 0, 0.26667],
-              "107": [0, 0.69444, 0.08336, 0, 0.48889],
-              "108": [0, 0.69444, 0.09483, 0, 0.23889],
-              "109": [0, 0.44444, 0.01778, 0, 0.79445],
-              "110": [0, 0.44444, 0.01778, 0, 0.51667],
-              "111": [0, 0.44444, 0.06613, 0, 0.5],
-              "112": [0.19444, 0.44444, 0.0389, 0, 0.51667],
-              "113": [0.19444, 0.44444, 0.04169, 0, 0.51667],
-              "114": [0, 0.44444, 0.10836, 0, 0.34167],
-              "115": [0, 0.44444, 0.0778, 0, 0.38333],
-              "116": [0, 0.57143, 0.07225, 0, 0.36111],
-              "117": [0, 0.44444, 0.04169, 0, 0.51667],
-              "118": [0, 0.44444, 0.10836, 0, 0.46111],
-              "119": [0, 0.44444, 0.10836, 0, 0.68334],
-              "120": [0, 0.44444, 0.09169, 0, 0.46111],
-              "121": [0.19444, 0.44444, 0.10836, 0, 0.46111],
-              "122": [0, 0.44444, 0.08752, 0, 0.43472],
-              "126": [0.35, 0.32659, 0.08826, 0, 0.5],
-              "160": [0, 0, 0, 0, 0.25],
-              "168": [0, 0.67937, 0.06385, 0, 0.5],
-              "176": [0, 0.69444, 0, 0, 0.73752],
-              "184": [0.17014, 0, 0, 0, 0.44445],
-              "305": [0, 0.44444, 0.04169, 0, 0.23889],
-              "567": [0.19444, 0.44444, 0.04169, 0, 0.26667],
-              "710": [0, 0.69444, 0.0799, 0, 0.5],
-              "711": [0, 0.63194, 0.08432, 0, 0.5],
-              "713": [0, 0.60889, 0.08776, 0, 0.5],
-              "714": [0, 0.69444, 0.09205, 0, 0.5],
-              "715": [0, 0.69444, 0, 0, 0.5],
-              "728": [0, 0.69444, 0.09483, 0, 0.5],
-              "729": [0, 0.67937, 0.07774, 0, 0.27778],
-              "730": [0, 0.69444, 0, 0, 0.73752],
-              "732": [0, 0.67659, 0.08826, 0, 0.5],
-              "733": [0, 0.69444, 0.09205, 0, 0.5],
-              "915": [0, 0.69444, 0.13372, 0, 0.54167],
-              "916": [0, 0.69444, 0, 0, 0.83334],
-              "920": [0, 0.69444, 0.07555, 0, 0.77778],
-              "923": [0, 0.69444, 0, 0, 0.61111],
-              "926": [0, 0.69444, 0.12816, 0, 0.66667],
-              "928": [0, 0.69444, 0.08094, 0, 0.70834],
-              "931": [0, 0.69444, 0.11983, 0, 0.72222],
-              "933": [0, 0.69444, 0.09031, 0, 0.77778],
-              "934": [0, 0.69444, 0.04603, 0, 0.72222],
-              "936": [0, 0.69444, 0.09031, 0, 0.77778],
-              "937": [0, 0.69444, 0.08293, 0, 0.72222],
-              "8211": [0, 0.44444, 0.08616, 0, 0.5],
-              "8212": [0, 0.44444, 0.08616, 0, 1],
-              "8216": [0, 0.69444, 0.07816, 0, 0.27778],
-              "8217": [0, 0.69444, 0.07816, 0, 0.27778],
-              "8220": [0, 0.69444, 0.14205, 0, 0.5],
-              "8221": [0, 0.69444, 316e-5, 0, 0.5]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0.05733, 0, 0.31945],
+              34: [0, 0.69444, 316e-5, 0, 0.5],
+              35: [0.19444, 0.69444, 0.05087, 0, 0.83334],
+              36: [0.05556, 0.75, 0.11156, 0, 0.5],
+              37: [0.05556, 0.75, 0.03126, 0, 0.83334],
+              38: [0, 0.69444, 0.03058, 0, 0.75834],
+              39: [0, 0.69444, 0.07816, 0, 0.27778],
+              40: [0.25, 0.75, 0.13164, 0, 0.38889],
+              41: [0.25, 0.75, 0.02536, 0, 0.38889],
+              42: [0, 0.75, 0.11775, 0, 0.5],
+              43: [0.08333, 0.58333, 0.02536, 0, 0.77778],
+              44: [0.125, 0.08333, 0, 0, 0.27778],
+              45: [0, 0.44444, 0.01946, 0, 0.33333],
+              46: [0, 0.08333, 0, 0, 0.27778],
+              47: [0.25, 0.75, 0.13164, 0, 0.5],
+              48: [0, 0.65556, 0.11156, 0, 0.5],
+              49: [0, 0.65556, 0.11156, 0, 0.5],
+              50: [0, 0.65556, 0.11156, 0, 0.5],
+              51: [0, 0.65556, 0.11156, 0, 0.5],
+              52: [0, 0.65556, 0.11156, 0, 0.5],
+              53: [0, 0.65556, 0.11156, 0, 0.5],
+              54: [0, 0.65556, 0.11156, 0, 0.5],
+              55: [0, 0.65556, 0.11156, 0, 0.5],
+              56: [0, 0.65556, 0.11156, 0, 0.5],
+              57: [0, 0.65556, 0.11156, 0, 0.5],
+              58: [0, 0.44444, 0.02502, 0, 0.27778],
+              59: [0.125, 0.44444, 0.02502, 0, 0.27778],
+              61: [-0.13, 0.37, 0.05087, 0, 0.77778],
+              63: [0, 0.69444, 0.11809, 0, 0.47222],
+              64: [0, 0.69444, 0.07555, 0, 0.66667],
+              65: [0, 0.69444, 0, 0, 0.66667],
+              66: [0, 0.69444, 0.08293, 0, 0.66667],
+              67: [0, 0.69444, 0.11983, 0, 0.63889],
+              68: [0, 0.69444, 0.07555, 0, 0.72223],
+              69: [0, 0.69444, 0.11983, 0, 0.59722],
+              70: [0, 0.69444, 0.13372, 0, 0.56945],
+              71: [0, 0.69444, 0.11983, 0, 0.66667],
+              72: [0, 0.69444, 0.08094, 0, 0.70834],
+              73: [0, 0.69444, 0.13372, 0, 0.27778],
+              74: [0, 0.69444, 0.08094, 0, 0.47222],
+              75: [0, 0.69444, 0.11983, 0, 0.69445],
+              76: [0, 0.69444, 0, 0, 0.54167],
+              77: [0, 0.69444, 0.08094, 0, 0.875],
+              78: [0, 0.69444, 0.08094, 0, 0.70834],
+              79: [0, 0.69444, 0.07555, 0, 0.73611],
+              80: [0, 0.69444, 0.08293, 0, 0.63889],
+              81: [0.125, 0.69444, 0.07555, 0, 0.73611],
+              82: [0, 0.69444, 0.08293, 0, 0.64584],
+              83: [0, 0.69444, 0.09205, 0, 0.55556],
+              84: [0, 0.69444, 0.13372, 0, 0.68056],
+              85: [0, 0.69444, 0.08094, 0, 0.6875],
+              86: [0, 0.69444, 0.1615, 0, 0.66667],
+              87: [0, 0.69444, 0.1615, 0, 0.94445],
+              88: [0, 0.69444, 0.13372, 0, 0.66667],
+              89: [0, 0.69444, 0.17261, 0, 0.66667],
+              90: [0, 0.69444, 0.11983, 0, 0.61111],
+              91: [0.25, 0.75, 0.15942, 0, 0.28889],
+              93: [0.25, 0.75, 0.08719, 0, 0.28889],
+              94: [0, 0.69444, 0.0799, 0, 0.5],
+              95: [0.35, 0.09444, 0.08616, 0, 0.5],
+              97: [0, 0.44444, 981e-5, 0, 0.48056],
+              98: [0, 0.69444, 0.03057, 0, 0.51667],
+              99: [0, 0.44444, 0.08336, 0, 0.44445],
+              100: [0, 0.69444, 0.09483, 0, 0.51667],
+              101: [0, 0.44444, 0.06778, 0, 0.44445],
+              102: [0, 0.69444, 0.21705, 0, 0.30556],
+              103: [0.19444, 0.44444, 0.10836, 0, 0.5],
+              104: [0, 0.69444, 0.01778, 0, 0.51667],
+              105: [0, 0.67937, 0.09718, 0, 0.23889],
+              106: [0.19444, 0.67937, 0.09162, 0, 0.26667],
+              107: [0, 0.69444, 0.08336, 0, 0.48889],
+              108: [0, 0.69444, 0.09483, 0, 0.23889],
+              109: [0, 0.44444, 0.01778, 0, 0.79445],
+              110: [0, 0.44444, 0.01778, 0, 0.51667],
+              111: [0, 0.44444, 0.06613, 0, 0.5],
+              112: [0.19444, 0.44444, 0.0389, 0, 0.51667],
+              113: [0.19444, 0.44444, 0.04169, 0, 0.51667],
+              114: [0, 0.44444, 0.10836, 0, 0.34167],
+              115: [0, 0.44444, 0.0778, 0, 0.38333],
+              116: [0, 0.57143, 0.07225, 0, 0.36111],
+              117: [0, 0.44444, 0.04169, 0, 0.51667],
+              118: [0, 0.44444, 0.10836, 0, 0.46111],
+              119: [0, 0.44444, 0.10836, 0, 0.68334],
+              120: [0, 0.44444, 0.09169, 0, 0.46111],
+              121: [0.19444, 0.44444, 0.10836, 0, 0.46111],
+              122: [0, 0.44444, 0.08752, 0, 0.43472],
+              126: [0.35, 0.32659, 0.08826, 0, 0.5],
+              160: [0, 0, 0, 0, 0.25],
+              168: [0, 0.67937, 0.06385, 0, 0.5],
+              176: [0, 0.69444, 0, 0, 0.73752],
+              184: [0.17014, 0, 0, 0, 0.44445],
+              305: [0, 0.44444, 0.04169, 0, 0.23889],
+              567: [0.19444, 0.44444, 0.04169, 0, 0.26667],
+              710: [0, 0.69444, 0.0799, 0, 0.5],
+              711: [0, 0.63194, 0.08432, 0, 0.5],
+              713: [0, 0.60889, 0.08776, 0, 0.5],
+              714: [0, 0.69444, 0.09205, 0, 0.5],
+              715: [0, 0.69444, 0, 0, 0.5],
+              728: [0, 0.69444, 0.09483, 0, 0.5],
+              729: [0, 0.67937, 0.07774, 0, 0.27778],
+              730: [0, 0.69444, 0, 0, 0.73752],
+              732: [0, 0.67659, 0.08826, 0, 0.5],
+              733: [0, 0.69444, 0.09205, 0, 0.5],
+              915: [0, 0.69444, 0.13372, 0, 0.54167],
+              916: [0, 0.69444, 0, 0, 0.83334],
+              920: [0, 0.69444, 0.07555, 0, 0.77778],
+              923: [0, 0.69444, 0, 0, 0.61111],
+              926: [0, 0.69444, 0.12816, 0, 0.66667],
+              928: [0, 0.69444, 0.08094, 0, 0.70834],
+              931: [0, 0.69444, 0.11983, 0, 0.72222],
+              933: [0, 0.69444, 0.09031, 0, 0.77778],
+              934: [0, 0.69444, 0.04603, 0, 0.72222],
+              936: [0, 0.69444, 0.09031, 0, 0.77778],
+              937: [0, 0.69444, 0.08293, 0, 0.72222],
+              8211: [0, 0.44444, 0.08616, 0, 0.5],
+              8212: [0, 0.44444, 0.08616, 0, 1],
+              8216: [0, 0.69444, 0.07816, 0, 0.27778],
+              8217: [0, 0.69444, 0.07816, 0, 0.27778],
+              8220: [0, 0.69444, 0.14205, 0, 0.5],
+              8221: [0, 0.69444, 316e-5, 0, 0.5],
             },
             "SansSerif-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "33": [0, 0.69444, 0, 0, 0.31945],
-              "34": [0, 0.69444, 0, 0, 0.5],
-              "35": [0.19444, 0.69444, 0, 0, 0.83334],
-              "36": [0.05556, 0.75, 0, 0, 0.5],
-              "37": [0.05556, 0.75, 0, 0, 0.83334],
-              "38": [0, 0.69444, 0, 0, 0.75834],
-              "39": [0, 0.69444, 0, 0, 0.27778],
-              "40": [0.25, 0.75, 0, 0, 0.38889],
-              "41": [0.25, 0.75, 0, 0, 0.38889],
-              "42": [0, 0.75, 0, 0, 0.5],
-              "43": [0.08333, 0.58333, 0, 0, 0.77778],
-              "44": [0.125, 0.08333, 0, 0, 0.27778],
-              "45": [0, 0.44444, 0, 0, 0.33333],
-              "46": [0, 0.08333, 0, 0, 0.27778],
-              "47": [0.25, 0.75, 0, 0, 0.5],
-              "48": [0, 0.65556, 0, 0, 0.5],
-              "49": [0, 0.65556, 0, 0, 0.5],
-              "50": [0, 0.65556, 0, 0, 0.5],
-              "51": [0, 0.65556, 0, 0, 0.5],
-              "52": [0, 0.65556, 0, 0, 0.5],
-              "53": [0, 0.65556, 0, 0, 0.5],
-              "54": [0, 0.65556, 0, 0, 0.5],
-              "55": [0, 0.65556, 0, 0, 0.5],
-              "56": [0, 0.65556, 0, 0, 0.5],
-              "57": [0, 0.65556, 0, 0, 0.5],
-              "58": [0, 0.44444, 0, 0, 0.27778],
-              "59": [0.125, 0.44444, 0, 0, 0.27778],
-              "61": [-0.13, 0.37, 0, 0, 0.77778],
-              "63": [0, 0.69444, 0, 0, 0.47222],
-              "64": [0, 0.69444, 0, 0, 0.66667],
-              "65": [0, 0.69444, 0, 0, 0.66667],
-              "66": [0, 0.69444, 0, 0, 0.66667],
-              "67": [0, 0.69444, 0, 0, 0.63889],
-              "68": [0, 0.69444, 0, 0, 0.72223],
-              "69": [0, 0.69444, 0, 0, 0.59722],
-              "70": [0, 0.69444, 0, 0, 0.56945],
-              "71": [0, 0.69444, 0, 0, 0.66667],
-              "72": [0, 0.69444, 0, 0, 0.70834],
-              "73": [0, 0.69444, 0, 0, 0.27778],
-              "74": [0, 0.69444, 0, 0, 0.47222],
-              "75": [0, 0.69444, 0, 0, 0.69445],
-              "76": [0, 0.69444, 0, 0, 0.54167],
-              "77": [0, 0.69444, 0, 0, 0.875],
-              "78": [0, 0.69444, 0, 0, 0.70834],
-              "79": [0, 0.69444, 0, 0, 0.73611],
-              "80": [0, 0.69444, 0, 0, 0.63889],
-              "81": [0.125, 0.69444, 0, 0, 0.73611],
-              "82": [0, 0.69444, 0, 0, 0.64584],
-              "83": [0, 0.69444, 0, 0, 0.55556],
-              "84": [0, 0.69444, 0, 0, 0.68056],
-              "85": [0, 0.69444, 0, 0, 0.6875],
-              "86": [0, 0.69444, 0.01389, 0, 0.66667],
-              "87": [0, 0.69444, 0.01389, 0, 0.94445],
-              "88": [0, 0.69444, 0, 0, 0.66667],
-              "89": [0, 0.69444, 0.025, 0, 0.66667],
-              "90": [0, 0.69444, 0, 0, 0.61111],
-              "91": [0.25, 0.75, 0, 0, 0.28889],
-              "93": [0.25, 0.75, 0, 0, 0.28889],
-              "94": [0, 0.69444, 0, 0, 0.5],
-              "95": [0.35, 0.09444, 0.02778, 0, 0.5],
-              "97": [0, 0.44444, 0, 0, 0.48056],
-              "98": [0, 0.69444, 0, 0, 0.51667],
-              "99": [0, 0.44444, 0, 0, 0.44445],
-              "100": [0, 0.69444, 0, 0, 0.51667],
-              "101": [0, 0.44444, 0, 0, 0.44445],
-              "102": [0, 0.69444, 0.06944, 0, 0.30556],
-              "103": [0.19444, 0.44444, 0.01389, 0, 0.5],
-              "104": [0, 0.69444, 0, 0, 0.51667],
-              "105": [0, 0.67937, 0, 0, 0.23889],
-              "106": [0.19444, 0.67937, 0, 0, 0.26667],
-              "107": [0, 0.69444, 0, 0, 0.48889],
-              "108": [0, 0.69444, 0, 0, 0.23889],
-              "109": [0, 0.44444, 0, 0, 0.79445],
-              "110": [0, 0.44444, 0, 0, 0.51667],
-              "111": [0, 0.44444, 0, 0, 0.5],
-              "112": [0.19444, 0.44444, 0, 0, 0.51667],
-              "113": [0.19444, 0.44444, 0, 0, 0.51667],
-              "114": [0, 0.44444, 0.01389, 0, 0.34167],
-              "115": [0, 0.44444, 0, 0, 0.38333],
-              "116": [0, 0.57143, 0, 0, 0.36111],
-              "117": [0, 0.44444, 0, 0, 0.51667],
-              "118": [0, 0.44444, 0.01389, 0, 0.46111],
-              "119": [0, 0.44444, 0.01389, 0, 0.68334],
-              "120": [0, 0.44444, 0, 0, 0.46111],
-              "121": [0.19444, 0.44444, 0.01389, 0, 0.46111],
-              "122": [0, 0.44444, 0, 0, 0.43472],
-              "126": [0.35, 0.32659, 0, 0, 0.5],
-              "160": [0, 0, 0, 0, 0.25],
-              "168": [0, 0.67937, 0, 0, 0.5],
-              "176": [0, 0.69444, 0, 0, 0.66667],
-              "184": [0.17014, 0, 0, 0, 0.44445],
-              "305": [0, 0.44444, 0, 0, 0.23889],
-              "567": [0.19444, 0.44444, 0, 0, 0.26667],
-              "710": [0, 0.69444, 0, 0, 0.5],
-              "711": [0, 0.63194, 0, 0, 0.5],
-              "713": [0, 0.60889, 0, 0, 0.5],
-              "714": [0, 0.69444, 0, 0, 0.5],
-              "715": [0, 0.69444, 0, 0, 0.5],
-              "728": [0, 0.69444, 0, 0, 0.5],
-              "729": [0, 0.67937, 0, 0, 0.27778],
-              "730": [0, 0.69444, 0, 0, 0.66667],
-              "732": [0, 0.67659, 0, 0, 0.5],
-              "733": [0, 0.69444, 0, 0, 0.5],
-              "915": [0, 0.69444, 0, 0, 0.54167],
-              "916": [0, 0.69444, 0, 0, 0.83334],
-              "920": [0, 0.69444, 0, 0, 0.77778],
-              "923": [0, 0.69444, 0, 0, 0.61111],
-              "926": [0, 0.69444, 0, 0, 0.66667],
-              "928": [0, 0.69444, 0, 0, 0.70834],
-              "931": [0, 0.69444, 0, 0, 0.72222],
-              "933": [0, 0.69444, 0, 0, 0.77778],
-              "934": [0, 0.69444, 0, 0, 0.72222],
-              "936": [0, 0.69444, 0, 0, 0.77778],
-              "937": [0, 0.69444, 0, 0, 0.72222],
-              "8211": [0, 0.44444, 0.02778, 0, 0.5],
-              "8212": [0, 0.44444, 0.02778, 0, 1],
-              "8216": [0, 0.69444, 0, 0, 0.27778],
-              "8217": [0, 0.69444, 0, 0, 0.27778],
-              "8220": [0, 0.69444, 0, 0, 0.5],
-              "8221": [0, 0.69444, 0, 0, 0.5]
+              32: [0, 0, 0, 0, 0.25],
+              33: [0, 0.69444, 0, 0, 0.31945],
+              34: [0, 0.69444, 0, 0, 0.5],
+              35: [0.19444, 0.69444, 0, 0, 0.83334],
+              36: [0.05556, 0.75, 0, 0, 0.5],
+              37: [0.05556, 0.75, 0, 0, 0.83334],
+              38: [0, 0.69444, 0, 0, 0.75834],
+              39: [0, 0.69444, 0, 0, 0.27778],
+              40: [0.25, 0.75, 0, 0, 0.38889],
+              41: [0.25, 0.75, 0, 0, 0.38889],
+              42: [0, 0.75, 0, 0, 0.5],
+              43: [0.08333, 0.58333, 0, 0, 0.77778],
+              44: [0.125, 0.08333, 0, 0, 0.27778],
+              45: [0, 0.44444, 0, 0, 0.33333],
+              46: [0, 0.08333, 0, 0, 0.27778],
+              47: [0.25, 0.75, 0, 0, 0.5],
+              48: [0, 0.65556, 0, 0, 0.5],
+              49: [0, 0.65556, 0, 0, 0.5],
+              50: [0, 0.65556, 0, 0, 0.5],
+              51: [0, 0.65556, 0, 0, 0.5],
+              52: [0, 0.65556, 0, 0, 0.5],
+              53: [0, 0.65556, 0, 0, 0.5],
+              54: [0, 0.65556, 0, 0, 0.5],
+              55: [0, 0.65556, 0, 0, 0.5],
+              56: [0, 0.65556, 0, 0, 0.5],
+              57: [0, 0.65556, 0, 0, 0.5],
+              58: [0, 0.44444, 0, 0, 0.27778],
+              59: [0.125, 0.44444, 0, 0, 0.27778],
+              61: [-0.13, 0.37, 0, 0, 0.77778],
+              63: [0, 0.69444, 0, 0, 0.47222],
+              64: [0, 0.69444, 0, 0, 0.66667],
+              65: [0, 0.69444, 0, 0, 0.66667],
+              66: [0, 0.69444, 0, 0, 0.66667],
+              67: [0, 0.69444, 0, 0, 0.63889],
+              68: [0, 0.69444, 0, 0, 0.72223],
+              69: [0, 0.69444, 0, 0, 0.59722],
+              70: [0, 0.69444, 0, 0, 0.56945],
+              71: [0, 0.69444, 0, 0, 0.66667],
+              72: [0, 0.69444, 0, 0, 0.70834],
+              73: [0, 0.69444, 0, 0, 0.27778],
+              74: [0, 0.69444, 0, 0, 0.47222],
+              75: [0, 0.69444, 0, 0, 0.69445],
+              76: [0, 0.69444, 0, 0, 0.54167],
+              77: [0, 0.69444, 0, 0, 0.875],
+              78: [0, 0.69444, 0, 0, 0.70834],
+              79: [0, 0.69444, 0, 0, 0.73611],
+              80: [0, 0.69444, 0, 0, 0.63889],
+              81: [0.125, 0.69444, 0, 0, 0.73611],
+              82: [0, 0.69444, 0, 0, 0.64584],
+              83: [0, 0.69444, 0, 0, 0.55556],
+              84: [0, 0.69444, 0, 0, 0.68056],
+              85: [0, 0.69444, 0, 0, 0.6875],
+              86: [0, 0.69444, 0.01389, 0, 0.66667],
+              87: [0, 0.69444, 0.01389, 0, 0.94445],
+              88: [0, 0.69444, 0, 0, 0.66667],
+              89: [0, 0.69444, 0.025, 0, 0.66667],
+              90: [0, 0.69444, 0, 0, 0.61111],
+              91: [0.25, 0.75, 0, 0, 0.28889],
+              93: [0.25, 0.75, 0, 0, 0.28889],
+              94: [0, 0.69444, 0, 0, 0.5],
+              95: [0.35, 0.09444, 0.02778, 0, 0.5],
+              97: [0, 0.44444, 0, 0, 0.48056],
+              98: [0, 0.69444, 0, 0, 0.51667],
+              99: [0, 0.44444, 0, 0, 0.44445],
+              100: [0, 0.69444, 0, 0, 0.51667],
+              101: [0, 0.44444, 0, 0, 0.44445],
+              102: [0, 0.69444, 0.06944, 0, 0.30556],
+              103: [0.19444, 0.44444, 0.01389, 0, 0.5],
+              104: [0, 0.69444, 0, 0, 0.51667],
+              105: [0, 0.67937, 0, 0, 0.23889],
+              106: [0.19444, 0.67937, 0, 0, 0.26667],
+              107: [0, 0.69444, 0, 0, 0.48889],
+              108: [0, 0.69444, 0, 0, 0.23889],
+              109: [0, 0.44444, 0, 0, 0.79445],
+              110: [0, 0.44444, 0, 0, 0.51667],
+              111: [0, 0.44444, 0, 0, 0.5],
+              112: [0.19444, 0.44444, 0, 0, 0.51667],
+              113: [0.19444, 0.44444, 0, 0, 0.51667],
+              114: [0, 0.44444, 0.01389, 0, 0.34167],
+              115: [0, 0.44444, 0, 0, 0.38333],
+              116: [0, 0.57143, 0, 0, 0.36111],
+              117: [0, 0.44444, 0, 0, 0.51667],
+              118: [0, 0.44444, 0.01389, 0, 0.46111],
+              119: [0, 0.44444, 0.01389, 0, 0.68334],
+              120: [0, 0.44444, 0, 0, 0.46111],
+              121: [0.19444, 0.44444, 0.01389, 0, 0.46111],
+              122: [0, 0.44444, 0, 0, 0.43472],
+              126: [0.35, 0.32659, 0, 0, 0.5],
+              160: [0, 0, 0, 0, 0.25],
+              168: [0, 0.67937, 0, 0, 0.5],
+              176: [0, 0.69444, 0, 0, 0.66667],
+              184: [0.17014, 0, 0, 0, 0.44445],
+              305: [0, 0.44444, 0, 0, 0.23889],
+              567: [0.19444, 0.44444, 0, 0, 0.26667],
+              710: [0, 0.69444, 0, 0, 0.5],
+              711: [0, 0.63194, 0, 0, 0.5],
+              713: [0, 0.60889, 0, 0, 0.5],
+              714: [0, 0.69444, 0, 0, 0.5],
+              715: [0, 0.69444, 0, 0, 0.5],
+              728: [0, 0.69444, 0, 0, 0.5],
+              729: [0, 0.67937, 0, 0, 0.27778],
+              730: [0, 0.69444, 0, 0, 0.66667],
+              732: [0, 0.67659, 0, 0, 0.5],
+              733: [0, 0.69444, 0, 0, 0.5],
+              915: [0, 0.69444, 0, 0, 0.54167],
+              916: [0, 0.69444, 0, 0, 0.83334],
+              920: [0, 0.69444, 0, 0, 0.77778],
+              923: [0, 0.69444, 0, 0, 0.61111],
+              926: [0, 0.69444, 0, 0, 0.66667],
+              928: [0, 0.69444, 0, 0, 0.70834],
+              931: [0, 0.69444, 0, 0, 0.72222],
+              933: [0, 0.69444, 0, 0, 0.77778],
+              934: [0, 0.69444, 0, 0, 0.72222],
+              936: [0, 0.69444, 0, 0, 0.77778],
+              937: [0, 0.69444, 0, 0, 0.72222],
+              8211: [0, 0.44444, 0.02778, 0, 0.5],
+              8212: [0, 0.44444, 0.02778, 0, 1],
+              8216: [0, 0.69444, 0, 0, 0.27778],
+              8217: [0, 0.69444, 0, 0, 0.27778],
+              8220: [0, 0.69444, 0, 0, 0.5],
+              8221: [0, 0.69444, 0, 0, 0.5],
             },
             "Script-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "65": [0, 0.7, 0.22925, 0, 0.80253],
-              "66": [0, 0.7, 0.04087, 0, 0.90757],
-              "67": [0, 0.7, 0.1689, 0, 0.66619],
-              "68": [0, 0.7, 0.09371, 0, 0.77443],
-              "69": [0, 0.7, 0.18583, 0, 0.56162],
-              "70": [0, 0.7, 0.13634, 0, 0.89544],
-              "71": [0, 0.7, 0.17322, 0, 0.60961],
-              "72": [0, 0.7, 0.29694, 0, 0.96919],
-              "73": [0, 0.7, 0.19189, 0, 0.80907],
-              "74": [0.27778, 0.7, 0.19189, 0, 1.05159],
-              "75": [0, 0.7, 0.31259, 0, 0.91364],
-              "76": [0, 0.7, 0.19189, 0, 0.87373],
-              "77": [0, 0.7, 0.15981, 0, 1.08031],
-              "78": [0, 0.7, 0.3525, 0, 0.9015],
-              "79": [0, 0.7, 0.08078, 0, 0.73787],
-              "80": [0, 0.7, 0.08078, 0, 1.01262],
-              "81": [0, 0.7, 0.03305, 0, 0.88282],
-              "82": [0, 0.7, 0.06259, 0, 0.85],
-              "83": [0, 0.7, 0.19189, 0, 0.86767],
-              "84": [0, 0.7, 0.29087, 0, 0.74697],
-              "85": [0, 0.7, 0.25815, 0, 0.79996],
-              "86": [0, 0.7, 0.27523, 0, 0.62204],
-              "87": [0, 0.7, 0.27523, 0, 0.80532],
-              "88": [0, 0.7, 0.26006, 0, 0.94445],
-              "89": [0, 0.7, 0.2939, 0, 0.70961],
-              "90": [0, 0.7, 0.24037, 0, 0.8212],
-              "160": [0, 0, 0, 0, 0.25]
+              32: [0, 0, 0, 0, 0.25],
+              65: [0, 0.7, 0.22925, 0, 0.80253],
+              66: [0, 0.7, 0.04087, 0, 0.90757],
+              67: [0, 0.7, 0.1689, 0, 0.66619],
+              68: [0, 0.7, 0.09371, 0, 0.77443],
+              69: [0, 0.7, 0.18583, 0, 0.56162],
+              70: [0, 0.7, 0.13634, 0, 0.89544],
+              71: [0, 0.7, 0.17322, 0, 0.60961],
+              72: [0, 0.7, 0.29694, 0, 0.96919],
+              73: [0, 0.7, 0.19189, 0, 0.80907],
+              74: [0.27778, 0.7, 0.19189, 0, 1.05159],
+              75: [0, 0.7, 0.31259, 0, 0.91364],
+              76: [0, 0.7, 0.19189, 0, 0.87373],
+              77: [0, 0.7, 0.15981, 0, 1.08031],
+              78: [0, 0.7, 0.3525, 0, 0.9015],
+              79: [0, 0.7, 0.08078, 0, 0.73787],
+              80: [0, 0.7, 0.08078, 0, 1.01262],
+              81: [0, 0.7, 0.03305, 0, 0.88282],
+              82: [0, 0.7, 0.06259, 0, 0.85],
+              83: [0, 0.7, 0.19189, 0, 0.86767],
+              84: [0, 0.7, 0.29087, 0, 0.74697],
+              85: [0, 0.7, 0.25815, 0, 0.79996],
+              86: [0, 0.7, 0.27523, 0, 0.62204],
+              87: [0, 0.7, 0.27523, 0, 0.80532],
+              88: [0, 0.7, 0.26006, 0, 0.94445],
+              89: [0, 0.7, 0.2939, 0, 0.70961],
+              90: [0, 0.7, 0.24037, 0, 0.8212],
+              160: [0, 0, 0, 0, 0.25],
             },
             "Size1-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "40": [0.35001, 0.85, 0, 0, 0.45834],
-              "41": [0.35001, 0.85, 0, 0, 0.45834],
-              "47": [0.35001, 0.85, 0, 0, 0.57778],
-              "91": [0.35001, 0.85, 0, 0, 0.41667],
-              "92": [0.35001, 0.85, 0, 0, 0.57778],
-              "93": [0.35001, 0.85, 0, 0, 0.41667],
-              "123": [0.35001, 0.85, 0, 0, 0.58334],
-              "125": [0.35001, 0.85, 0, 0, 0.58334],
-              "160": [0, 0, 0, 0, 0.25],
-              "710": [0, 0.72222, 0, 0, 0.55556],
-              "732": [0, 0.72222, 0, 0, 0.55556],
-              "770": [0, 0.72222, 0, 0, 0.55556],
-              "771": [0, 0.72222, 0, 0, 0.55556],
-              "8214": [-99e-5, 0.601, 0, 0, 0.77778],
-              "8593": [1e-5, 0.6, 0, 0, 0.66667],
-              "8595": [1e-5, 0.6, 0, 0, 0.66667],
-              "8657": [1e-5, 0.6, 0, 0, 0.77778],
-              "8659": [1e-5, 0.6, 0, 0, 0.77778],
-              "8719": [0.25001, 0.75, 0, 0, 0.94445],
-              "8720": [0.25001, 0.75, 0, 0, 0.94445],
-              "8721": [0.25001, 0.75, 0, 0, 1.05556],
-              "8730": [0.35001, 0.85, 0, 0, 1],
-              "8739": [-599e-5, 0.606, 0, 0, 0.33333],
-              "8741": [-599e-5, 0.606, 0, 0, 0.55556],
-              "8747": [0.30612, 0.805, 0.19445, 0, 0.47222],
-              "8748": [0.306, 0.805, 0.19445, 0, 0.47222],
-              "8749": [0.306, 0.805, 0.19445, 0, 0.47222],
-              "8750": [0.30612, 0.805, 0.19445, 0, 0.47222],
-              "8896": [0.25001, 0.75, 0, 0, 0.83334],
-              "8897": [0.25001, 0.75, 0, 0, 0.83334],
-              "8898": [0.25001, 0.75, 0, 0, 0.83334],
-              "8899": [0.25001, 0.75, 0, 0, 0.83334],
-              "8968": [0.35001, 0.85, 0, 0, 0.47222],
-              "8969": [0.35001, 0.85, 0, 0, 0.47222],
-              "8970": [0.35001, 0.85, 0, 0, 0.47222],
-              "8971": [0.35001, 0.85, 0, 0, 0.47222],
-              "9168": [-99e-5, 0.601, 0, 0, 0.66667],
-              "10216": [0.35001, 0.85, 0, 0, 0.47222],
-              "10217": [0.35001, 0.85, 0, 0, 0.47222],
-              "10752": [0.25001, 0.75, 0, 0, 1.11111],
-              "10753": [0.25001, 0.75, 0, 0, 1.11111],
-              "10754": [0.25001, 0.75, 0, 0, 1.11111],
-              "10756": [0.25001, 0.75, 0, 0, 0.83334],
-              "10758": [0.25001, 0.75, 0, 0, 0.83334]
+              32: [0, 0, 0, 0, 0.25],
+              40: [0.35001, 0.85, 0, 0, 0.45834],
+              41: [0.35001, 0.85, 0, 0, 0.45834],
+              47: [0.35001, 0.85, 0, 0, 0.57778],
+              91: [0.35001, 0.85, 0, 0, 0.41667],
+              92: [0.35001, 0.85, 0, 0, 0.57778],
+              93: [0.35001, 0.85, 0, 0, 0.41667],
+              123: [0.35001, 0.85, 0, 0, 0.58334],
+              125: [0.35001, 0.85, 0, 0, 0.58334],
+              160: [0, 0, 0, 0, 0.25],
+              710: [0, 0.72222, 0, 0, 0.55556],
+              732: [0, 0.72222, 0, 0, 0.55556],
+              770: [0, 0.72222, 0, 0, 0.55556],
+              771: [0, 0.72222, 0, 0, 0.55556],
+              8214: [-99e-5, 0.601, 0, 0, 0.77778],
+              8593: [1e-5, 0.6, 0, 0, 0.66667],
+              8595: [1e-5, 0.6, 0, 0, 0.66667],
+              8657: [1e-5, 0.6, 0, 0, 0.77778],
+              8659: [1e-5, 0.6, 0, 0, 0.77778],
+              8719: [0.25001, 0.75, 0, 0, 0.94445],
+              8720: [0.25001, 0.75, 0, 0, 0.94445],
+              8721: [0.25001, 0.75, 0, 0, 1.05556],
+              8730: [0.35001, 0.85, 0, 0, 1],
+              8739: [-599e-5, 0.606, 0, 0, 0.33333],
+              8741: [-599e-5, 0.606, 0, 0, 0.55556],
+              8747: [0.30612, 0.805, 0.19445, 0, 0.47222],
+              8748: [0.306, 0.805, 0.19445, 0, 0.47222],
+              8749: [0.306, 0.805, 0.19445, 0, 0.47222],
+              8750: [0.30612, 0.805, 0.19445, 0, 0.47222],
+              8896: [0.25001, 0.75, 0, 0, 0.83334],
+              8897: [0.25001, 0.75, 0, 0, 0.83334],
+              8898: [0.25001, 0.75, 0, 0, 0.83334],
+              8899: [0.25001, 0.75, 0, 0, 0.83334],
+              8968: [0.35001, 0.85, 0, 0, 0.47222],
+              8969: [0.35001, 0.85, 0, 0, 0.47222],
+              8970: [0.35001, 0.85, 0, 0, 0.47222],
+              8971: [0.35001, 0.85, 0, 0, 0.47222],
+              9168: [-99e-5, 0.601, 0, 0, 0.66667],
+              10216: [0.35001, 0.85, 0, 0, 0.47222],
+              10217: [0.35001, 0.85, 0, 0, 0.47222],
+              10752: [0.25001, 0.75, 0, 0, 1.11111],
+              10753: [0.25001, 0.75, 0, 0, 1.11111],
+              10754: [0.25001, 0.75, 0, 0, 1.11111],
+              10756: [0.25001, 0.75, 0, 0, 0.83334],
+              10758: [0.25001, 0.75, 0, 0, 0.83334],
             },
             "Size2-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "40": [0.65002, 1.15, 0, 0, 0.59722],
-              "41": [0.65002, 1.15, 0, 0, 0.59722],
-              "47": [0.65002, 1.15, 0, 0, 0.81111],
-              "91": [0.65002, 1.15, 0, 0, 0.47222],
-              "92": [0.65002, 1.15, 0, 0, 0.81111],
-              "93": [0.65002, 1.15, 0, 0, 0.47222],
-              "123": [0.65002, 1.15, 0, 0, 0.66667],
-              "125": [0.65002, 1.15, 0, 0, 0.66667],
-              "160": [0, 0, 0, 0, 0.25],
-              "710": [0, 0.75, 0, 0, 1],
-              "732": [0, 0.75, 0, 0, 1],
-              "770": [0, 0.75, 0, 0, 1],
-              "771": [0, 0.75, 0, 0, 1],
-              "8719": [0.55001, 1.05, 0, 0, 1.27778],
-              "8720": [0.55001, 1.05, 0, 0, 1.27778],
-              "8721": [0.55001, 1.05, 0, 0, 1.44445],
-              "8730": [0.65002, 1.15, 0, 0, 1],
-              "8747": [0.86225, 1.36, 0.44445, 0, 0.55556],
-              "8748": [0.862, 1.36, 0.44445, 0, 0.55556],
-              "8749": [0.862, 1.36, 0.44445, 0, 0.55556],
-              "8750": [0.86225, 1.36, 0.44445, 0, 0.55556],
-              "8896": [0.55001, 1.05, 0, 0, 1.11111],
-              "8897": [0.55001, 1.05, 0, 0, 1.11111],
-              "8898": [0.55001, 1.05, 0, 0, 1.11111],
-              "8899": [0.55001, 1.05, 0, 0, 1.11111],
-              "8968": [0.65002, 1.15, 0, 0, 0.52778],
-              "8969": [0.65002, 1.15, 0, 0, 0.52778],
-              "8970": [0.65002, 1.15, 0, 0, 0.52778],
-              "8971": [0.65002, 1.15, 0, 0, 0.52778],
-              "10216": [0.65002, 1.15, 0, 0, 0.61111],
-              "10217": [0.65002, 1.15, 0, 0, 0.61111],
-              "10752": [0.55001, 1.05, 0, 0, 1.51112],
-              "10753": [0.55001, 1.05, 0, 0, 1.51112],
-              "10754": [0.55001, 1.05, 0, 0, 1.51112],
-              "10756": [0.55001, 1.05, 0, 0, 1.11111],
-              "10758": [0.55001, 1.05, 0, 0, 1.11111]
+              32: [0, 0, 0, 0, 0.25],
+              40: [0.65002, 1.15, 0, 0, 0.59722],
+              41: [0.65002, 1.15, 0, 0, 0.59722],
+              47: [0.65002, 1.15, 0, 0, 0.81111],
+              91: [0.65002, 1.15, 0, 0, 0.47222],
+              92: [0.65002, 1.15, 0, 0, 0.81111],
+              93: [0.65002, 1.15, 0, 0, 0.47222],
+              123: [0.65002, 1.15, 0, 0, 0.66667],
+              125: [0.65002, 1.15, 0, 0, 0.66667],
+              160: [0, 0, 0, 0, 0.25],
+              710: [0, 0.75, 0, 0, 1],
+              732: [0, 0.75, 0, 0, 1],
+              770: [0, 0.75, 0, 0, 1],
+              771: [0, 0.75, 0, 0, 1],
+              8719: [0.55001, 1.05, 0, 0, 1.27778],
+              8720: [0.55001, 1.05, 0, 0, 1.27778],
+              8721: [0.55001, 1.05, 0, 0, 1.44445],
+              8730: [0.65002, 1.15, 0, 0, 1],
+              8747: [0.86225, 1.36, 0.44445, 0, 0.55556],
+              8748: [0.862, 1.36, 0.44445, 0, 0.55556],
+              8749: [0.862, 1.36, 0.44445, 0, 0.55556],
+              8750: [0.86225, 1.36, 0.44445, 0, 0.55556],
+              8896: [0.55001, 1.05, 0, 0, 1.11111],
+              8897: [0.55001, 1.05, 0, 0, 1.11111],
+              8898: [0.55001, 1.05, 0, 0, 1.11111],
+              8899: [0.55001, 1.05, 0, 0, 1.11111],
+              8968: [0.65002, 1.15, 0, 0, 0.52778],
+              8969: [0.65002, 1.15, 0, 0, 0.52778],
+              8970: [0.65002, 1.15, 0, 0, 0.52778],
+              8971: [0.65002, 1.15, 0, 0, 0.52778],
+              10216: [0.65002, 1.15, 0, 0, 0.61111],
+              10217: [0.65002, 1.15, 0, 0, 0.61111],
+              10752: [0.55001, 1.05, 0, 0, 1.51112],
+              10753: [0.55001, 1.05, 0, 0, 1.51112],
+              10754: [0.55001, 1.05, 0, 0, 1.51112],
+              10756: [0.55001, 1.05, 0, 0, 1.11111],
+              10758: [0.55001, 1.05, 0, 0, 1.11111],
             },
             "Size3-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "40": [0.95003, 1.45, 0, 0, 0.73611],
-              "41": [0.95003, 1.45, 0, 0, 0.73611],
-              "47": [0.95003, 1.45, 0, 0, 1.04445],
-              "91": [0.95003, 1.45, 0, 0, 0.52778],
-              "92": [0.95003, 1.45, 0, 0, 1.04445],
-              "93": [0.95003, 1.45, 0, 0, 0.52778],
-              "123": [0.95003, 1.45, 0, 0, 0.75],
-              "125": [0.95003, 1.45, 0, 0, 0.75],
-              "160": [0, 0, 0, 0, 0.25],
-              "710": [0, 0.75, 0, 0, 1.44445],
-              "732": [0, 0.75, 0, 0, 1.44445],
-              "770": [0, 0.75, 0, 0, 1.44445],
-              "771": [0, 0.75, 0, 0, 1.44445],
-              "8730": [0.95003, 1.45, 0, 0, 1],
-              "8968": [0.95003, 1.45, 0, 0, 0.58334],
-              "8969": [0.95003, 1.45, 0, 0, 0.58334],
-              "8970": [0.95003, 1.45, 0, 0, 0.58334],
-              "8971": [0.95003, 1.45, 0, 0, 0.58334],
-              "10216": [0.95003, 1.45, 0, 0, 0.75],
-              "10217": [0.95003, 1.45, 0, 0, 0.75]
+              32: [0, 0, 0, 0, 0.25],
+              40: [0.95003, 1.45, 0, 0, 0.73611],
+              41: [0.95003, 1.45, 0, 0, 0.73611],
+              47: [0.95003, 1.45, 0, 0, 1.04445],
+              91: [0.95003, 1.45, 0, 0, 0.52778],
+              92: [0.95003, 1.45, 0, 0, 1.04445],
+              93: [0.95003, 1.45, 0, 0, 0.52778],
+              123: [0.95003, 1.45, 0, 0, 0.75],
+              125: [0.95003, 1.45, 0, 0, 0.75],
+              160: [0, 0, 0, 0, 0.25],
+              710: [0, 0.75, 0, 0, 1.44445],
+              732: [0, 0.75, 0, 0, 1.44445],
+              770: [0, 0.75, 0, 0, 1.44445],
+              771: [0, 0.75, 0, 0, 1.44445],
+              8730: [0.95003, 1.45, 0, 0, 1],
+              8968: [0.95003, 1.45, 0, 0, 0.58334],
+              8969: [0.95003, 1.45, 0, 0, 0.58334],
+              8970: [0.95003, 1.45, 0, 0, 0.58334],
+              8971: [0.95003, 1.45, 0, 0, 0.58334],
+              10216: [0.95003, 1.45, 0, 0, 0.75],
+              10217: [0.95003, 1.45, 0, 0, 0.75],
             },
             "Size4-Regular": {
-              "32": [0, 0, 0, 0, 0.25],
-              "40": [1.25003, 1.75, 0, 0, 0.79167],
-              "41": [1.25003, 1.75, 0, 0, 0.79167],
-              "47": [1.25003, 1.75, 0, 0, 1.27778],
-              "91": [1.25003, 1.75, 0, 0, 0.58334],
-              "92": [1.25003, 1.75, 0, 0, 1.27778],
-              "93": [1.25003, 1.75, 0, 0, 0.58334],
-              "123": [1.25003, 1.75, 0, 0, 0.80556],
-              "125": [1.25003, 1.75, 0, 0, 0.80556],
-              "160": [0, 0, 0, 0, 0.25],
-              "710": [0, 0.825, 0, 0, 1.8889],
-              "732": [0, 0.825, 0, 0, 1.8889],
-              "770": [0, 0.825, 0, 0, 1.8889],
-              "771": [0, 0.825, 0, 0, 1.8889],
-              "8730": [1.25003, 1.75, 0, 0, 1],
-              "8968": [1.25003, 1.75, 0, 0, 0.63889],
-              "8969": [1.25003, 1.75, 0, 0, 0.63889],
-              "8970": [1.25003, 1.75, 0, 0, 0.63889],
-              "8971": [1.25003, 1.75, 0, 0, 0.63889],
-              "9115": [0.64502, 1.155, 0, 0, 0.875],
-              "9116": [1e-5, 0.6, 0, 0, 0.875],
-              "9117": [0.64502, 1.155, 0, 0, 0.875],
-              "9118": [0.64502, 1.155, 0, 0, 0.875],
-              "9119": [1e-5, 0.6, 0, 0, 0.875],
-              "9120": [0.64502, 1.155, 0, 0, 0.875],
-              "9121": [0.64502, 1.155, 0, 0, 0.66667],
-              "9122": [-99e-5, 0.601, 0, 0, 0.66667],
-              "9123": [0.64502, 1.155, 0, 0, 0.66667],
-              "9124": [0.64502, 1.155, 0, 0, 0.66667],
-              "9125": [-99e-5, 0.601, 0, 0, 0.66667],
-              "9126": [0.64502, 1.155, 0, 0, 0.66667],
-              "9127": [1e-5, 0.9, 0, 0, 0.88889],
-              "9128": [0.65002, 1.15, 0, 0, 0.88889],
-              "9129": [0.90001, 0, 0, 0, 0.88889],
-              "9130": [0, 0.3, 0, 0, 0.88889],
-              "9131": [1e-5, 0.9, 0, 0, 0.88889],
-              "9132": [0.65002, 1.15, 0, 0, 0.88889],
-              "9133": [0.90001, 0, 0, 0, 0.88889],
-              "9143": [0.88502, 0.915, 0, 0, 1.05556],
-              "10216": [1.25003, 1.75, 0, 0, 0.80556],
-              "10217": [1.25003, 1.75, 0, 0, 0.80556],
-              "57344": [-499e-5, 0.605, 0, 0, 1.05556],
-              "57345": [-499e-5, 0.605, 0, 0, 1.05556],
-              "57680": [0, 0.12, 0, 0, 0.45],
-              "57681": [0, 0.12, 0, 0, 0.45],
-              "57682": [0, 0.12, 0, 0, 0.45],
-              "57683": [0, 0.12, 0, 0, 0.45]
+              32: [0, 0, 0, 0, 0.25],
+              40: [1.25003, 1.75, 0, 0, 0.79167],
+              41: [1.25003, 1.75, 0, 0, 0.79167],
+              47: [1.25003, 1.75, 0, 0, 1.27778],
+              91: [1.25003, 1.75, 0, 0, 0.58334],
+              92: [1.25003, 1.75, 0, 0, 1.27778],
+              93: [1.25003, 1.75, 0, 0, 0.58334],
+              123: [1.25003, 1.75, 0, 0, 0.80556],
+              125: [1.25003, 1.75, 0, 0, 0.80556],
+              160: [0, 0, 0, 0, 0.25],
+              710: [0, 0.825, 0, 0, 1.8889],
+              732: [0, 0.825, 0, 0, 1.8889],
+              770: [0, 0.825, 0, 0, 1.8889],
+              771: [0, 0.825, 0, 0, 1.8889],
+              8730: [1.25003, 1.75, 0, 0, 1],
+              8968: [1.25003, 1.75, 0, 0, 0.63889],
+              8969: [1.25003, 1.75, 0, 0, 0.63889],
+              8970: [1.25003, 1.75, 0, 0, 0.63889],
+              8971: [1.25003, 1.75, 0, 0, 0.63889],
+              9115: [0.64502, 1.155, 0, 0, 0.875],
+              9116: [1e-5, 0.6, 0, 0, 0.875],
+              9117: [0.64502, 1.155, 0, 0, 0.875],
+              9118: [0.64502, 1.155, 0, 0, 0.875],
+              9119: [1e-5, 0.6, 0, 0, 0.875],
+              9120: [0.64502, 1.155, 0, 0, 0.875],
+              9121: [0.64502, 1.155, 0, 0, 0.66667],
+              9122: [-99e-5, 0.601, 0, 0, 0.66667],
+              9123: [0.64502, 1.155, 0, 0, 0.66667],
+              9124: [0.64502, 1.155, 0, 0, 0.66667],
+              9125: [-99e-5, 0.601, 0, 0, 0.66667],
+              9126: [0.64502, 1.155, 0, 0, 0.66667],
+              9127: [1e-5, 0.9, 0, 0, 0.88889],
+              9128: [0.65002, 1.15, 0, 0, 0.88889],
+              9129: [0.90001, 0, 0, 0, 0.88889],
+              9130: [0, 0.3, 0, 0, 0.88889],
+              9131: [1e-5, 0.9, 0, 0, 0.88889],
+              9132: [0.65002, 1.15, 0, 0, 0.88889],
+              9133: [0.90001, 0, 0, 0, 0.88889],
+              9143: [0.88502, 0.915, 0, 0, 1.05556],
+              10216: [1.25003, 1.75, 0, 0, 0.80556],
+              10217: [1.25003, 1.75, 0, 0, 0.80556],
+              57344: [-499e-5, 0.605, 0, 0, 1.05556],
+              57345: [-499e-5, 0.605, 0, 0, 1.05556],
+              57680: [0, 0.12, 0, 0, 0.45],
+              57681: [0, 0.12, 0, 0, 0.45],
+              57682: [0, 0.12, 0, 0, 0.45],
+              57683: [0, 0.12, 0, 0, 0.45],
             },
             "Typewriter-Regular": {
-              "32": [0, 0, 0, 0, 0.525],
-              "33": [0, 0.61111, 0, 0, 0.525],
-              "34": [0, 0.61111, 0, 0, 0.525],
-              "35": [0, 0.61111, 0, 0, 0.525],
-              "36": [0.08333, 0.69444, 0, 0, 0.525],
-              "37": [0.08333, 0.69444, 0, 0, 0.525],
-              "38": [0, 0.61111, 0, 0, 0.525],
-              "39": [0, 0.61111, 0, 0, 0.525],
-              "40": [0.08333, 0.69444, 0, 0, 0.525],
-              "41": [0.08333, 0.69444, 0, 0, 0.525],
-              "42": [0, 0.52083, 0, 0, 0.525],
-              "43": [-0.08056, 0.53055, 0, 0, 0.525],
-              "44": [0.13889, 0.125, 0, 0, 0.525],
-              "45": [-0.08056, 0.53055, 0, 0, 0.525],
-              "46": [0, 0.125, 0, 0, 0.525],
-              "47": [0.08333, 0.69444, 0, 0, 0.525],
-              "48": [0, 0.61111, 0, 0, 0.525],
-              "49": [0, 0.61111, 0, 0, 0.525],
-              "50": [0, 0.61111, 0, 0, 0.525],
-              "51": [0, 0.61111, 0, 0, 0.525],
-              "52": [0, 0.61111, 0, 0, 0.525],
-              "53": [0, 0.61111, 0, 0, 0.525],
-              "54": [0, 0.61111, 0, 0, 0.525],
-              "55": [0, 0.61111, 0, 0, 0.525],
-              "56": [0, 0.61111, 0, 0, 0.525],
-              "57": [0, 0.61111, 0, 0, 0.525],
-              "58": [0, 0.43056, 0, 0, 0.525],
-              "59": [0.13889, 0.43056, 0, 0, 0.525],
-              "60": [-0.05556, 0.55556, 0, 0, 0.525],
-              "61": [-0.19549, 0.41562, 0, 0, 0.525],
-              "62": [-0.05556, 0.55556, 0, 0, 0.525],
-              "63": [0, 0.61111, 0, 0, 0.525],
-              "64": [0, 0.61111, 0, 0, 0.525],
-              "65": [0, 0.61111, 0, 0, 0.525],
-              "66": [0, 0.61111, 0, 0, 0.525],
-              "67": [0, 0.61111, 0, 0, 0.525],
-              "68": [0, 0.61111, 0, 0, 0.525],
-              "69": [0, 0.61111, 0, 0, 0.525],
-              "70": [0, 0.61111, 0, 0, 0.525],
-              "71": [0, 0.61111, 0, 0, 0.525],
-              "72": [0, 0.61111, 0, 0, 0.525],
-              "73": [0, 0.61111, 0, 0, 0.525],
-              "74": [0, 0.61111, 0, 0, 0.525],
-              "75": [0, 0.61111, 0, 0, 0.525],
-              "76": [0, 0.61111, 0, 0, 0.525],
-              "77": [0, 0.61111, 0, 0, 0.525],
-              "78": [0, 0.61111, 0, 0, 0.525],
-              "79": [0, 0.61111, 0, 0, 0.525],
-              "80": [0, 0.61111, 0, 0, 0.525],
-              "81": [0.13889, 0.61111, 0, 0, 0.525],
-              "82": [0, 0.61111, 0, 0, 0.525],
-              "83": [0, 0.61111, 0, 0, 0.525],
-              "84": [0, 0.61111, 0, 0, 0.525],
-              "85": [0, 0.61111, 0, 0, 0.525],
-              "86": [0, 0.61111, 0, 0, 0.525],
-              "87": [0, 0.61111, 0, 0, 0.525],
-              "88": [0, 0.61111, 0, 0, 0.525],
-              "89": [0, 0.61111, 0, 0, 0.525],
-              "90": [0, 0.61111, 0, 0, 0.525],
-              "91": [0.08333, 0.69444, 0, 0, 0.525],
-              "92": [0.08333, 0.69444, 0, 0, 0.525],
-              "93": [0.08333, 0.69444, 0, 0, 0.525],
-              "94": [0, 0.61111, 0, 0, 0.525],
-              "95": [0.09514, 0, 0, 0, 0.525],
-              "96": [0, 0.61111, 0, 0, 0.525],
-              "97": [0, 0.43056, 0, 0, 0.525],
-              "98": [0, 0.61111, 0, 0, 0.525],
-              "99": [0, 0.43056, 0, 0, 0.525],
-              "100": [0, 0.61111, 0, 0, 0.525],
-              "101": [0, 0.43056, 0, 0, 0.525],
-              "102": [0, 0.61111, 0, 0, 0.525],
-              "103": [0.22222, 0.43056, 0, 0, 0.525],
-              "104": [0, 0.61111, 0, 0, 0.525],
-              "105": [0, 0.61111, 0, 0, 0.525],
-              "106": [0.22222, 0.61111, 0, 0, 0.525],
-              "107": [0, 0.61111, 0, 0, 0.525],
-              "108": [0, 0.61111, 0, 0, 0.525],
-              "109": [0, 0.43056, 0, 0, 0.525],
-              "110": [0, 0.43056, 0, 0, 0.525],
-              "111": [0, 0.43056, 0, 0, 0.525],
-              "112": [0.22222, 0.43056, 0, 0, 0.525],
-              "113": [0.22222, 0.43056, 0, 0, 0.525],
-              "114": [0, 0.43056, 0, 0, 0.525],
-              "115": [0, 0.43056, 0, 0, 0.525],
-              "116": [0, 0.55358, 0, 0, 0.525],
-              "117": [0, 0.43056, 0, 0, 0.525],
-              "118": [0, 0.43056, 0, 0, 0.525],
-              "119": [0, 0.43056, 0, 0, 0.525],
-              "120": [0, 0.43056, 0, 0, 0.525],
-              "121": [0.22222, 0.43056, 0, 0, 0.525],
-              "122": [0, 0.43056, 0, 0, 0.525],
-              "123": [0.08333, 0.69444, 0, 0, 0.525],
-              "124": [0.08333, 0.69444, 0, 0, 0.525],
-              "125": [0.08333, 0.69444, 0, 0, 0.525],
-              "126": [0, 0.61111, 0, 0, 0.525],
-              "127": [0, 0.61111, 0, 0, 0.525],
-              "160": [0, 0, 0, 0, 0.525],
-              "176": [0, 0.61111, 0, 0, 0.525],
-              "184": [0.19445, 0, 0, 0, 0.525],
-              "305": [0, 0.43056, 0, 0, 0.525],
-              "567": [0.22222, 0.43056, 0, 0, 0.525],
-              "711": [0, 0.56597, 0, 0, 0.525],
-              "713": [0, 0.56555, 0, 0, 0.525],
-              "714": [0, 0.61111, 0, 0, 0.525],
-              "715": [0, 0.61111, 0, 0, 0.525],
-              "728": [0, 0.61111, 0, 0, 0.525],
-              "730": [0, 0.61111, 0, 0, 0.525],
-              "770": [0, 0.61111, 0, 0, 0.525],
-              "771": [0, 0.61111, 0, 0, 0.525],
-              "776": [0, 0.61111, 0, 0, 0.525],
-              "915": [0, 0.61111, 0, 0, 0.525],
-              "916": [0, 0.61111, 0, 0, 0.525],
-              "920": [0, 0.61111, 0, 0, 0.525],
-              "923": [0, 0.61111, 0, 0, 0.525],
-              "926": [0, 0.61111, 0, 0, 0.525],
-              "928": [0, 0.61111, 0, 0, 0.525],
-              "931": [0, 0.61111, 0, 0, 0.525],
-              "933": [0, 0.61111, 0, 0, 0.525],
-              "934": [0, 0.61111, 0, 0, 0.525],
-              "936": [0, 0.61111, 0, 0, 0.525],
-              "937": [0, 0.61111, 0, 0, 0.525],
-              "8216": [0, 0.61111, 0, 0, 0.525],
-              "8217": [0, 0.61111, 0, 0, 0.525],
-              "8242": [0, 0.61111, 0, 0, 0.525],
-              "9251": [0.11111, 0.21944, 0, 0, 0.525]
-            }
+              32: [0, 0, 0, 0, 0.525],
+              33: [0, 0.61111, 0, 0, 0.525],
+              34: [0, 0.61111, 0, 0, 0.525],
+              35: [0, 0.61111, 0, 0, 0.525],
+              36: [0.08333, 0.69444, 0, 0, 0.525],
+              37: [0.08333, 0.69444, 0, 0, 0.525],
+              38: [0, 0.61111, 0, 0, 0.525],
+              39: [0, 0.61111, 0, 0, 0.525],
+              40: [0.08333, 0.69444, 0, 0, 0.525],
+              41: [0.08333, 0.69444, 0, 0, 0.525],
+              42: [0, 0.52083, 0, 0, 0.525],
+              43: [-0.08056, 0.53055, 0, 0, 0.525],
+              44: [0.13889, 0.125, 0, 0, 0.525],
+              45: [-0.08056, 0.53055, 0, 0, 0.525],
+              46: [0, 0.125, 0, 0, 0.525],
+              47: [0.08333, 0.69444, 0, 0, 0.525],
+              48: [0, 0.61111, 0, 0, 0.525],
+              49: [0, 0.61111, 0, 0, 0.525],
+              50: [0, 0.61111, 0, 0, 0.525],
+              51: [0, 0.61111, 0, 0, 0.525],
+              52: [0, 0.61111, 0, 0, 0.525],
+              53: [0, 0.61111, 0, 0, 0.525],
+              54: [0, 0.61111, 0, 0, 0.525],
+              55: [0, 0.61111, 0, 0, 0.525],
+              56: [0, 0.61111, 0, 0, 0.525],
+              57: [0, 0.61111, 0, 0, 0.525],
+              58: [0, 0.43056, 0, 0, 0.525],
+              59: [0.13889, 0.43056, 0, 0, 0.525],
+              60: [-0.05556, 0.55556, 0, 0, 0.525],
+              61: [-0.19549, 0.41562, 0, 0, 0.525],
+              62: [-0.05556, 0.55556, 0, 0, 0.525],
+              63: [0, 0.61111, 0, 0, 0.525],
+              64: [0, 0.61111, 0, 0, 0.525],
+              65: [0, 0.61111, 0, 0, 0.525],
+              66: [0, 0.61111, 0, 0, 0.525],
+              67: [0, 0.61111, 0, 0, 0.525],
+              68: [0, 0.61111, 0, 0, 0.525],
+              69: [0, 0.61111, 0, 0, 0.525],
+              70: [0, 0.61111, 0, 0, 0.525],
+              71: [0, 0.61111, 0, 0, 0.525],
+              72: [0, 0.61111, 0, 0, 0.525],
+              73: [0, 0.61111, 0, 0, 0.525],
+              74: [0, 0.61111, 0, 0, 0.525],
+              75: [0, 0.61111, 0, 0, 0.525],
+              76: [0, 0.61111, 0, 0, 0.525],
+              77: [0, 0.61111, 0, 0, 0.525],
+              78: [0, 0.61111, 0, 0, 0.525],
+              79: [0, 0.61111, 0, 0, 0.525],
+              80: [0, 0.61111, 0, 0, 0.525],
+              81: [0.13889, 0.61111, 0, 0, 0.525],
+              82: [0, 0.61111, 0, 0, 0.525],
+              83: [0, 0.61111, 0, 0, 0.525],
+              84: [0, 0.61111, 0, 0, 0.525],
+              85: [0, 0.61111, 0, 0, 0.525],
+              86: [0, 0.61111, 0, 0, 0.525],
+              87: [0, 0.61111, 0, 0, 0.525],
+              88: [0, 0.61111, 0, 0, 0.525],
+              89: [0, 0.61111, 0, 0, 0.525],
+              90: [0, 0.61111, 0, 0, 0.525],
+              91: [0.08333, 0.69444, 0, 0, 0.525],
+              92: [0.08333, 0.69444, 0, 0, 0.525],
+              93: [0.08333, 0.69444, 0, 0, 0.525],
+              94: [0, 0.61111, 0, 0, 0.525],
+              95: [0.09514, 0, 0, 0, 0.525],
+              96: [0, 0.61111, 0, 0, 0.525],
+              97: [0, 0.43056, 0, 0, 0.525],
+              98: [0, 0.61111, 0, 0, 0.525],
+              99: [0, 0.43056, 0, 0, 0.525],
+              100: [0, 0.61111, 0, 0, 0.525],
+              101: [0, 0.43056, 0, 0, 0.525],
+              102: [0, 0.61111, 0, 0, 0.525],
+              103: [0.22222, 0.43056, 0, 0, 0.525],
+              104: [0, 0.61111, 0, 0, 0.525],
+              105: [0, 0.61111, 0, 0, 0.525],
+              106: [0.22222, 0.61111, 0, 0, 0.525],
+              107: [0, 0.61111, 0, 0, 0.525],
+              108: [0, 0.61111, 0, 0, 0.525],
+              109: [0, 0.43056, 0, 0, 0.525],
+              110: [0, 0.43056, 0, 0, 0.525],
+              111: [0, 0.43056, 0, 0, 0.525],
+              112: [0.22222, 0.43056, 0, 0, 0.525],
+              113: [0.22222, 0.43056, 0, 0, 0.525],
+              114: [0, 0.43056, 0, 0, 0.525],
+              115: [0, 0.43056, 0, 0, 0.525],
+              116: [0, 0.55358, 0, 0, 0.525],
+              117: [0, 0.43056, 0, 0, 0.525],
+              118: [0, 0.43056, 0, 0, 0.525],
+              119: [0, 0.43056, 0, 0, 0.525],
+              120: [0, 0.43056, 0, 0, 0.525],
+              121: [0.22222, 0.43056, 0, 0, 0.525],
+              122: [0, 0.43056, 0, 0, 0.525],
+              123: [0.08333, 0.69444, 0, 0, 0.525],
+              124: [0.08333, 0.69444, 0, 0, 0.525],
+              125: [0.08333, 0.69444, 0, 0, 0.525],
+              126: [0, 0.61111, 0, 0, 0.525],
+              127: [0, 0.61111, 0, 0, 0.525],
+              160: [0, 0, 0, 0, 0.525],
+              176: [0, 0.61111, 0, 0, 0.525],
+              184: [0.19445, 0, 0, 0, 0.525],
+              305: [0, 0.43056, 0, 0, 0.525],
+              567: [0.22222, 0.43056, 0, 0, 0.525],
+              711: [0, 0.56597, 0, 0, 0.525],
+              713: [0, 0.56555, 0, 0, 0.525],
+              714: [0, 0.61111, 0, 0, 0.525],
+              715: [0, 0.61111, 0, 0, 0.525],
+              728: [0, 0.61111, 0, 0, 0.525],
+              730: [0, 0.61111, 0, 0, 0.525],
+              770: [0, 0.61111, 0, 0, 0.525],
+              771: [0, 0.61111, 0, 0, 0.525],
+              776: [0, 0.61111, 0, 0, 0.525],
+              915: [0, 0.61111, 0, 0, 0.525],
+              916: [0, 0.61111, 0, 0, 0.525],
+              920: [0, 0.61111, 0, 0, 0.525],
+              923: [0, 0.61111, 0, 0, 0.525],
+              926: [0, 0.61111, 0, 0, 0.525],
+              928: [0, 0.61111, 0, 0, 0.525],
+              931: [0, 0.61111, 0, 0, 0.525],
+              933: [0, 0.61111, 0, 0, 0.525],
+              934: [0, 0.61111, 0, 0, 0.525],
+              936: [0, 0.61111, 0, 0, 0.525],
+              937: [0, 0.61111, 0, 0, 0.525],
+              8216: [0, 0.61111, 0, 0, 0.525],
+              8217: [0, 0.61111, 0, 0, 0.525],
+              8242: [0, 0.61111, 0, 0, 0.525],
+              9251: [0.11111, 0.21944, 0, 0, 0.525],
+            },
           };
           const sigmasAndXis = {
             slant: [0.25, 0.25, 0.25],
@@ -3301,82 +3590,82 @@ function requireKatex() {
             // Two values from LaTeX source2e:
             fboxsep: [0.3, 0.3, 0.3],
             //        3 pt / ptPerEm
-            fboxrule: [0.04, 0.04, 0.04]
+            fboxrule: [0.04, 0.04, 0.04],
             // 0.4 pt / ptPerEm
           };
           const extraCharacterMap = {
             // Latin-1
-            "Å": "A",
-            "Ð": "D",
-            "Þ": "o",
-            "å": "a",
-            "ð": "d",
-            "þ": "o",
+            Å: "A",
+            Ð: "D",
+            Þ: "o",
+            å: "a",
+            ð: "d",
+            þ: "o",
             // Cyrillic
-            "А": "A",
-            "Б": "B",
-            "В": "B",
-            "Г": "F",
-            "Д": "A",
-            "Е": "E",
-            "Ж": "K",
-            "З": "3",
-            "И": "N",
-            "Й": "N",
-            "К": "K",
-            "Л": "N",
-            "М": "M",
-            "Н": "H",
-            "О": "O",
-            "П": "N",
-            "Р": "P",
-            "С": "C",
-            "Т": "T",
-            "У": "y",
-            "Ф": "O",
-            "Х": "X",
-            "Ц": "U",
-            "Ч": "h",
-            "Ш": "W",
-            "Щ": "W",
-            "Ъ": "B",
-            "Ы": "X",
-            "Ь": "B",
-            "Э": "3",
-            "Ю": "X",
-            "Я": "R",
-            "а": "a",
-            "б": "b",
-            "в": "a",
-            "г": "r",
-            "д": "y",
-            "е": "e",
-            "ж": "m",
-            "з": "e",
-            "и": "n",
-            "й": "n",
-            "к": "n",
-            "л": "n",
-            "м": "m",
-            "н": "n",
-            "о": "o",
-            "п": "n",
-            "р": "p",
-            "с": "c",
-            "т": "o",
-            "у": "y",
-            "ф": "b",
-            "х": "x",
-            "ц": "n",
-            "ч": "n",
-            "ш": "w",
-            "щ": "w",
-            "ъ": "a",
-            "ы": "m",
-            "ь": "a",
-            "э": "e",
-            "ю": "m",
-            "я": "r"
+            А: "A",
+            Б: "B",
+            В: "B",
+            Г: "F",
+            Д: "A",
+            Е: "E",
+            Ж: "K",
+            З: "3",
+            И: "N",
+            Й: "N",
+            К: "K",
+            Л: "N",
+            М: "M",
+            Н: "H",
+            О: "O",
+            П: "N",
+            Р: "P",
+            С: "C",
+            Т: "T",
+            У: "y",
+            Ф: "O",
+            Х: "X",
+            Ц: "U",
+            Ч: "h",
+            Ш: "W",
+            Щ: "W",
+            Ъ: "B",
+            Ы: "X",
+            Ь: "B",
+            Э: "3",
+            Ю: "X",
+            Я: "R",
+            а: "a",
+            б: "b",
+            в: "a",
+            г: "r",
+            д: "y",
+            е: "e",
+            ж: "m",
+            з: "e",
+            и: "n",
+            й: "n",
+            к: "n",
+            л: "n",
+            м: "m",
+            н: "n",
+            о: "o",
+            п: "n",
+            р: "p",
+            с: "c",
+            т: "o",
+            у: "y",
+            ф: "b",
+            х: "x",
+            ц: "n",
+            ч: "n",
+            ш: "w",
+            щ: "w",
+            ъ: "a",
+            ы: "m",
+            ь: "a",
+            э: "e",
+            ю: "m",
+            я: "r",
           };
           function setFontMetrics(fontName, metrics) {
             fontMetricsData[fontName] = metrics;
@@ -3402,7 +3691,7 @@ function requireKatex() {
                 height: metrics[1],
                 italic: metrics[2],
                 skew: metrics[3],
-                width: metrics[4]
+                width: metrics[4],
               };
             }
           }
@@ -3417,9 +3706,9 @@ function requireKatex() {
               sizeIndex = 2;
             }
             if (!fontMetricsBySizeIndex[sizeIndex]) {
-              const metrics = fontMetricsBySizeIndex[sizeIndex] = {
-                cssEmPerMu: sigmasAndXis.quad[sizeIndex] / 18
-              };
+              const metrics = (fontMetricsBySizeIndex[sizeIndex] = {
+                cssEmPerMu: sigmasAndXis.quad[sizeIndex] / 18,
+              });
               for (const key in sigmasAndXis) {
                 if (sigmasAndXis.hasOwnProperty(key)) {
                   metrics[key] = sigmasAndXis[key][sizeIndex];
@@ -3429,15 +3718,15 @@ function requireKatex() {
             return fontMetricsBySizeIndex[sizeIndex];
           }
           const symbols = {
-            "math": {},
-            "text": {}
+            math: {},
+            text: {},
           };
           var src_symbols = symbols;
           function defineSymbol(mode, font, group, replace, name, acceptUnicodeChar) {
             symbols[mode][name] = {
               font,
               group,
-              replace
+              replace,
             };
             if (acceptUnicodeChar && replace) {
               symbols[mode][replace] = symbols[mode][name];
@@ -4035,7 +4324,7 @@ function requireKatex() {
             "--": true,
             "---": true,
             "``": true,
-            "''": true
+            "''": true,
           };
           defineSymbol(symbols_text, main, textord, "–", "--", true);
           defineSymbol(symbols_text, main, textord, "–", "\\textendash");
@@ -4156,62 +4445,62 @@ function requireKatex() {
           const boldUpright = {
             mathClass: "mathbf",
             textClass: "textbf",
-            font: "Main-Bold"
+            font: "Main-Bold",
           };
           const italic = {
             mathClass: "mathnormal",
             textClass: "textit",
-            font: "Math-Italic"
+            font: "Math-Italic",
           };
           const boldItalic = {
             mathClass: "boldsymbol",
             textClass: "boldsymbol",
-            font: "Main-BoldItalic"
+            font: "Main-BoldItalic",
           };
           const script = {
             mathClass: "mathscr",
             textClass: "textscr",
-            font: "Script-Regular"
+            font: "Script-Regular",
           };
           const noFont = {
             mathClass: "",
             textClass: "",
-            font: ""
+            font: "",
           };
           const fraktur = {
             mathClass: "mathfrak",
             textClass: "textfrak",
-            font: "Fraktur-Regular"
+            font: "Fraktur-Regular",
           };
           const doubleStruck = {
             mathClass: "mathbb",
             textClass: "textbb",
-            font: "AMS-Regular"
+            font: "AMS-Regular",
           };
           const boldFraktur = {
             mathClass: "mathboldfrak",
             textClass: "textboldfrak",
-            font: "Fraktur-Regular"
+            font: "Fraktur-Regular",
           };
           const sansSerif = {
             mathClass: "mathsf",
             textClass: "textsf",
-            font: "SansSerif-Regular"
+            font: "SansSerif-Regular",
           };
           const boldSansSerif = {
             mathClass: "mathboldsf",
             textClass: "textboldsf",
-            font: "SansSerif-Bold"
+            font: "SansSerif-Bold",
           };
           const italicSansSerif = {
             mathClass: "mathitsf",
             textClass: "textitsf",
-            font: "SansSerif-Italic"
+            font: "SansSerif-Italic",
           };
           const monospace = {
             mathClass: "mathtt",
             textClass: "texttt",
-            font: "Typewriter-Regular"
+            font: "Typewriter-Regular",
           };
           const wideLatinLetterData = [
             boldUpright,
@@ -4254,7 +4543,7 @@ function requireKatex() {
             noFont,
             // A-Z bold italic sans, a-z bold italic sans - no font
             monospace,
-            monospace
+            monospace,
             // A-Z, a-z
           ];
           const wideNumeralData = [
@@ -4266,7 +4555,7 @@ function requireKatex() {
             // 0-9
             boldSansSerif,
             // 0-9
-            monospace
+            monospace,
             // 0-9
           ];
           const wideCharacterFont = (wideChar2) => {
@@ -4287,7 +4576,7 @@ function requireKatex() {
               throw new src_ParseError("Unsupported character: " + wideChar2);
             }
           };
-          const lookupSymbol = function(value, fontName, mode) {
+          const lookupSymbol = function (value, fontName, mode) {
             if (src_symbols[mode][value]) {
               const replacement = src_symbols[mode][value].replace;
               if (replacement) {
@@ -4296,22 +4585,34 @@ function requireKatex() {
             }
             return {
               value,
-              metrics: getCharacterMetrics(value, fontName, mode)
+              metrics: getCharacterMetrics(value, fontName, mode),
             };
           };
-          const makeSymbol = function(value, fontName, mode, options, classes) {
+          const makeSymbol = function (value, fontName, mode, options, classes) {
             const lookup = lookupSymbol(value, fontName, mode);
             const metrics = lookup.metrics;
             value = lookup.value;
             let symbolNode;
             if (metrics) {
               let italic2 = metrics.italic;
-              if (mode === "text" || options && options.font === "mathit") {
+              if (mode === "text" || (options && options.font === "mathit")) {
                 italic2 = 0;
               }
-              symbolNode = new SymbolNode(value, metrics.height, metrics.depth, italic2, metrics.skew, metrics.width, classes);
+              symbolNode = new SymbolNode(
+                value,
+                metrics.height,
+                metrics.depth,
+                italic2,
+                metrics.skew,
+                metrics.width,
+                classes,
+              );
             } else {
-              typeof console !== "undefined" && console.warn("No character metrics " + ("for '" + value + "' in style '" + fontName + "' and mode '" + mode + "'"));
+              typeof console !== "undefined" &&
+                console.warn(
+                  "No character metrics " +
+                    ("for '" + value + "' in style '" + fontName + "' and mode '" + mode + "'"),
+                );
               symbolNode = new SymbolNode(value, 0, 0, 0, 0, 0, classes);
             }
             if (options) {
@@ -4326,7 +4627,7 @@ function requireKatex() {
             }
             return symbolNode;
           };
-          const mathsym = function(value, mode, options, classes) {
+          const mathsym = function (value, mode, options, classes) {
             if (classes === void 0) {
               classes = [];
             }
@@ -4338,30 +4639,25 @@ function requireKatex() {
               return makeSymbol(value, "AMS-Regular", mode, options, classes.concat(["amsrm"]));
             }
           };
-          const boldSymbol = function(value, mode, type) {
+          const boldSymbol = function (value, mode, type) {
             if (type !== "textord" && lookupSymbol(value, "Math-BoldItalic", mode).metrics) {
               return {
                 fontName: "Math-BoldItalic",
-                fontClass: "boldsymbol"
+                fontClass: "boldsymbol",
               };
             } else {
               return {
                 fontName: "Main-Bold",
-                fontClass: "mathbf"
+                fontClass: "mathbf",
               };
             }
           };
-          const makeOrd = function(group, options, type) {
+          const makeOrd = function (group, options, type) {
             const mode = group.mode;
             const text = group.text;
             const classes = ["mord"];
-            const {
-              font,
-              fontFamily,
-              fontWeight,
-              fontShape
-            } = options;
-            const useFont = mode === "math" || mode === "text" && !!font;
+            const { font, fontFamily, fontWeight, fontShape } = options;
+            const useFont = mode === "math" || (mode === "text" && !!font);
             const fontOrFamily = useFont ? font : fontFamily;
             let wideFontName = "";
             let wideFontClass = "";
@@ -4391,7 +4687,9 @@ function requireKatex() {
               } else if (ligatures.hasOwnProperty(text) && fontName.slice(0, 10) === "Typewriter") {
                 const parts = [];
                 for (let i = 0; i < text.length; i++) {
-                  parts.push(makeSymbol(text[i], fontName, mode, options, classes.concat(fontClasses)));
+                  parts.push(
+                    makeSymbol(text[i], fontName, mode, options, classes.concat(fontClasses)),
+                  );
                 }
                 return makeFragment(parts);
               }
@@ -4402,20 +4700,43 @@ function requireKatex() {
               const font2 = src_symbols[mode][text] && src_symbols[mode][text].font;
               if (font2 === "ams") {
                 const fontName = retrieveTextFontName("amsrm", fontWeight, fontShape);
-                return makeSymbol(text, fontName, mode, options, classes.concat("amsrm", fontWeight, fontShape));
+                return makeSymbol(
+                  text,
+                  fontName,
+                  mode,
+                  options,
+                  classes.concat("amsrm", fontWeight, fontShape),
+                );
               } else if (font2 === "main" || !font2) {
                 const fontName = retrieveTextFontName("textrm", fontWeight, fontShape);
-                return makeSymbol(text, fontName, mode, options, classes.concat(fontWeight, fontShape));
+                return makeSymbol(
+                  text,
+                  fontName,
+                  mode,
+                  options,
+                  classes.concat(fontWeight, fontShape),
+                );
               } else {
                 const fontName = retrieveTextFontName(font2, fontWeight, fontShape);
-                return makeSymbol(text, fontName, mode, options, classes.concat(fontName, fontWeight, fontShape));
+                return makeSymbol(
+                  text,
+                  fontName,
+                  mode,
+                  options,
+                  classes.concat(fontName, fontWeight, fontShape),
+                );
               }
             } else {
               throw new Error("unexpected type: " + type + " in makeOrd");
             }
           };
           const canCombine = (prev, next) => {
-            if (createClass(prev.classes) !== createClass(next.classes) || prev.skew !== next.skew || prev.maxFontSize !== next.maxFontSize || prev.italic !== 0 && prev.hasClass("mathnormal")) {
+            if (
+              createClass(prev.classes) !== createClass(next.classes) ||
+              prev.skew !== next.skew ||
+              prev.maxFontSize !== next.maxFontSize ||
+              (prev.italic !== 0 && prev.hasClass("mathnormal"))
+            ) {
               return false;
             }
             if (prev.classes.length === 1) {
@@ -4440,7 +4761,11 @@ function requireKatex() {
             for (let i = 0; i < chars.length - 1; i++) {
               const prev = chars[i];
               const next = chars[i + 1];
-              if (prev instanceof SymbolNode && next instanceof SymbolNode && canCombine(prev, next)) {
+              if (
+                prev instanceof SymbolNode &&
+                next instanceof SymbolNode &&
+                canCombine(prev, next)
+              ) {
                 prev.text += next.text;
                 prev.height = Math.max(prev.height, next.height);
                 prev.depth = Math.max(prev.depth, next.depth);
@@ -4451,7 +4776,7 @@ function requireKatex() {
             }
             return chars;
           };
-          const sizeElementFromChildren = function(elem) {
+          const sizeElementFromChildren = function (elem) {
             let height = 0;
             let depth = 0;
             let maxFontSize = 0;
@@ -4471,36 +4796,40 @@ function requireKatex() {
             elem.depth = depth;
             elem.maxFontSize = maxFontSize;
           };
-          const makeSpan = function(classes, children, options, style) {
+          const makeSpan = function (classes, children, options, style) {
             const span = new Span(classes, children, options, style);
             sizeElementFromChildren(span);
             return span;
           };
-          const makeSvgSpan = (classes, children, options, style) => new Span(classes, children, options, style);
-          const makeLineSpan = function(className, options, thickness) {
+          const makeSvgSpan = (classes, children, options, style) =>
+            new Span(classes, children, options, style);
+          const makeLineSpan = function (className, options, thickness) {
             const line = makeSpan([className], [], options);
-            line.height = Math.max(thickness || options.fontMetrics().defaultRuleThickness, options.minRuleThickness);
+            line.height = Math.max(
+              thickness || options.fontMetrics().defaultRuleThickness,
+              options.minRuleThickness,
+            );
             line.style.borderBottomWidth = makeEm(line.height);
             line.maxFontSize = 1;
             return line;
           };
-          const makeAnchor = function(href, classes, children, options) {
+          const makeAnchor = function (href, classes, children, options) {
             const anchor = new Anchor(href, classes, children, options);
             sizeElementFromChildren(anchor);
             return anchor;
           };
-          const makeFragment = function(children) {
+          const makeFragment = function (children) {
             const fragment = new DocumentFragment(children);
             sizeElementFromChildren(fragment);
             return fragment;
           };
-          const wrapFragment = function(group, options) {
+          const wrapFragment = function (group, options) {
             if (group instanceof DocumentFragment) {
               return makeSpan([], [group], options);
             }
             return group;
           };
-          const getVListChildrenAndDepth = function(params) {
+          const getVListChildrenAndDepth = function (params) {
             if (params.positionType === "individualShift") {
               const oldChildren = params.children;
               const children = [oldChildren[0]];
@@ -4508,17 +4837,18 @@ function requireKatex() {
               let currPos = depth2;
               for (let i = 1; i < oldChildren.length; i++) {
                 const diff = -oldChildren[i].shift - currPos - oldChildren[i].elem.depth;
-                const size = diff - (oldChildren[i - 1].elem.height + oldChildren[i - 1].elem.depth);
+                const size =
+                  diff - (oldChildren[i - 1].elem.height + oldChildren[i - 1].elem.depth);
                 currPos = currPos + diff;
                 children.push({
                   type: "kern",
-                  size
+                  size,
                 });
                 children.push(oldChildren[i]);
               }
               return {
                 children,
-                depth: depth2
+                depth: depth2,
               };
             }
             let depth;
@@ -4546,14 +4876,11 @@ function requireKatex() {
             }
             return {
               children: params.children,
-              depth
+              depth,
             };
           };
-          const makeVList = function(params, options) {
-            const {
-              children,
-              depth
-            } = getVListChildrenAndDepth(params);
+          const makeVList = function (params, options) {
+            const { children, depth } = getVListChildrenAndDepth(params);
             let pstrutSize = 0;
             for (let i = 0; i < children.length; i++) {
               const child = children[i];
@@ -4599,7 +4926,10 @@ function requireKatex() {
               const depthStrut = makeSpan(["vlist"], [emptySpan]);
               depthStrut.style.height = makeEm(-minPos);
               const topStrut = makeSpan(["vlist-s"], [new SymbolNode("​")]);
-              rows = [makeSpan(["vlist-r"], [vlist, topStrut]), makeSpan(["vlist-r"], [depthStrut])];
+              rows = [
+                makeSpan(["vlist-r"], [vlist, topStrut]),
+                makeSpan(["vlist-r"], [depthStrut]),
+              ];
             } else {
               rows = [makeSpan(["vlist-r"], [vlist])];
             }
@@ -4649,58 +4979,58 @@ function requireKatex() {
           };
           const fontMap = {
             // styles
-            "mathbf": {
+            mathbf: {
               variant: "bold",
-              fontName: "Main-Bold"
+              fontName: "Main-Bold",
             },
-            "mathrm": {
+            mathrm: {
               variant: "normal",
-              fontName: "Main-Regular"
+              fontName: "Main-Regular",
             },
-            "textit": {
+            textit: {
               variant: "italic",
-              fontName: "Main-Italic"
+              fontName: "Main-Italic",
             },
-            "mathit": {
+            mathit: {
               variant: "italic",
-              fontName: "Main-Italic"
+              fontName: "Main-Italic",
             },
-            "mathnormal": {
+            mathnormal: {
               variant: "italic",
-              fontName: "Math-Italic"
+              fontName: "Math-Italic",
             },
-            "mathsfit": {
+            mathsfit: {
               variant: "sans-serif-italic",
-              fontName: "SansSerif-Italic"
+              fontName: "SansSerif-Italic",
             },
             // "boldsymbol" is missing because they require the use of multiple fonts:
             // Math-BoldItalic and Main-Bold.  This is handled by a special case in
             // makeOrd which ends up calling boldsymbol.
             // families
-            "mathbb": {
+            mathbb: {
               variant: "double-struck",
-              fontName: "AMS-Regular"
+              fontName: "AMS-Regular",
             },
-            "mathcal": {
+            mathcal: {
               variant: "script",
-              fontName: "Caligraphic-Regular"
+              fontName: "Caligraphic-Regular",
             },
-            "mathfrak": {
+            mathfrak: {
               variant: "fraktur",
-              fontName: "Fraktur-Regular"
+              fontName: "Fraktur-Regular",
             },
-            "mathscr": {
+            mathscr: {
               variant: "script",
-              fontName: "Script-Regular"
+              fontName: "Script-Regular",
             },
-            "mathsf": {
+            mathsf: {
               variant: "sans-serif",
-              fontName: "SansSerif-Regular"
+              fontName: "SansSerif-Regular",
             },
-            "mathtt": {
+            mathtt: {
               variant: "monospace",
-              fontName: "Typewriter-Regular"
-            }
+              fontName: "Typewriter-Regular",
+            },
           };
           const svgData = {
             //   path, width, height
@@ -4710,18 +5040,18 @@ function requireKatex() {
             // oval to overlay the integrand
             oiintSize2: ["oiintSize2", 1.472, 0.659],
             oiiintSize1: ["oiiintSize1", 1.304, 0.499],
-            oiiintSize2: ["oiiintSize2", 1.98, 0.659]
+            oiiintSize2: ["oiiintSize2", 1.98, 0.659],
           };
-          const staticSvg = function(value, options) {
+          const staticSvg = function (value, options) {
             const [pathName, width, height] = svgData[value];
             const path2 = new PathNode(pathName);
             const svgNode = new SvgNode([path2], {
-              "width": makeEm(width),
-              "height": makeEm(height),
+              width: makeEm(width),
+              height: makeEm(height),
               // Override CSS rule `.katex svg { width: 100% }`
-              "style": "width:" + makeEm(width),
-              "viewBox": "0 0 " + 1e3 * width + " " + 1e3 * height,
-              "preserveAspectRatio": "xMinYMin"
+              style: "width:" + makeEm(width),
+              viewBox: "0 0 " + 1e3 * width + " " + 1e3 * height,
+              preserveAspectRatio: "xMinYMin",
             });
             const span = makeSvgSpan(["overlay"], [svgNode], options);
             span.height = height;
@@ -4731,47 +5061,47 @@ function requireKatex() {
           };
           const thinspace = {
             number: 3,
-            unit: "mu"
+            unit: "mu",
           };
           const mediumspace = {
             number: 4,
-            unit: "mu"
+            unit: "mu",
           };
           const thickspace = {
             number: 5,
-            unit: "mu"
+            unit: "mu",
           };
           const spacings = {
             mord: {
               mop: thinspace,
               mbin: mediumspace,
               mrel: thickspace,
-              minner: thinspace
+              minner: thinspace,
             },
             mop: {
               mord: thinspace,
               mop: thinspace,
               mrel: thickspace,
-              minner: thinspace
+              minner: thinspace,
             },
             mbin: {
               mord: mediumspace,
               mop: mediumspace,
               mopen: mediumspace,
-              minner: mediumspace
+              minner: mediumspace,
             },
             mrel: {
               mord: thickspace,
               mop: thickspace,
               mopen: thickspace,
-              minner: thickspace
+              minner: thickspace,
             },
             mopen: {},
             mclose: {
               mop: thinspace,
               mbin: mediumspace,
               mrel: thickspace,
-              minner: thinspace
+              minner: thinspace,
             },
             mpunct: {
               mord: thinspace,
@@ -4780,7 +5110,7 @@ function requireKatex() {
               mopen: thinspace,
               mclose: thinspace,
               mpunct: thinspace,
-              minner: thinspace
+              minner: thinspace,
             },
             minner: {
               mord: thinspace,
@@ -4789,27 +5119,27 @@ function requireKatex() {
               mrel: thickspace,
               mopen: thinspace,
               mpunct: thinspace,
-              minner: thinspace
-            }
+              minner: thinspace,
+            },
           };
           const tightSpacings = {
             mord: {
-              mop: thinspace
+              mop: thinspace,
             },
             mop: {
               mord: thinspace,
-              mop: thinspace
+              mop: thinspace,
             },
             mbin: {},
             mrel: {},
             mopen: {},
             mclose: {
-              mop: thinspace
+              mop: thinspace,
             },
             mpunct: {},
             minner: {
-              mop: thinspace
-            }
+              mop: thinspace,
+            },
           };
           const _functions = {};
           const _htmlGroupBuilders = {};
@@ -4821,7 +5151,7 @@ function requireKatex() {
               props,
               handler,
               htmlBuilder: htmlBuilder2,
-              mathmlBuilder: mathmlBuilder2
+              mathmlBuilder: mathmlBuilder2,
             } = _ref;
             const data = {
               type,
@@ -4833,7 +5163,7 @@ function requireKatex() {
               numOptionalArgs: props.numOptionalArgs || 0,
               infix: !!props.infix,
               primitive: !!props.primitive,
-              handler
+              handler,
             };
             for (let i = 0; i < names.length; ++i) {
               _functions[names[i]] = data;
@@ -4848,37 +5178,45 @@ function requireKatex() {
             }
           }
           function defineFunctionBuilders(_ref2) {
-            let {
-              type,
-              htmlBuilder: htmlBuilder2,
-              mathmlBuilder: mathmlBuilder2
-            } = _ref2;
+            let { type, htmlBuilder: htmlBuilder2, mathmlBuilder: mathmlBuilder2 } = _ref2;
             defineFunction({
               type,
               names: [],
               props: {
-                numArgs: 0
+                numArgs: 0,
               },
               handler() {
                 throw new Error("Should never be called.");
               },
               htmlBuilder: htmlBuilder2,
-              mathmlBuilder: mathmlBuilder2
+              mathmlBuilder: mathmlBuilder2,
             });
           }
-          const normalizeArgument = function(arg) {
+          const normalizeArgument = function (arg) {
             return arg.type === "ordgroup" && arg.body.length === 1 ? arg.body[0] : arg;
           };
-          const ordargument = function(arg) {
+          const ordargument = function (arg) {
             return arg.type === "ordgroup" ? arg.body : [arg];
           };
-          const binLeftCanceller = /* @__PURE__ */ new Set(["leftmost", "mbin", "mopen", "mrel", "mop", "mpunct"]);
-          const binRightCanceller = /* @__PURE__ */ new Set(["rightmost", "mrel", "mclose", "mpunct"]);
+          const binLeftCanceller = /* @__PURE__ */ new Set([
+            "leftmost",
+            "mbin",
+            "mopen",
+            "mrel",
+            "mop",
+            "mpunct",
+          ]);
+          const binRightCanceller = /* @__PURE__ */ new Set([
+            "rightmost",
+            "mrel",
+            "mclose",
+            "mpunct",
+          ]);
           const styleMap = {
-            "display": src_Style.DISPLAY,
-            "text": src_Style.TEXT,
-            "script": src_Style.SCRIPT,
-            "scriptscript": src_Style.SCRIPTSCRIPT
+            display: src_Style.DISPLAY,
+            text: src_Style.TEXT,
+            script: src_Style.SCRIPT,
+            scriptscript: src_Style.SCRIPTSCRIPT,
           };
           const DomEnum = {
             mord: "mord",
@@ -4888,9 +5226,9 @@ function requireKatex() {
             mopen: "mopen",
             mclose: "mclose",
             mpunct: "mpunct",
-            minner: "minner"
+            minner: "minner",
           };
-          const buildExpression = function(expression, options, isRealGroup, surrounding) {
+          const buildExpression = function (expression, options, isRealGroup, surrounding) {
             if (surrounding === void 0) {
               surrounding = [null, null];
             }
@@ -4920,31 +5258,52 @@ function requireKatex() {
             const dummyPrev = makeSpan([surrounding[0] || "leftmost"], [], options);
             const dummyNext = makeSpan([surrounding[1] || "rightmost"], [], options);
             const isRoot = isRealGroup === "root";
-            traverseNonSpaceNodes(groups, (node, prev) => {
-              const prevType = prev.classes[0];
-              const type = node.classes[0];
-              if (prevType === "mbin" && binRightCanceller.has(type)) {
-                prev.classes[0] = "mord";
-              } else if (type === "mbin" && binLeftCanceller.has(prevType)) {
-                node.classes[0] = "mord";
-              }
-            }, {
-              node: dummyPrev
-            }, dummyNext, isRoot);
-            traverseNonSpaceNodes(groups, (node, prev) => {
-              var _tightSpacings$prevTy, _spacings$prevType;
-              const prevType = getTypeOfDomTree(prev);
-              const type = getTypeOfDomTree(node);
-              const space = prevType && type ? node.hasClass("mtight") ? (_tightSpacings$prevTy = tightSpacings[prevType]) == null ? void 0 : _tightSpacings$prevTy[type] : (_spacings$prevType = spacings[prevType]) == null ? void 0 : _spacings$prevType[type] : null;
-              if (space) {
-                return makeGlue(space, glueOptions);
-              }
-            }, {
-              node: dummyPrev
-            }, dummyNext, isRoot);
+            traverseNonSpaceNodes(
+              groups,
+              (node, prev) => {
+                const prevType = prev.classes[0];
+                const type = node.classes[0];
+                if (prevType === "mbin" && binRightCanceller.has(type)) {
+                  prev.classes[0] = "mord";
+                } else if (type === "mbin" && binLeftCanceller.has(prevType)) {
+                  node.classes[0] = "mord";
+                }
+              },
+              {
+                node: dummyPrev,
+              },
+              dummyNext,
+              isRoot,
+            );
+            traverseNonSpaceNodes(
+              groups,
+              (node, prev) => {
+                var _tightSpacings$prevTy, _spacings$prevType;
+                const prevType = getTypeOfDomTree(prev);
+                const type = getTypeOfDomTree(node);
+                const space =
+                  prevType && type
+                    ? node.hasClass("mtight")
+                      ? (_tightSpacings$prevTy = tightSpacings[prevType]) == null
+                        ? void 0
+                        : _tightSpacings$prevTy[type]
+                      : (_spacings$prevType = spacings[prevType]) == null
+                        ? void 0
+                        : _spacings$prevType[type]
+                    : null;
+                if (space) {
+                  return makeGlue(space, glueOptions);
+                }
+              },
+              {
+                node: dummyPrev,
+              },
+              dummyNext,
+              isRoot,
+            );
             return groups;
           };
-          const traverseNonSpaceNodes = function(nodes, callback, prev, next, isRoot) {
+          const traverseNonSpaceNodes = function (nodes, callback, prev, next, isRoot) {
             if (next) {
               nodes.push(next);
             }
@@ -4982,13 +5341,17 @@ function requireKatex() {
               nodes.pop();
             }
           };
-          const checkPartialGroup = function(node) {
-            if (node instanceof DocumentFragment || node instanceof Anchor || node instanceof Span && node.hasClass("enclosing")) {
+          const checkPartialGroup = function (node) {
+            if (
+              node instanceof DocumentFragment ||
+              node instanceof Anchor ||
+              (node instanceof Span && node.hasClass("enclosing"))
+            ) {
               return node;
             }
             return null;
           };
-          const getOutermostNode = function(node, side) {
+          const getOutermostNode = function (node, side) {
             const partialGroup = checkPartialGroup(node);
             if (partialGroup) {
               const children = partialGroup.children;
@@ -5002,7 +5365,7 @@ function requireKatex() {
             }
             return node;
           };
-          const getTypeOfDomTree = function(node, side) {
+          const getTypeOfDomTree = function (node, side) {
             if (!node) {
               return null;
             }
@@ -5012,11 +5375,11 @@ function requireKatex() {
             const className = node.classes[0];
             return DomEnum[className] || null;
           };
-          const makeNullDelimiter = function(options, classes) {
+          const makeNullDelimiter = function (options, classes) {
             const moreClasses = ["nulldelimiter"].concat(options.baseSizingClasses());
             return makeSpan(classes.concat(moreClasses));
           };
-          const buildGroup = function(group, options, baseOptions) {
+          const buildGroup = function (group, options, baseOptions) {
             if (!group) {
               return makeSpan();
             }
@@ -5058,9 +5421,17 @@ function requireKatex() {
             let parts = [];
             for (let i = 0; i < expression.length; i++) {
               parts.push(expression[i]);
-              if (expression[i].hasClass("mbin") || expression[i].hasClass("mrel") || expression[i].hasClass("allowbreak")) {
+              if (
+                expression[i].hasClass("mbin") ||
+                expression[i].hasClass("mrel") ||
+                expression[i].hasClass("allowbreak")
+              ) {
                 let nobreak = false;
-                while (i < expression.length - 1 && expression[i + 1].hasClass("mspace") && !expression[i + 1].hasClass("newline")) {
+                while (
+                  i < expression.length - 1 &&
+                  expression[i + 1].hasClass("mspace") &&
+                  !expression[i + 1].hasClass("newline")
+                ) {
                   i++;
                   parts.push(expression[i]);
                   if (expression[i].hasClass("nobreak")) {
@@ -5133,7 +5504,10 @@ function requireKatex() {
              * Converts the math node into a MathML-namespaced DOM element.
              */
             toNode() {
-              const node = document.createElementNS("http://www.w3.org/1998/Math/MathML", this.type);
+              const node = document.createElementNS(
+                "http://www.w3.org/1998/Math/MathML",
+                this.type,
+              );
               for (const attr in this.attributes) {
                 if (Object.prototype.hasOwnProperty.call(this.attributes, attr)) {
                   node.setAttribute(attr, this.attributes[attr]);
@@ -5143,7 +5517,10 @@ function requireKatex() {
                 node.className = createClass(this.classes);
               }
               for (let i = 0; i < this.children.length; i++) {
-                if (this.children[i] instanceof TextNode && this.children[i + 1] instanceof TextNode) {
+                if (
+                  this.children[i] instanceof TextNode &&
+                  this.children[i + 1] instanceof TextNode
+                ) {
                   let text = this.children[i].toText() + this.children[++i].toText();
                   while (this.children[i + 1] instanceof TextNode) {
                     text += this.children[++i].toText();
@@ -5245,7 +5622,10 @@ function requireKatex() {
               if (this.character) {
                 return document.createTextNode(this.character);
               } else {
-                const node = document.createElementNS("http://www.w3.org/1998/Math/MathML", "mspace");
+                const node = document.createElementNS(
+                  "http://www.w3.org/1998/Math/MathML",
+                  "mspace",
+                );
                 node.setAttribute("width", makeEm(this.width));
                 return node;
               }
@@ -5273,13 +5653,23 @@ function requireKatex() {
           }
           const noVariantSymbols = /* @__PURE__ */ new Set(["\\imath", "\\jmath"]);
           const rowLikeTypes = /* @__PURE__ */ new Set(["mrow", "mtable"]);
-          const makeText = function(text, mode, options) {
-            if (src_symbols[mode][text] && src_symbols[mode][text].replace && text.charCodeAt(0) !== 55349 && !(ligatures.hasOwnProperty(text) && options && (options.fontFamily && options.fontFamily.slice(4, 6) === "tt" || options.font && options.font.slice(4, 6) === "tt"))) {
+          const makeText = function (text, mode, options) {
+            if (
+              src_symbols[mode][text] &&
+              src_symbols[mode][text].replace &&
+              text.charCodeAt(0) !== 55349 &&
+              !(
+                ligatures.hasOwnProperty(text) &&
+                options &&
+                ((options.fontFamily && options.fontFamily.slice(4, 6) === "tt") ||
+                  (options.font && options.font.slice(4, 6) === "tt"))
+              )
+            ) {
               text = src_symbols[mode][text].replace;
             }
             return new TextNode(text);
           };
-          const makeRow = function(body) {
+          const makeRow = function (body) {
             if (body.length === 1) {
               return body[0];
             } else {
@@ -5288,7 +5678,7 @@ function requireKatex() {
           };
           const mathFontVariants = {
             mathit: "italic",
-            boldsymbol: (group) => group.type === "textord" ? "bold" : "bold-italic",
+            boldsymbol: (group) => (group.type === "textord" ? "bold" : "bold-italic"),
             mathbf: "bold",
             mathbb: "double-struck",
             mathsfit: "sans-serif-italic",
@@ -5296,7 +5686,7 @@ function requireKatex() {
             mathscr: "script",
             mathcal: "script",
             mathsf: "sans-serif",
-            mathtt: "monospace"
+            mathtt: "monospace",
           };
           const getVariant = (group, options) => {
             if (group.mode === "text") {
@@ -5352,14 +5742,20 @@ function requireKatex() {
             if (group.type === "mi" && group.children.length === 1) {
               const child = group.children[0];
               return child instanceof TextNode && child.text === ".";
-            } else if (group.type === "mo" && group.children.length === 1 && group.getAttribute("separator") === "true" && group.getAttribute("lspace") === "0em" && group.getAttribute("rspace") === "0em") {
+            } else if (
+              group.type === "mo" &&
+              group.children.length === 1 &&
+              group.getAttribute("separator") === "true" &&
+              group.getAttribute("lspace") === "0em" &&
+              group.getAttribute("rspace") === "0em"
+            ) {
               const child = group.children[0];
               return child instanceof TextNode && child.text === ",";
             } else {
               return false;
             }
           }
-          const buildMathML_buildExpression = function(expression, options, isOrdgroup) {
+          const buildMathML_buildExpression = function (expression, options, isOrdgroup) {
             if (expression.length === 1) {
               const group = buildMathML_buildGroup(expression[0], options);
               if (isOrdgroup && group instanceof MathNode && group.type === "mo") {
@@ -5373,7 +5769,11 @@ function requireKatex() {
             for (let i = 0; i < expression.length; i++) {
               const group = buildMathML_buildGroup(expression[i], options);
               if (group instanceof MathNode && lastGroup instanceof MathNode) {
-                if (group.type === "mtext" && lastGroup.type === "mtext" && group.getAttribute("mathvariant") === lastGroup.getAttribute("mathvariant")) {
+                if (
+                  group.type === "mtext" &&
+                  lastGroup.type === "mtext" &&
+                  group.getAttribute("mathvariant") === lastGroup.getAttribute("mathvariant")
+                ) {
                   lastGroup.children.push(...group.children);
                   continue;
                 } else if (group.type === "mn" && lastGroup.type === "mn") {
@@ -5385,7 +5785,11 @@ function requireKatex() {
                 } else if (group.type === "mn" && isNumberPunctuation(lastGroup)) {
                   group.children = [...lastGroup.children, ...group.children];
                   groups.pop();
-                } else if ((group.type === "msup" || group.type === "msub") && group.children.length >= 1 && (lastGroup.type === "mn" || isNumberPunctuation(lastGroup))) {
+                } else if (
+                  (group.type === "msup" || group.type === "msub") &&
+                  group.children.length >= 1 &&
+                  (lastGroup.type === "mn" || isNumberPunctuation(lastGroup))
+                ) {
                   const base = group.children[0];
                   if (base instanceof MathNode && base.type === "mn") {
                     base.children = [...lastGroup.children, ...base.children];
@@ -5393,7 +5797,11 @@ function requireKatex() {
                   }
                 } else if (lastGroup.type === "mi" && lastGroup.children.length === 1) {
                   const lastChild = lastGroup.children[0];
-                  if (lastChild instanceof TextNode && lastChild.text === "̸" && (group.type === "mo" || group.type === "mi" || group.type === "mn")) {
+                  if (
+                    lastChild instanceof TextNode &&
+                    lastChild.text === "̸" &&
+                    (group.type === "mo" || group.type === "mi" || group.type === "mn")
+                  ) {
                     const child = group.children[0];
                     if (child instanceof TextNode && child.text.length > 0) {
                       child.text = child.text.slice(0, 1) + "̸" + child.text.slice(1);
@@ -5407,10 +5815,10 @@ function requireKatex() {
             }
             return groups;
           };
-          const buildExpressionRow = function(expression, options, isOrdgroup) {
+          const buildExpressionRow = function (expression, options, isOrdgroup) {
             return makeRow(buildMathML_buildExpression(expression, options, isOrdgroup));
           };
-          const buildMathML_buildGroup = function(group, options) {
+          const buildMathML_buildGroup = function (group, options) {
             if (!group) {
               return new MathNode("mrow");
             }
@@ -5423,7 +5831,11 @@ function requireKatex() {
           function buildMathML(tree, texExpression, options, isDisplayMode, forMathmlOnly) {
             const expression = buildMathML_buildExpression(tree, options);
             let wrapper;
-            if (expression.length === 1 && expression[0] instanceof MathNode && rowLikeTypes.has(expression[0].type)) {
+            if (
+              expression.length === 1 &&
+              expression[0] instanceof MathNode &&
+              rowLikeTypes.has(expression[0].type)
+            ) {
               wrapper = expression[0];
             } else {
               wrapper = new MathNode("mrow", expression);
@@ -5462,25 +5874,15 @@ function requireKatex() {
             // size9: [17.28, 12, 10]        \LARGE
             [10, 8, 7],
             // size10: [20.74, 14.4, 12]     \huge
-            [11, 10, 9]
+            [11, 10, 9],
             // size11: [24.88, 20.74, 17.28] \HUGE
           ];
           const sizeMultipliers = [
             // fontMetrics.js:getGlobalMetrics also uses size indexes, so if
             // you change size indexes, change that function.
-            0.5,
-            0.6,
-            0.7,
-            0.8,
-            0.9,
-            1,
-            1.2,
-            1.44,
-            1.728,
-            2.074,
-            2.488
+            0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.2, 1.44, 1.728, 2.074, 2.488,
           ];
-          const sizeAtStyle = function(size, style) {
+          const sizeAtStyle = function (size, style) {
             return style.size < 2 ? size : sizeStyleMap[size - 1][style.size - 1];
           };
           class Options {
@@ -5528,7 +5930,7 @@ function requireKatex() {
                 fontWeight: this.fontWeight,
                 fontShape: this.fontShape,
                 maxSize: this.maxSize,
-                minRuleThickness: this.minRuleThickness
+                minRuleThickness: this.minRuleThickness,
               };
               Object.assign(data, extension);
               return new Options(data);
@@ -5543,7 +5945,7 @@ function requireKatex() {
               } else {
                 return this.extend({
                   style,
-                  size: sizeAtStyle(this.textSize, style)
+                  size: sizeAtStyle(this.textSize, style),
                 });
               }
             }
@@ -5566,7 +5968,7 @@ function requireKatex() {
                   style: this.style.text(),
                   size,
                   textSize: size,
-                  sizeMultiplier: sizeMultipliers[size - 1]
+                  sizeMultiplier: sizeMultipliers[size - 1],
                 });
               }
             }
@@ -5577,12 +5979,16 @@ function requireKatex() {
             havingBaseStyle(style) {
               style = style || this.style.text();
               const wantSize = sizeAtStyle(Options.BASESIZE, style);
-              if (this.size === wantSize && this.textSize === Options.BASESIZE && this.style === style) {
+              if (
+                this.size === wantSize &&
+                this.textSize === Options.BASESIZE &&
+                this.style === style
+              ) {
                 return this;
               } else {
                 return this.extend({
                   style,
-                  size: wantSize
+                  size: wantSize,
                 });
               }
             }
@@ -5606,7 +6012,7 @@ function requireKatex() {
               }
               return this.extend({
                 style: this.style.text(),
-                size
+                size,
               });
             }
             /**
@@ -5614,7 +6020,7 @@ function requireKatex() {
              */
             withColor(color) {
               return this.extend({
-                color
+                color,
               });
             }
             /**
@@ -5622,7 +6028,7 @@ function requireKatex() {
              */
             withPhantom() {
               return this.extend({
-                phantom: true
+                phantom: true,
               });
             }
             /**
@@ -5631,7 +6037,7 @@ function requireKatex() {
              */
             withFont(font) {
               return this.extend({
-                font
+                font,
               });
             }
             /**
@@ -5640,7 +6046,7 @@ function requireKatex() {
             withTextFontFamily(fontFamily) {
               return this.extend({
                 fontFamily,
-                font: ""
+                font: "",
               });
             }
             /**
@@ -5649,7 +6055,7 @@ function requireKatex() {
             withTextFontWeight(fontWeight) {
               return this.extend({
                 fontWeight,
-                font: ""
+                font: "",
               });
             }
             /**
@@ -5658,7 +6064,7 @@ function requireKatex() {
             withTextFontShape(fontShape) {
               return this.extend({
                 fontShape,
-                font: ""
+                font: "",
               });
             }
             /**
@@ -5705,14 +6111,14 @@ function requireKatex() {
           }
           Options.BASESIZE = 6;
           var src_Options = Options;
-          const optionsFromSettings = function(settings) {
+          const optionsFromSettings = function (settings) {
             return new src_Options({
               style: settings.displayMode ? src_Style.DISPLAY : src_Style.TEXT,
               maxSize: settings.maxSize,
-              minRuleThickness: settings.minRuleThickness
+              minRuleThickness: settings.minRuleThickness,
             });
           };
-          const displayWrap = function(node, settings) {
+          const displayWrap = function (node, settings) {
             if (settings.displayMode) {
               const classes = ["katex-display"];
               if (settings.leqno) {
@@ -5725,7 +6131,7 @@ function requireKatex() {
             }
             return node;
           };
-          const buildTree = function(tree, expression, settings) {
+          const buildTree = function (tree, expression, settings) {
             const options = optionsFromSettings(settings);
             let katexNode;
             if (settings.output === "mathml") {
@@ -5734,13 +6140,19 @@ function requireKatex() {
               const htmlNode = buildHTML(tree, options);
               katexNode = makeSpan(["katex"], [htmlNode]);
             } else {
-              const mathMLNode = buildMathML(tree, expression, options, settings.displayMode, false);
+              const mathMLNode = buildMathML(
+                tree,
+                expression,
+                options,
+                settings.displayMode,
+                false,
+              );
               const htmlNode = buildHTML(tree, options);
               katexNode = makeSpan(["katex"], [mathMLNode, htmlNode]);
             }
             return displayWrap(katexNode, settings);
           };
-          const buildHTMLTree = function(tree, expression, settings) {
+          const buildHTMLTree = function (tree, expression, settings) {
             const options = optionsFromSettings(settings);
             const htmlNode = buildHTML(tree, options);
             const katexNode = makeSpan(["katex"], [htmlNode]);
@@ -5792,10 +6204,12 @@ function requireKatex() {
             // None better available.
             "\\cdrightarrow": "→",
             "\\cdleftarrow": "←",
-            "\\cdlongequal": "="
+            "\\cdlongequal": "=",
           };
-          const stretchyMathML = function(label) {
-            const node = new MathNode("mo", [new TextNode(stretchyCodePoint[label.replace(/^\\/, "")])]);
+          const stretchyMathML = function (label) {
+            const node = new MathNode("mo", [
+              new TextNode(stretchyCodePoint[label.replace(/^\\/, "")]),
+            ]);
             node.setAttribute("stretchy", "true");
             return node;
           };
@@ -5846,11 +6260,24 @@ function requireKatex() {
             // document as \xrightarrow or \xrightleftharpoons. Those have
             // min-length = 1.75em, so we set min-length on these next three to match.
             xrightleftarrows: [["baraboveleftarrow", "rightarrowabovebar"], 1.75, 901],
-            xrightequilibrium: [["baraboveshortleftharpoon", "rightharpoonaboveshortbar"], 1.75, 716],
-            xleftequilibrium: [["shortbaraboveleftharpoon", "shortrightharpoonabovebar"], 1.75, 716]
+            xrightequilibrium: [
+              ["baraboveshortleftharpoon", "rightharpoonaboveshortbar"],
+              1.75,
+              716,
+            ],
+            xleftequilibrium: [
+              ["shortbaraboveleftharpoon", "shortrightharpoonabovebar"],
+              1.75,
+              716,
+            ],
           };
-          const wideAccentLabels = /* @__PURE__ */ new Set(["widehat", "widecheck", "widetilde", "utilde"]);
-          const stretchySvg = function(group, options) {
+          const wideAccentLabels = /* @__PURE__ */ new Set([
+            "widehat",
+            "widecheck",
+            "widetilde",
+            "utilde",
+          ]);
+          const stretchySvg = function (group, options) {
             function buildSvgSpan_() {
               let viewBoxWidth = 4e5;
               const label = group.label.slice(1);
@@ -5887,15 +6314,15 @@ function requireKatex() {
                 }
                 const path2 = new PathNode(pathName);
                 const svgNode = new SvgNode([path2], {
-                  "width": "100%",
-                  "height": makeEm(height2),
-                  "viewBox": "0 0 " + viewBoxWidth + " " + viewBoxHeight,
-                  "preserveAspectRatio": "none"
+                  width: "100%",
+                  height: makeEm(height2),
+                  viewBox: "0 0 " + viewBoxWidth + " " + viewBoxHeight,
+                  preserveAspectRatio: "none",
                 });
                 return {
                   span: makeSvgSpan([], [svgNode], options),
                   minWidth: 0,
-                  height: height2
+                  height: height2,
                 };
               } else {
                 const spans = [];
@@ -5921,22 +6348,26 @@ function requireKatex() {
                   widthClasses = ["brace-left", "brace-center", "brace-right"];
                   aligns = ["xMinYMin", "xMidYMin", "xMaxYMin"];
                 } else {
-                  throw new Error("Correct katexImagesData or update code here to support\n                    " + numSvgChildren + " children.");
+                  throw new Error(
+                    "Correct katexImagesData or update code here to support\n                    " +
+                      numSvgChildren +
+                      " children.",
+                  );
                 }
                 for (let i = 0; i < numSvgChildren; i++) {
                   const path2 = new PathNode(paths[i]);
                   const svgNode = new SvgNode([path2], {
-                    "width": "400em",
-                    "height": makeEm(height2),
-                    "viewBox": "0 0 " + viewBoxWidth + " " + viewBoxHeight,
-                    "preserveAspectRatio": aligns[i] + " slice"
+                    width: "400em",
+                    height: makeEm(height2),
+                    viewBox: "0 0 " + viewBoxWidth + " " + viewBoxHeight,
+                    preserveAspectRatio: aligns[i] + " slice",
                   });
                   const span2 = makeSvgSpan([widthClasses[i]], [svgNode], options);
                   if (numSvgChildren === 1) {
                     return {
                       span: span2,
                       minWidth: minWidth2,
-                      height: height2
+                      height: height2,
                     };
                   } else {
                     span2.style.height = makeEm(height2);
@@ -5946,15 +6377,11 @@ function requireKatex() {
                 return {
                   span: makeSpan(["stretchy"], spans, options),
                   minWidth: minWidth2,
-                  height: height2
+                  height: height2,
                 };
               }
             }
-            const {
-              span,
-              minWidth,
-              height
-            } = buildSvgSpan_();
+            const { span, minWidth, height } = buildSvgSpan_();
             span.height = height;
             span.style.height = makeEm(height);
             if (minWidth > 0) {
@@ -5962,7 +6389,7 @@ function requireKatex() {
             }
             return span;
           };
-          const stretchyEnclose = function(inner2, label, topPad, bottomPad, options) {
+          const stretchyEnclose = function (inner2, label, topPad, bottomPad, options) {
             let img;
             const totalHeight = inner2.height + inner2.depth + topPad + bottomPad;
             if (/fbox|color|angl/.test(label)) {
@@ -5976,26 +6403,30 @@ function requireKatex() {
             } else {
               const lines = [];
               if (/^[bx]cancel$/.test(label)) {
-                lines.push(new LineNode({
-                  "x1": "0",
-                  "y1": "0",
-                  "x2": "100%",
-                  "y2": "100%",
-                  "stroke-width": "0.046em"
-                }));
+                lines.push(
+                  new LineNode({
+                    x1: "0",
+                    y1: "0",
+                    x2: "100%",
+                    y2: "100%",
+                    "stroke-width": "0.046em",
+                  }),
+                );
               }
               if (/^x?cancel$/.test(label)) {
-                lines.push(new LineNode({
-                  "x1": "0",
-                  "y1": "100%",
-                  "x2": "100%",
-                  "y2": "0",
-                  "stroke-width": "0.046em"
-                }));
+                lines.push(
+                  new LineNode({
+                    x1: "0",
+                    y1: "100%",
+                    x2: "100%",
+                    y2: "0",
+                    "stroke-width": "0.046em",
+                  }),
+                );
               }
               const svgNode = new SvgNode(lines, {
-                "width": "100%",
-                "height": makeEm(totalHeight)
+                width: "100%",
+                height: makeEm(totalHeight),
               });
               img = makeSvgSpan([], [svgNode], options);
             }
@@ -6004,33 +6435,41 @@ function requireKatex() {
             return img;
           };
           const ATOMS = {
-            "bin": 1,
-            "close": 1,
-            "inner": 1,
-            "open": 1,
-            "punct": 1,
-            "rel": 1
+            bin: 1,
+            close: 1,
+            inner: 1,
+            open: 1,
+            punct: 1,
+            rel: 1,
           };
           const NON_ATOMS = {
             "accent-token": 1,
-            "mathord": 1,
+            mathord: 1,
             "op-token": 1,
-            "spacing": 1,
-            "textord": 1
+            spacing: 1,
+            textord: 1,
           };
           function isAtom(value) {
             return value in ATOMS;
           }
           function assertNodeType(node, type) {
             if (!node || node.type !== type) {
-              throw new Error("Expected node of type " + type + ", but got " + (node ? "node of type " + node.type : String(node)));
+              throw new Error(
+                "Expected node of type " +
+                  type +
+                  ", but got " +
+                  (node ? "node of type " + node.type : String(node)),
+              );
             }
             return node;
           }
           function assertSymbolNodeType(node) {
             const typedNode = checkSymbolNodeType(node);
             if (!typedNode) {
-              throw new Error("Expected node of symbol group type, but got " + (node ? "node of type " + node.type : String(node)));
+              throw new Error(
+                "Expected node of symbol group type, but got " +
+                  (node ? "node of type " + node.type : String(node)),
+              );
             }
             return typedNode;
           }
@@ -6067,10 +6506,17 @@ function requireKatex() {
             let skew = 0;
             if (mustShift) {
               var _getBaseSymbol$skew, _getBaseSymbol;
-              skew = (_getBaseSymbol$skew = (_getBaseSymbol = getBaseSymbol(body)) == null ? void 0 : _getBaseSymbol.skew) != null ? _getBaseSymbol$skew : 0;
+              skew =
+                (_getBaseSymbol$skew =
+                  (_getBaseSymbol = getBaseSymbol(body)) == null ? void 0 : _getBaseSymbol.skew) !=
+                null
+                  ? _getBaseSymbol$skew
+                  : 0;
             }
             const accentBelow = group.label === "\\c";
-            let clearance = accentBelow ? body.height + body.depth : Math.min(body.height, options.fontMetrics().xHeight);
+            let clearance = accentBelow
+              ? body.height + body.depth
+              : Math.min(body.height, options.fontMetrics().xHeight);
             let accentBody;
             if (!group.isStretchy) {
               let accent2;
@@ -6079,10 +6525,14 @@ function requireKatex() {
                 accent2 = staticSvg("vec", options);
                 width = svgData.vec[1];
               } else {
-                accent2 = makeOrd({
-                  mode: group.mode,
-                  text: group.label
-                }, options, "textord");
+                accent2 = makeOrd(
+                  {
+                    mode: group.mode,
+                    text: group.label,
+                  },
+                  options,
+                  "textord",
+                );
                 accent2 = assertSymbolDomNode(accent2);
                 accent2.italic = 0;
                 width = accent2.width;
@@ -6106,33 +6556,43 @@ function requireKatex() {
               }
               accentBody = makeVList({
                 positionType: "firstBaseline",
-                children: [{
-                  type: "elem",
-                  elem: body
-                }, {
-                  type: "kern",
-                  size: -clearance
-                }, {
-                  type: "elem",
-                  elem: accentBody
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: body,
+                  },
+                  {
+                    type: "kern",
+                    size: -clearance,
+                  },
+                  {
+                    type: "elem",
+                    elem: accentBody,
+                  },
+                ],
               });
             } else {
               accentBody = stretchySvg(group, options);
               accentBody = makeVList({
                 positionType: "firstBaseline",
-                children: [{
-                  type: "elem",
-                  elem: body
-                }, {
-                  type: "elem",
-                  elem: accentBody,
-                  wrapperClasses: ["svg-align"],
-                  wrapperStyle: skew > 0 ? {
-                    width: "calc(100% - " + makeEm(2 * skew) + ")",
-                    marginLeft: makeEm(2 * skew)
-                  } : void 0
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: body,
+                  },
+                  {
+                    type: "elem",
+                    elem: accentBody,
+                    wrapperClasses: ["svg-align"],
+                    wrapperStyle:
+                      skew > 0
+                        ? {
+                            width: "calc(100% - " + makeEm(2 * skew) + ")",
+                            marginLeft: makeEm(2 * skew),
+                          }
+                        : void 0,
+                  },
+                ],
               });
             }
             const accentWrap = makeSpan(["mord", "accent"], [accentBody], options);
@@ -6146,49 +6606,114 @@ function requireKatex() {
             }
           };
           const mathmlBuilder = (group, options) => {
-            const accentNode = group.isStretchy ? stretchyMathML(group.label) : new MathNode("mo", [makeText(group.label, group.mode)]);
-            const node = new MathNode("mover", [buildMathML_buildGroup(group.base, options), accentNode]);
+            const accentNode = group.isStretchy
+              ? stretchyMathML(group.label)
+              : new MathNode("mo", [makeText(group.label, group.mode)]);
+            const node = new MathNode("mover", [
+              buildMathML_buildGroup(group.base, options),
+              accentNode,
+            ]);
             node.setAttribute("accent", "true");
             return node;
           };
-          const NON_STRETCHY_ACCENT_REGEX = new RegExp(["\\acute", "\\grave", "\\ddot", "\\tilde", "\\bar", "\\breve", "\\check", "\\hat", "\\vec", "\\dot", "\\mathring"].map((accent2) => "\\" + accent2).join("|"));
+          const NON_STRETCHY_ACCENT_REGEX = new RegExp(
+            [
+              "\\acute",
+              "\\grave",
+              "\\ddot",
+              "\\tilde",
+              "\\bar",
+              "\\breve",
+              "\\check",
+              "\\hat",
+              "\\vec",
+              "\\dot",
+              "\\mathring",
+            ]
+              .map((accent2) => "\\" + accent2)
+              .join("|"),
+          );
           defineFunction({
             type: "accent",
-            names: ["\\acute", "\\grave", "\\ddot", "\\tilde", "\\bar", "\\breve", "\\check", "\\hat", "\\vec", "\\dot", "\\mathring", "\\widecheck", "\\widehat", "\\widetilde", "\\overrightarrow", "\\overleftarrow", "\\Overrightarrow", "\\overleftrightarrow", "\\overgroup", "\\overlinesegment", "\\overleftharpoon", "\\overrightharpoon"],
+            names: [
+              "\\acute",
+              "\\grave",
+              "\\ddot",
+              "\\tilde",
+              "\\bar",
+              "\\breve",
+              "\\check",
+              "\\hat",
+              "\\vec",
+              "\\dot",
+              "\\mathring",
+              "\\widecheck",
+              "\\widehat",
+              "\\widetilde",
+              "\\overrightarrow",
+              "\\overleftarrow",
+              "\\Overrightarrow",
+              "\\overleftrightarrow",
+              "\\overgroup",
+              "\\overlinesegment",
+              "\\overleftharpoon",
+              "\\overrightharpoon",
+            ],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler: (context, args) => {
               const base = normalizeArgument(args[0]);
               const isStretchy = !NON_STRETCHY_ACCENT_REGEX.test(context.funcName);
-              const isShifty = !isStretchy || context.funcName === "\\widehat" || context.funcName === "\\widetilde" || context.funcName === "\\widecheck";
+              const isShifty =
+                !isStretchy ||
+                context.funcName === "\\widehat" ||
+                context.funcName === "\\widetilde" ||
+                context.funcName === "\\widecheck";
               return {
                 type: "accent",
                 mode: context.parser.mode,
                 label: context.funcName,
                 isStretchy,
                 isShifty,
-                base
+                base,
               };
             },
             htmlBuilder,
-            mathmlBuilder
+            mathmlBuilder,
           });
           defineFunction({
             type: "accent",
-            names: ["\\'", "\\`", "\\^", "\\~", "\\=", "\\u", "\\.", '\\"', "\\c", "\\r", "\\H", "\\v", "\\textcircled"],
+            names: [
+              "\\'",
+              "\\`",
+              "\\^",
+              "\\~",
+              "\\=",
+              "\\u",
+              "\\.",
+              '\\"',
+              "\\c",
+              "\\r",
+              "\\H",
+              "\\v",
+              "\\textcircled",
+            ],
             props: {
               numArgs: 1,
               allowedInText: true,
               allowedInMath: true,
               // unless in strict mode
-              argTypes: ["primitive"]
+              argTypes: ["primitive"],
             },
             handler: (context, args) => {
               const base = args[0];
               let mode = context.parser.mode;
               if (mode === "math") {
-                context.parser.settings.reportNonstrict("mathVsTextAccents", "LaTeX's accent " + context.funcName + " works only in text mode");
+                context.parser.settings.reportNonstrict(
+                  "mathVsTextAccents",
+                  "LaTeX's accent " + context.funcName + " works only in text mode",
+                );
                 mode = "text";
               }
               return {
@@ -6197,29 +6722,33 @@ function requireKatex() {
                 label: context.funcName,
                 isStretchy: false,
                 isShifty: true,
-                base
+                base,
               };
             },
             htmlBuilder,
-            mathmlBuilder
+            mathmlBuilder,
           });
           defineFunction({
             type: "accentUnder",
-            names: ["\\underleftarrow", "\\underrightarrow", "\\underleftrightarrow", "\\undergroup", "\\underlinesegment", "\\utilde"],
+            names: [
+              "\\underleftarrow",
+              "\\underrightarrow",
+              "\\underleftrightarrow",
+              "\\undergroup",
+              "\\underlinesegment",
+              "\\utilde",
+            ],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const base = args[0];
               return {
                 type: "accentUnder",
                 mode: parser.mode,
                 label: funcName,
-                base
+                base,
               };
             },
             htmlBuilder: (group, options) => {
@@ -6229,26 +6758,33 @@ function requireKatex() {
               const vlist = makeVList({
                 positionType: "top",
                 positionData: innerGroup.height,
-                children: [{
-                  type: "elem",
-                  elem: accentBody,
-                  wrapperClasses: ["svg-align"]
-                }, {
-                  type: "kern",
-                  size: kern
-                }, {
-                  type: "elem",
-                  elem: innerGroup
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: accentBody,
+                    wrapperClasses: ["svg-align"],
+                  },
+                  {
+                    type: "kern",
+                    size: kern,
+                  },
+                  {
+                    type: "elem",
+                    elem: innerGroup,
+                  },
+                ],
               });
               return makeSpan(["mord", "accentunder"], [vlist], options);
             },
             mathmlBuilder: (group, options) => {
               const accentNode = stretchyMathML(group.label);
-              const node = new MathNode("munder", [buildMathML_buildGroup(group.base, options), accentNode]);
+              const node = new MathNode("munder", [
+                buildMathML_buildGroup(group.base, options),
+                accentNode,
+              ]);
               node.setAttribute("accentunder", "true");
               return node;
-            }
+            },
           });
           const paddedNode = (group) => {
             const node = new MathNode("mpadded", group ? [group] : []);
@@ -6286,23 +6822,20 @@ function requireKatex() {
               // The next 3 functions are here only to support the {CD} environment.
               "\\\\cdrightarrow",
               "\\\\cdleftarrow",
-              "\\\\cdlongequal"
+              "\\\\cdlongequal",
             ],
             props: {
               numArgs: 1,
-              numOptionalArgs: 1
+              numOptionalArgs: 1,
             },
             handler(_ref, args, optArgs) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               return {
                 type: "xArrow",
                 mode: parser.mode,
                 label: funcName,
                 body: args[0],
-                below: optArgs[0]
+                below: optArgs[0],
               };
             },
             htmlBuilder(group, options) {
@@ -6325,37 +6858,48 @@ function requireKatex() {
               }
               let vlist;
               if (lowerGroup) {
-                const lowerShift = -options.fontMetrics().axisHeight + lowerGroup.height + 0.5 * arrowBody.height + 0.111;
+                const lowerShift =
+                  -options.fontMetrics().axisHeight +
+                  lowerGroup.height +
+                  0.5 * arrowBody.height +
+                  0.111;
                 vlist = makeVList({
                   positionType: "individualShift",
-                  children: [{
-                    type: "elem",
-                    elem: upperGroup,
-                    shift: upperShift
-                  }, {
-                    type: "elem",
-                    elem: arrowBody,
-                    shift: arrowShift,
-                    wrapperClasses: ["svg-align"]
-                  }, {
-                    type: "elem",
-                    elem: lowerGroup,
-                    shift: lowerShift
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: upperGroup,
+                      shift: upperShift,
+                    },
+                    {
+                      type: "elem",
+                      elem: arrowBody,
+                      shift: arrowShift,
+                      wrapperClasses: ["svg-align"],
+                    },
+                    {
+                      type: "elem",
+                      elem: lowerGroup,
+                      shift: lowerShift,
+                    },
+                  ],
                 });
               } else {
                 vlist = makeVList({
                   positionType: "individualShift",
-                  children: [{
-                    type: "elem",
-                    elem: upperGroup,
-                    shift: upperShift
-                  }, {
-                    type: "elem",
-                    elem: arrowBody,
-                    shift: arrowShift,
-                    wrapperClasses: ["svg-align"]
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: upperGroup,
+                      shift: upperShift,
+                    },
+                    {
+                      type: "elem",
+                      elem: arrowBody,
+                      shift: arrowShift,
+                      wrapperClasses: ["svg-align"],
+                    },
+                  ],
                 });
               }
               return makeSpan(["mrel", "x-arrow"], [vlist], options);
@@ -6380,7 +6924,7 @@ function requireKatex() {
                 node = new MathNode("mover", [arrowNode, node]);
               }
               return node;
-            }
+            },
           });
           function mclass_htmlBuilder(group, options) {
             const elements = buildExpression(group.body, options, true);
@@ -6423,16 +6967,21 @@ function requireKatex() {
           }
           defineFunction({
             type: "mclass",
-            names: ["\\mathord", "\\mathbin", "\\mathrel", "\\mathopen", "\\mathclose", "\\mathpunct", "\\mathinner"],
+            names: [
+              "\\mathord",
+              "\\mathbin",
+              "\\mathrel",
+              "\\mathopen",
+              "\\mathclose",
+              "\\mathpunct",
+              "\\mathinner",
+            ],
             props: {
               numArgs: 1,
-              primitive: true
+              primitive: true,
             },
             handler(_ref, args) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const body = args[0];
               return {
                 type: "mclass",
@@ -6440,11 +6989,11 @@ function requireKatex() {
                 mclass: "m" + funcName.slice(5),
                 // TODO(kevinb): don't prefix with 'm'
                 body: ordargument(body),
-                isCharacterBox: isCharacterBox(body)
+                isCharacterBox: isCharacterBox(body),
               };
             },
             htmlBuilder: mclass_htmlBuilder,
-            mathmlBuilder: mclass_mathmlBuilder
+            mathmlBuilder: mclass_mathmlBuilder,
           });
           const binrelClass = (arg) => {
             const atom = arg.type === "ordgroup" && arg.body.length ? arg.body[0] : arg;
@@ -6458,32 +7007,27 @@ function requireKatex() {
             type: "mclass",
             names: ["\\@binrel"],
             props: {
-              numArgs: 2
+              numArgs: 2,
             },
             handler(_ref2, args) {
-              let {
-                parser
-              } = _ref2;
+              let { parser } = _ref2;
               return {
                 type: "mclass",
                 mode: parser.mode,
                 mclass: binrelClass(args[0]),
                 body: ordargument(args[1]),
-                isCharacterBox: isCharacterBox(args[1])
+                isCharacterBox: isCharacterBox(args[1]),
               };
-            }
+            },
           });
           defineFunction({
             type: "mclass",
             names: ["\\stackrel", "\\overset", "\\underset"],
             props: {
-              numArgs: 2
+              numArgs: 2,
             },
             handler(_ref3, args) {
-              let {
-                parser,
-                funcName
-              } = _ref3;
+              let { parser, funcName } = _ref3;
               const baseArg = args[1];
               const shiftedArg = args[0];
               let mclass;
@@ -6500,42 +7044,40 @@ function requireKatex() {
                 parentIsSupSub: false,
                 symbol: false,
                 suppressBaseShift: funcName !== "\\stackrel",
-                body: ordargument(baseArg)
+                body: ordargument(baseArg),
               };
               const supsub = {
                 type: "supsub",
                 mode: shiftedArg.mode,
                 base: baseOp,
                 sup: funcName === "\\underset" ? null : shiftedArg,
-                sub: funcName === "\\underset" ? shiftedArg : null
+                sub: funcName === "\\underset" ? shiftedArg : null,
               };
               return {
                 type: "mclass",
                 mode: parser.mode,
                 mclass,
                 body: [supsub],
-                isCharacterBox: isCharacterBox(supsub)
+                isCharacterBox: isCharacterBox(supsub),
               };
             },
             htmlBuilder: mclass_htmlBuilder,
-            mathmlBuilder: mclass_mathmlBuilder
+            mathmlBuilder: mclass_mathmlBuilder,
           });
           defineFunction({
             type: "pmb",
             names: ["\\pmb"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "pmb",
                 mode: parser.mode,
                 mclass: binrelClass(args[0]),
-                body: ordargument(args[0])
+                body: ordargument(args[0]),
               };
             },
             htmlBuilder(group, options) {
@@ -6549,16 +7091,16 @@ function requireKatex() {
               const node = new MathNode("mstyle", inner2);
               node.setAttribute("style", "text-shadow: 0.02em 0.01em 0.04px");
               return node;
-            }
+            },
           });
           const cdArrowFunctionName = {
             ">": "\\\\cdrightarrow",
             "<": "\\\\cdleftarrow",
             "=": "\\\\cdlongequal",
-            "A": "\\uparrow",
-            "V": "\\downarrow",
+            A: "\\uparrow",
+            V: "\\downarrow",
             "|": "\\Vert",
-            ".": "no arrow"
+            ".": "no arrow",
           };
           const newCell = () => {
             return {
@@ -6566,7 +7108,7 @@ function requireKatex() {
               body: [],
               mode: "math",
               style: "display",
-              resetFont: true
+              resetFont: true,
             };
           };
           const isStartOfArrow = (node) => {
@@ -6588,14 +7130,14 @@ function requireKatex() {
                   type: "atom",
                   text: funcName,
                   mode: "math",
-                  family: "rel"
+                  family: "rel",
                 };
                 const sizedArrow = parser.callFunction("\\Big", [bareArrow], []);
                 const rightLabel = parser.callFunction("\\\\cdright", [labels[1]], []);
                 const arrowGroup = {
                   type: "ordgroup",
                   mode: "math",
-                  body: [leftLabel, sizedArrow, rightLabel]
+                  body: [leftLabel, sizedArrow, rightLabel],
                 };
                 return parser.callFunction("\\\\cdparent", [arrowGroup], []);
               }
@@ -6605,7 +7147,7 @@ function requireKatex() {
                 const arrow = {
                   type: "textord",
                   text: "\\Vert",
-                  mode: "math"
+                  mode: "math",
                 };
                 return parser.callFunction("\\Big", [arrow], []);
               }
@@ -6613,7 +7155,7 @@ function requireKatex() {
                 return {
                   type: "textord",
                   text: " ",
-                  mode: "math"
+                  mode: "math",
                 };
             }
           }
@@ -6654,14 +7196,14 @@ function requireKatex() {
                   labels[0] = {
                     type: "ordgroup",
                     mode: "math",
-                    body: []
+                    body: [],
                   };
                   labels[1] = {
                     type: "ordgroup",
                     mode: "math",
-                    body: []
+                    body: [],
                   };
-                  if ("=|.".includes(arrowChar)) ;
+                  if ("=|.".includes(arrowChar));
                   else if ("<>AV".includes(arrowChar)) {
                     for (let labelNum = 0; labelNum < 2; labelNum++) {
                       let inLabel = true;
@@ -6672,12 +7214,18 @@ function requireKatex() {
                           break;
                         }
                         if (isStartOfArrow(rowNodes[k])) {
-                          throw new src_ParseError("Missing a " + arrowChar + " character to complete a CD arrow.", rowNodes[k]);
+                          throw new src_ParseError(
+                            "Missing a " + arrowChar + " character to complete a CD arrow.",
+                            rowNodes[k],
+                          );
                         }
                         labels[labelNum].body.push(rowNodes[k]);
                       }
                       if (inLabel) {
-                        throw new src_ParseError("Missing a " + arrowChar + " character to complete a CD arrow.", rowNodes[j]);
+                        throw new src_ParseError(
+                          "Missing a " + arrowChar + " character to complete a CD arrow.",
+                          rowNodes[j],
+                        );
                       }
                     }
                   } else {
@@ -6690,7 +7238,7 @@ function requireKatex() {
                     mode: "math",
                     style: "display",
                     // CD is always displaystyle.
-                    resetFont: true
+                    resetFont: true,
                   };
                   row.push(wrappedArrow);
                   cell = newCell();
@@ -6711,7 +7259,7 @@ function requireKatex() {
               align: "c",
               pregap: 0.25,
               // CD package sets \enskip between columns.
-              postgap: 0.25
+              postgap: 0.25,
               // So pre and post each get half an \enskip, i.e. 0.25em.
             });
             return {
@@ -6723,25 +7271,22 @@ function requireKatex() {
               rowGaps: [null],
               cols,
               colSeparationType: "CD",
-              hLinesBeforeRow: new Array(body.length + 1).fill([])
+              hLinesBeforeRow: new Array(body.length + 1).fill([]),
             };
           }
           defineFunction({
             type: "cdlabel",
             names: ["\\\\cdleft", "\\\\cdright"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(_ref, args) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               return {
                 type: "cdlabel",
                 mode: parser.mode,
                 side: funcName.slice(4),
-                label: args[0]
+                label: args[0],
               };
             },
             htmlBuilder(group, options) {
@@ -6765,22 +7310,20 @@ function requireKatex() {
               label.setAttribute("displaystyle", "false");
               label.setAttribute("scriptlevel", "1");
               return label;
-            }
+            },
           });
           defineFunction({
             type: "cdlabelparent",
             names: ["\\\\cdparent"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(_ref2, args) {
-              let {
-                parser
-              } = _ref2;
+              let { parser } = _ref2;
               return {
                 type: "cdlabelparent",
                 mode: parser.mode,
-                fragment: args[0]
+                fragment: args[0],
               };
             },
             htmlBuilder(group, options) {
@@ -6790,19 +7333,17 @@ function requireKatex() {
             },
             mathmlBuilder(group, options) {
               return new MathNode("mrow", [buildMathML_buildGroup(group.fragment, options)]);
-            }
+            },
           });
           defineFunction({
             type: "textord",
             names: ["\\@char"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const arg = assertNodeType(args[0], "ordgroup");
               const group = arg.body;
               let number = "";
@@ -6825,9 +7366,9 @@ function requireKatex() {
               return {
                 type: "textord",
                 mode: parser.mode,
-                text
+                text,
               };
-            }
+            },
           });
           const color_htmlBuilder = (group, options) => {
             const elements = buildExpression(group.body, options.withColor(group.color), false);
@@ -6845,23 +7386,21 @@ function requireKatex() {
             props: {
               numArgs: 2,
               allowedInText: true,
-              argTypes: ["color", "original"]
+              argTypes: ["color", "original"],
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const color = assertNodeType(args[0], "color-token").color;
               const body = args[1];
               return {
                 type: "color",
                 mode: parser.mode,
                 color,
-                body: ordargument(body)
+                body: ordargument(body),
               };
             },
             htmlBuilder: color_htmlBuilder,
-            mathmlBuilder: color_mathmlBuilder
+            mathmlBuilder: color_mathmlBuilder,
           });
           defineFunction({
             type: "color",
@@ -6869,13 +7408,10 @@ function requireKatex() {
             props: {
               numArgs: 1,
               allowedInText: true,
-              argTypes: ["color"]
+              argTypes: ["color"],
             },
             handler(_ref2, args) {
-              let {
-                parser,
-                breakOnTokenText
-              } = _ref2;
+              let { parser, breakOnTokenText } = _ref2;
               const color = assertNodeType(args[0], "color-token").color;
               parser.gullet.macros.set("\\current@color", color);
               const body = parser.parseExpression(true, breakOnTokenText);
@@ -6883,11 +7419,11 @@ function requireKatex() {
                 type: "color",
                 mode: parser.mode,
                 color,
-                body
+                body,
               };
             },
             htmlBuilder: color_htmlBuilder,
-            mathmlBuilder: color_mathmlBuilder
+            mathmlBuilder: color_mathmlBuilder,
           });
           defineFunction({
             type: "cr",
@@ -6895,19 +7431,22 @@ function requireKatex() {
             props: {
               numArgs: 0,
               numOptionalArgs: 0,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args, optArgs) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const size = parser.gullet.future().text === "[" ? parser.parseSizeGroup(true) : null;
-              const newLine = !parser.settings.displayMode || !parser.settings.useStrictBehavior("newLineInDisplayMode", "In LaTeX, \\\\ or \\newline does nothing in display mode");
+              const newLine =
+                !parser.settings.displayMode ||
+                !parser.settings.useStrictBehavior(
+                  "newLineInDisplayMode",
+                  "In LaTeX, \\\\ or \\newline does nothing in display mode",
+                );
               return {
                 type: "cr",
                 mode: parser.mode,
                 newLine,
-                size: size && assertNodeType(size, "size").value
+                size: size && assertNodeType(size, "size").value,
               };
             },
             // The following builders are called only at the top level,
@@ -6931,7 +7470,7 @@ function requireKatex() {
                 }
               }
               return node;
-            }
+            },
           });
           const globalMap = {
             "\\global": "\\global",
@@ -6942,7 +7481,7 @@ function requireKatex() {
             "\\edef": "\\xdef",
             "\\xdef": "\\xdef",
             "\\let": "\\\\globallet",
-            "\\futurelet": "\\\\globalfuture"
+            "\\futurelet": "\\\\globalfuture",
           };
           const checkControlSequence = (tok) => {
             const name = tok.text;
@@ -6969,7 +7508,7 @@ function requireKatex() {
                 tokens: [tok],
                 numArgs: 0,
                 // reproduce the same behavior in expansion
-                unexpandable: !parser.gullet.isExpandable(tok.text)
+                unexpandable: !parser.gullet.isExpandable(tok.text),
               };
             }
             parser.gullet.macros.set(name, macro, global);
@@ -6979,18 +7518,15 @@ function requireKatex() {
             names: [
               "\\global",
               "\\long",
-              "\\\\globallong"
+              "\\\\globallong",
               // can’t be entered directly
             ],
             props: {
               numArgs: 0,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               parser.consumeSpaces();
               const token = parser.fetch();
               if (globalMap[token.text]) {
@@ -7000,7 +7536,7 @@ function requireKatex() {
                 return assertNodeType(parser.parseFunction(), "internal");
               }
               throw new src_ParseError("Invalid token after macro prefix", token);
-            }
+            },
           });
           defineFunction({
             type: "internal",
@@ -7008,13 +7544,10 @@ function requireKatex() {
             props: {
               numArgs: 0,
               allowedInText: true,
-              primitive: true
+              primitive: true,
             },
             handler(_ref2) {
-              let {
-                parser,
-                funcName
-              } = _ref2;
+              let { parser, funcName } = _ref2;
               let tok = parser.gullet.popToken();
               const name = tok.text;
               if (/^(?:[\\{}$&#^_]|EOF)$/.test(name)) {
@@ -7046,9 +7579,7 @@ function requireKatex() {
                   delimiters2[numArgs].push(tok.text);
                 }
               }
-              let {
-                tokens
-              } = parser.gullet.consumeArg();
+              let { tokens } = parser.gullet.consumeArg();
               if (insert) {
                 tokens.unshift(insert);
               }
@@ -7056,61 +7587,59 @@ function requireKatex() {
                 tokens = parser.gullet.expandTokens(tokens);
                 tokens.reverse();
               }
-              parser.gullet.macros.set(name, {
-                tokens,
-                numArgs,
-                delimiters: delimiters2
-              }, funcName === globalMap[funcName]);
+              parser.gullet.macros.set(
+                name,
+                {
+                  tokens,
+                  numArgs,
+                  delimiters: delimiters2,
+                },
+                funcName === globalMap[funcName],
+              );
               return {
                 type: "internal",
-                mode: parser.mode
+                mode: parser.mode,
               };
-            }
+            },
           });
           defineFunction({
             type: "internal",
             names: [
               "\\let",
-              "\\\\globallet"
+              "\\\\globallet",
               // can’t be entered directly
             ],
             props: {
               numArgs: 0,
               allowedInText: true,
-              primitive: true
+              primitive: true,
             },
             handler(_ref3) {
-              let {
-                parser,
-                funcName
-              } = _ref3;
+              let { parser, funcName } = _ref3;
               const name = checkControlSequence(parser.gullet.popToken());
               parser.gullet.consumeSpaces();
               const tok = getRHS(parser);
               letCommand(parser, name, tok, funcName === "\\\\globallet");
               return {
                 type: "internal",
-                mode: parser.mode
+                mode: parser.mode,
               };
-            }
+            },
           });
           defineFunction({
             type: "internal",
             names: [
               "\\futurelet",
-              "\\\\globalfuture"
+              "\\\\globalfuture",
               // can’t be entered directly
             ],
             props: {
               numArgs: 0,
               allowedInText: true,
-              primitive: true
+              primitive: true,
             },
             handler(_ref4) {
-              let {
-                parser,
-                funcName
-              } = _ref4;
+              let { parser, funcName } = _ref4;
               const name = checkControlSequence(parser.gullet.popToken());
               const middle = parser.gullet.popToken();
               const tok = parser.gullet.popToken();
@@ -7119,11 +7648,11 @@ function requireKatex() {
               parser.gullet.pushToken(middle);
               return {
                 type: "internal",
-                mode: parser.mode
+                mode: parser.mode,
               };
-            }
+            },
           });
-          const getMetrics = function(symbol, font, mode) {
+          const getMetrics = function (symbol, font, mode) {
             const replace = src_symbols.math[symbol] && src_symbols.math[symbol].replace;
             const metrics = getCharacterMetrics(replace || symbol, font, mode);
             if (!metrics) {
@@ -7131,24 +7660,30 @@ function requireKatex() {
             }
             return metrics;
           };
-          const styleWrap = function(delim, toStyle, options, classes) {
+          const styleWrap = function (delim, toStyle, options, classes) {
             const newOptions = options.havingBaseStyle(toStyle);
-            const span = makeSpan(classes.concat(newOptions.sizingClasses(options)), [delim], options);
+            const span = makeSpan(
+              classes.concat(newOptions.sizingClasses(options)),
+              [delim],
+              options,
+            );
             const delimSizeMultiplier = newOptions.sizeMultiplier / options.sizeMultiplier;
             span.height *= delimSizeMultiplier;
             span.depth *= delimSizeMultiplier;
             span.maxFontSize = newOptions.sizeMultiplier;
             return span;
           };
-          const centerSpan = function(span, options, style) {
+          const centerSpan = function (span, options, style) {
             const newOptions = options.havingBaseStyle(style);
-            const shift = (1 - options.sizeMultiplier / newOptions.sizeMultiplier) * options.fontMetrics().axisHeight;
+            const shift =
+              (1 - options.sizeMultiplier / newOptions.sizeMultiplier) *
+              options.fontMetrics().axisHeight;
             span.classes.push("delimcenter");
             span.style.top = makeEm(shift);
             span.height -= shift;
             span.depth += shift;
           };
-          const makeSmallDelim = function(delim, style, center, options, mode, classes) {
+          const makeSmallDelim = function (delim, style, center, options, mode, classes) {
             const text = makeSymbol(delim, "Main-Regular", mode, options);
             const span = styleWrap(text, style, options, classes);
             {
@@ -7156,40 +7691,50 @@ function requireKatex() {
             }
             return span;
           };
-          const mathrmSize = function(value, size, mode, options) {
+          const mathrmSize = function (value, size, mode, options) {
             return makeSymbol(value, "Size" + size + "-Regular", mode, options);
           };
-          const makeLargeDelim = function(delim, size, center, options, mode, classes) {
+          const makeLargeDelim = function (delim, size, center, options, mode, classes) {
             const inner2 = mathrmSize(delim, size, mode, options);
-            const span = styleWrap(makeSpan(["delimsizing", "size" + size], [inner2], options), src_Style.TEXT, options, classes);
+            const span = styleWrap(
+              makeSpan(["delimsizing", "size" + size], [inner2], options),
+              src_Style.TEXT,
+              options,
+              classes,
+            );
             if (center) {
               centerSpan(span, options, src_Style.TEXT);
             }
             return span;
           };
-          const makeGlyphSpan = function(symbol, font, mode) {
+          const makeGlyphSpan = function (symbol, font, mode) {
             let sizeClass;
             if (font === "Size1-Regular") {
               sizeClass = "delim-size1";
             } else {
               sizeClass = "delim-size4";
             }
-            const corner = makeSpan(["delimsizinginner", sizeClass], [makeSpan([], [makeSymbol(symbol, font, mode)])]);
+            const corner = makeSpan(
+              ["delimsizinginner", sizeClass],
+              [makeSpan([], [makeSymbol(symbol, font, mode)])],
+            );
             return {
               type: "elem",
-              elem: corner
+              elem: corner,
             };
           };
-          const makeInner = function(ch, height, options) {
-            const width = fontMetricsData["Size4-Regular"][ch.charCodeAt(0)] ? fontMetricsData["Size4-Regular"][ch.charCodeAt(0)][4] : fontMetricsData["Size1-Regular"][ch.charCodeAt(0)][4];
+          const makeInner = function (ch, height, options) {
+            const width = fontMetricsData["Size4-Regular"][ch.charCodeAt(0)]
+              ? fontMetricsData["Size4-Regular"][ch.charCodeAt(0)][4]
+              : fontMetricsData["Size1-Regular"][ch.charCodeAt(0)][4];
             const path2 = new PathNode("inner", innerPath(ch, Math.round(1e3 * height)));
             const svgNode = new SvgNode([path2], {
-              "width": makeEm(width),
-              "height": makeEm(height),
+              width: makeEm(width),
+              height: makeEm(height),
               // Override CSS rule `.katex svg { width: 100% }`
-              "style": "width:" + makeEm(width),
-              "viewBox": "0 0 " + 1e3 * width + " " + Math.round(1e3 * height),
-              "preserveAspectRatio": "xMinYMin"
+              style: "width:" + makeEm(width),
+              viewBox: "0 0 " + 1e3 * width + " " + Math.round(1e3 * height),
+              preserveAspectRatio: "xMinYMin",
             });
             const span = makeSvgSpan([], [svgNode], options);
             span.height = height;
@@ -7197,17 +7742,17 @@ function requireKatex() {
             span.style.width = makeEm(width);
             return {
               type: "elem",
-              elem: span
+              elem: span,
             };
           };
           const lapInEms = 8e-3;
           const lap = {
             type: "kern",
-            size: -1 * lapInEms
+            size: -1 * lapInEms,
           };
           const verts = /* @__PURE__ */ new Set(["|", "\\lvert", "\\rvert", "\\vert"]);
           const doubleVerts = /* @__PURE__ */ new Set(["\\|", "\\lVert", "\\rVert", "\\Vert"]);
-          const makeStackedDelim = function(delim, heightTotal, center, options, mode, classes) {
+          const makeStackedDelim = function (delim, heightTotal, center, options, mode, classes) {
             let top;
             let middle;
             let repeat;
@@ -7340,7 +7885,10 @@ function requireKatex() {
               middleFactor = 2;
             }
             const minHeight = topHeightTotal + bottomHeightTotal + middleHeightTotal;
-            const repeatCount = Math.max(0, Math.ceil((heightTotal - minHeight) / (middleFactor * repeatHeightTotal)));
+            const repeatCount = Math.max(
+              0,
+              Math.ceil((heightTotal - minHeight) / (middleFactor * repeatHeightTotal)),
+            );
             const realHeightTotal = minHeight + repeatCount * middleFactor * repeatHeightTotal;
             let axisHeight = options.fontMetrics().axisHeight;
             if (center) {
@@ -7356,9 +7904,9 @@ function requireKatex() {
               const width = makeEm(viewBoxWidth / 1e3);
               const height = makeEm(viewBoxHeight / 1e3);
               const svg = new SvgNode([path2], {
-                "width": width,
-                "height": height,
-                "viewBox": "0 0 " + viewBoxWidth + " " + viewBoxHeight
+                width: width,
+                height: height,
+                viewBox: "0 0 " + viewBoxWidth + " " + viewBoxHeight,
               });
               const wrapper = makeSvgSpan([], [svg], options);
               wrapper.height = viewBoxHeight / 1e3;
@@ -7366,16 +7914,19 @@ function requireKatex() {
               wrapper.style.height = height;
               stack.push({
                 type: "elem",
-                elem: wrapper
+                elem: wrapper,
               });
             } else {
               stack.push(makeGlyphSpan(bottom, font, mode));
               stack.push(lap);
               if (middle === null) {
-                const innerHeight = realHeightTotal - topHeightTotal - bottomHeightTotal + 2 * lapInEms;
+                const innerHeight =
+                  realHeightTotal - topHeightTotal - bottomHeightTotal + 2 * lapInEms;
                 stack.push(makeInner(repeat, innerHeight, options));
               } else {
-                const innerHeight = (realHeightTotal - topHeightTotal - bottomHeightTotal - middleHeightTotal) / 2 + 2 * lapInEms;
+                const innerHeight =
+                  (realHeightTotal - topHeightTotal - bottomHeightTotal - middleHeightTotal) / 2 +
+                  2 * lapInEms;
                 stack.push(makeInner(repeat, innerHeight, options));
                 stack.push(lap);
                 stack.push(makeGlyphSpan(middle, font, mode));
@@ -7389,29 +7940,42 @@ function requireKatex() {
             const inner2 = makeVList({
               positionType: "bottom",
               positionData: depth,
-              children: stack
+              children: stack,
             });
-            return styleWrap(makeSpan(["delimsizing", "mult"], [inner2], newOptions), src_Style.TEXT, options, classes);
+            return styleWrap(
+              makeSpan(["delimsizing", "mult"], [inner2], newOptions),
+              src_Style.TEXT,
+              options,
+              classes,
+            );
           };
           const vbPad = 80;
           const emPad = 0.08;
-          const sqrtSvg = function(sqrtName, height, viewBoxHeight, extraVinculum, options) {
+          const sqrtSvg = function (sqrtName, height, viewBoxHeight, extraVinculum, options) {
             const path2 = sqrtPath(sqrtName, extraVinculum, viewBoxHeight);
             const pathNode = new PathNode(sqrtName, path2);
             const svg = new SvgNode([pathNode], {
               // Note: 1000:1 ratio of viewBox to document em width.
-              "width": "400em",
-              "height": makeEm(height),
-              "viewBox": "0 0 400000 " + viewBoxHeight,
-              "preserveAspectRatio": "xMinYMin slice"
+              width: "400em",
+              height: makeEm(height),
+              viewBox: "0 0 400000 " + viewBoxHeight,
+              preserveAspectRatio: "xMinYMin slice",
             });
             return makeSvgSpan(["hide-tail"], [svg], options);
           };
-          const makeSqrtImage = function(height, options) {
+          const makeSqrtImage = function (height, options) {
             const newOptions = options.havingBaseSizing();
-            const delim = traverseSequence("\\surd", height * newOptions.sizeMultiplier, stackLargeDelimiterSequence, newOptions);
+            const delim = traverseSequence(
+              "\\surd",
+              height * newOptions.sizeMultiplier,
+              stackLargeDelimiterSequence,
+              newOptions,
+            );
             let sizeMultiplier = newOptions.sizeMultiplier;
-            const extraVinculum = Math.max(0, options.minRuleThickness - options.fontMetrics().sqrtRuleThickness);
+            const extraVinculum = Math.max(
+              0,
+              options.minRuleThickness - options.fontMetrics().sqrtRuleThickness,
+            );
             let span;
             let spanHeight;
             let texHeight;
@@ -7433,7 +7997,13 @@ function requireKatex() {
               viewBoxHeight = (1e3 + vbPad) * sizeToMaxHeight[delim.size];
               texHeight = (sizeToMaxHeight[delim.size] + extraVinculum) / sizeMultiplier;
               spanHeight = (sizeToMaxHeight[delim.size] + extraVinculum + emPad) / sizeMultiplier;
-              span = sqrtSvg("sqrtSize" + delim.size, spanHeight, viewBoxHeight, extraVinculum, options);
+              span = sqrtSvg(
+                "sqrtSize" + delim.size,
+                spanHeight,
+                viewBoxHeight,
+                extraVinculum,
+                options,
+              );
               span.style.minWidth = "1.02em";
               advanceWidth = 1 / sizeMultiplier;
             } else {
@@ -7453,14 +8023,68 @@ function requireKatex() {
               // This actually should depend on the chosen font -- e.g. \boldmath
               // should use the thicker surd symbols from e.g. KaTeX_Main-Bold, and
               // have thicker rules.
-              ruleWidth: (options.fontMetrics().sqrtRuleThickness + extraVinculum) * sizeMultiplier
+              ruleWidth: (options.fontMetrics().sqrtRuleThickness + extraVinculum) * sizeMultiplier,
             };
           };
-          const stackLargeDelimiters = /* @__PURE__ */ new Set(["(", "\\lparen", ")", "\\rparen", "[", "\\lbrack", "]", "\\rbrack", "\\{", "\\lbrace", "\\}", "\\rbrace", "\\lfloor", "\\rfloor", "⌊", "⌋", "\\lceil", "\\rceil", "⌈", "⌉", "\\surd"]);
-          const stackAlwaysDelimiters = /* @__PURE__ */ new Set(["\\uparrow", "\\downarrow", "\\updownarrow", "\\Uparrow", "\\Downarrow", "\\Updownarrow", "|", "\\|", "\\vert", "\\Vert", "\\lvert", "\\rvert", "\\lVert", "\\rVert", "\\lgroup", "\\rgroup", "⟮", "⟯", "\\lmoustache", "\\rmoustache", "⎰", "⎱"]);
-          const stackNeverDelimiters = /* @__PURE__ */ new Set(["<", ">", "\\langle", "\\rangle", "/", "\\backslash", "\\lt", "\\gt"]);
+          const stackLargeDelimiters = /* @__PURE__ */ new Set([
+            "(",
+            "\\lparen",
+            ")",
+            "\\rparen",
+            "[",
+            "\\lbrack",
+            "]",
+            "\\rbrack",
+            "\\{",
+            "\\lbrace",
+            "\\}",
+            "\\rbrace",
+            "\\lfloor",
+            "\\rfloor",
+            "⌊",
+            "⌋",
+            "\\lceil",
+            "\\rceil",
+            "⌈",
+            "⌉",
+            "\\surd",
+          ]);
+          const stackAlwaysDelimiters = /* @__PURE__ */ new Set([
+            "\\uparrow",
+            "\\downarrow",
+            "\\updownarrow",
+            "\\Uparrow",
+            "\\Downarrow",
+            "\\Updownarrow",
+            "|",
+            "\\|",
+            "\\vert",
+            "\\Vert",
+            "\\lvert",
+            "\\rvert",
+            "\\lVert",
+            "\\rVert",
+            "\\lgroup",
+            "\\rgroup",
+            "⟮",
+            "⟯",
+            "\\lmoustache",
+            "\\rmoustache",
+            "⎰",
+            "⎱",
+          ]);
+          const stackNeverDelimiters = /* @__PURE__ */ new Set([
+            "<",
+            ">",
+            "\\langle",
+            "\\rangle",
+            "/",
+            "\\backslash",
+            "\\lt",
+            "\\gt",
+          ]);
           const sizeToMaxHeight = [0, 1.2, 1.8, 2.4, 3];
-          const makeSizedDelim = function(delim, size, options, mode, classes) {
+          const makeSizedDelim = function (delim, size, options, mode, classes) {
             if (delim === "<" || delim === "\\lt" || delim === "⟨") {
               delim = "\\langle";
             } else if (delim === ">" || delim === "\\gt" || delim === "⟩") {
@@ -7474,65 +8098,87 @@ function requireKatex() {
               throw new src_ParseError("Illegal delimiter: '" + delim + "'");
             }
           };
-          const stackNeverDelimiterSequence = [{
-            type: "small",
-            style: src_Style.SCRIPTSCRIPT
-          }, {
-            type: "small",
-            style: src_Style.SCRIPT
-          }, {
-            type: "small",
-            style: src_Style.TEXT
-          }, {
-            type: "large",
-            size: 1
-          }, {
-            type: "large",
-            size: 2
-          }, {
-            type: "large",
-            size: 3
-          }, {
-            type: "large",
-            size: 4
-          }];
-          const stackAlwaysDelimiterSequence = [{
-            type: "small",
-            style: src_Style.SCRIPTSCRIPT
-          }, {
-            type: "small",
-            style: src_Style.SCRIPT
-          }, {
-            type: "small",
-            style: src_Style.TEXT
-          }, {
-            type: "stack"
-          }];
-          const stackLargeDelimiterSequence = [{
-            type: "small",
-            style: src_Style.SCRIPTSCRIPT
-          }, {
-            type: "small",
-            style: src_Style.SCRIPT
-          }, {
-            type: "small",
-            style: src_Style.TEXT
-          }, {
-            type: "large",
-            size: 1
-          }, {
-            type: "large",
-            size: 2
-          }, {
-            type: "large",
-            size: 3
-          }, {
-            type: "large",
-            size: 4
-          }, {
-            type: "stack"
-          }];
-          const delimTypeToFont = function(type) {
+          const stackNeverDelimiterSequence = [
+            {
+              type: "small",
+              style: src_Style.SCRIPTSCRIPT,
+            },
+            {
+              type: "small",
+              style: src_Style.SCRIPT,
+            },
+            {
+              type: "small",
+              style: src_Style.TEXT,
+            },
+            {
+              type: "large",
+              size: 1,
+            },
+            {
+              type: "large",
+              size: 2,
+            },
+            {
+              type: "large",
+              size: 3,
+            },
+            {
+              type: "large",
+              size: 4,
+            },
+          ];
+          const stackAlwaysDelimiterSequence = [
+            {
+              type: "small",
+              style: src_Style.SCRIPTSCRIPT,
+            },
+            {
+              type: "small",
+              style: src_Style.SCRIPT,
+            },
+            {
+              type: "small",
+              style: src_Style.TEXT,
+            },
+            {
+              type: "stack",
+            },
+          ];
+          const stackLargeDelimiterSequence = [
+            {
+              type: "small",
+              style: src_Style.SCRIPTSCRIPT,
+            },
+            {
+              type: "small",
+              style: src_Style.SCRIPT,
+            },
+            {
+              type: "small",
+              style: src_Style.TEXT,
+            },
+            {
+              type: "large",
+              size: 1,
+            },
+            {
+              type: "large",
+              size: 2,
+            },
+            {
+              type: "large",
+              size: 3,
+            },
+            {
+              type: "large",
+              size: 4,
+            },
+            {
+              type: "stack",
+            },
+          ];
+          const delimTypeToFont = function (type) {
             if (type.type === "small") {
               return "Main-Regular";
             } else if (type.type === "large") {
@@ -7544,7 +8190,7 @@ function requireKatex() {
               throw new Error("Add support for delim type '" + delimKind + "' here.");
             }
           };
-          const traverseSequence = function(delim, height, sequence, options) {
+          const traverseSequence = function (delim, height, sequence, options) {
             const start = Math.min(2, 3 - options.style.size);
             for (let i = start; i < sequence.length; i++) {
               const delimType = sequence[i];
@@ -7563,7 +8209,7 @@ function requireKatex() {
             }
             return sequence[sequence.length - 1];
           };
-          const makeCustomSizedDelim = function(delim, height, center, options, mode, classes) {
+          const makeCustomSizedDelim = function (delim, height, center, options, mode, classes) {
             if (delim === "<" || delim === "\\lt" || delim === "⟨") {
               delim = "\\langle";
             } else if (delim === ">" || delim === "\\gt" || delim === "⟩") {
@@ -7586,7 +8232,7 @@ function requireKatex() {
               return makeStackedDelim(delim, height, center, options, mode, classes);
             }
           };
-          const makeLeftRightDelim = function(delim, height, depth, options, mode, classes) {
+          const makeLeftRightDelim = function (delim, height, depth, options, mode, classes) {
             const axisHeight = options.fontMetrics().axisHeight * options.sizeMultiplier;
             const delimiterFactor = 901;
             const delimiterExtend = 5 / options.fontMetrics().ptPerEm;
@@ -7601,78 +8247,132 @@ function requireKatex() {
               // (To see the difference, compare
               //    x^{x^{\left(\rule{0.1em}{0.68em}\right)}}
               // in TeX and KaTeX)
-              maxDistFromAxis / 500 * delimiterFactor,
-              2 * maxDistFromAxis - delimiterExtend
+              (maxDistFromAxis / 500) * delimiterFactor,
+              2 * maxDistFromAxis - delimiterExtend,
             );
             return makeCustomSizedDelim(delim, totalHeight, true, options, mode, classes);
           };
           const delimiterSizes = {
             "\\bigl": {
               mclass: "mopen",
-              size: 1
+              size: 1,
             },
             "\\Bigl": {
               mclass: "mopen",
-              size: 2
+              size: 2,
             },
             "\\biggl": {
               mclass: "mopen",
-              size: 3
+              size: 3,
             },
             "\\Biggl": {
               mclass: "mopen",
-              size: 4
+              size: 4,
             },
             "\\bigr": {
               mclass: "mclose",
-              size: 1
+              size: 1,
             },
             "\\Bigr": {
               mclass: "mclose",
-              size: 2
+              size: 2,
             },
             "\\biggr": {
               mclass: "mclose",
-              size: 3
+              size: 3,
             },
             "\\Biggr": {
               mclass: "mclose",
-              size: 4
+              size: 4,
             },
             "\\bigm": {
               mclass: "mrel",
-              size: 1
+              size: 1,
             },
             "\\Bigm": {
               mclass: "mrel",
-              size: 2
+              size: 2,
             },
             "\\biggm": {
               mclass: "mrel",
-              size: 3
+              size: 3,
             },
             "\\Biggm": {
               mclass: "mrel",
-              size: 4
+              size: 4,
             },
             "\\big": {
               mclass: "mord",
-              size: 1
+              size: 1,
             },
             "\\Big": {
               mclass: "mord",
-              size: 2
+              size: 2,
             },
             "\\bigg": {
               mclass: "mord",
-              size: 3
+              size: 3,
             },
             "\\Bigg": {
               mclass: "mord",
-              size: 4
-            }
+              size: 4,
+            },
           };
-          const delimiters = /* @__PURE__ */ new Set(["(", "\\lparen", ")", "\\rparen", "[", "\\lbrack", "]", "\\rbrack", "\\{", "\\lbrace", "\\}", "\\rbrace", "\\lfloor", "\\rfloor", "⌊", "⌋", "\\lceil", "\\rceil", "⌈", "⌉", "<", ">", "\\langle", "⟨", "\\rangle", "⟩", "\\lt", "\\gt", "\\lvert", "\\rvert", "\\lVert", "\\rVert", "\\lgroup", "\\rgroup", "⟮", "⟯", "\\lmoustache", "\\rmoustache", "⎰", "⎱", "/", "\\backslash", "|", "\\vert", "\\|", "\\Vert", "\\uparrow", "\\Uparrow", "\\downarrow", "\\Downarrow", "\\updownarrow", "\\Updownarrow", "."]);
+          const delimiters = /* @__PURE__ */ new Set([
+            "(",
+            "\\lparen",
+            ")",
+            "\\rparen",
+            "[",
+            "\\lbrack",
+            "]",
+            "\\rbrack",
+            "\\{",
+            "\\lbrace",
+            "\\}",
+            "\\rbrace",
+            "\\lfloor",
+            "\\rfloor",
+            "⌊",
+            "⌋",
+            "\\lceil",
+            "\\rceil",
+            "⌈",
+            "⌉",
+            "<",
+            ">",
+            "\\langle",
+            "⟨",
+            "\\rangle",
+            "⟩",
+            "\\lt",
+            "\\gt",
+            "\\lvert",
+            "\\rvert",
+            "\\lVert",
+            "\\rVert",
+            "\\lgroup",
+            "\\rgroup",
+            "⟮",
+            "⟯",
+            "\\lmoustache",
+            "\\rmoustache",
+            "⎰",
+            "⎱",
+            "/",
+            "\\backslash",
+            "|",
+            "\\vert",
+            "\\|",
+            "\\Vert",
+            "\\uparrow",
+            "\\Uparrow",
+            "\\downarrow",
+            "\\Downarrow",
+            "\\updownarrow",
+            "\\Updownarrow",
+            ".",
+          ]);
           function isMiddleDelimNode(node) {
             return "isMiddle" in node;
           }
@@ -7681,17 +8381,37 @@ function requireKatex() {
             if (symDelim && delimiters.has(symDelim.text)) {
               return symDelim;
             } else if (symDelim) {
-              throw new src_ParseError("Invalid delimiter '" + symDelim.text + "' after '" + context.funcName + "'", delim);
+              throw new src_ParseError(
+                "Invalid delimiter '" + symDelim.text + "' after '" + context.funcName + "'",
+                delim,
+              );
             } else {
               throw new src_ParseError("Invalid delimiter type '" + delim.type + "'", delim);
             }
           }
           defineFunction({
             type: "delimsizing",
-            names: ["\\bigl", "\\Bigl", "\\biggl", "\\Biggl", "\\bigr", "\\Bigr", "\\biggr", "\\Biggr", "\\bigm", "\\Bigm", "\\biggm", "\\Biggm", "\\big", "\\Big", "\\bigg", "\\Bigg"],
+            names: [
+              "\\bigl",
+              "\\Bigl",
+              "\\biggl",
+              "\\Biggl",
+              "\\bigr",
+              "\\Bigr",
+              "\\biggr",
+              "\\Biggr",
+              "\\bigm",
+              "\\Bigm",
+              "\\biggm",
+              "\\Biggm",
+              "\\big",
+              "\\Big",
+              "\\bigg",
+              "\\Bigg",
+            ],
             props: {
               numArgs: 1,
-              argTypes: ["primitive"]
+              argTypes: ["primitive"],
             },
             handler: (context, args) => {
               const delim = checkDelimiter(args[0], context);
@@ -7700,7 +8420,7 @@ function requireKatex() {
                 mode: context.parser.mode,
                 size: delimiterSizes[context.funcName].size,
                 mclass: delimiterSizes[context.funcName].mclass,
-                delim: delim.text
+                delim: delim.text,
               };
             },
             htmlBuilder: (group, options) => {
@@ -7725,7 +8445,7 @@ function requireKatex() {
               node.setAttribute("minsize", size);
               node.setAttribute("maxsize", size);
               return node;
-            }
+            },
           });
           function assertParsed(group) {
             if (!group.body) {
@@ -7737,7 +8457,7 @@ function requireKatex() {
             names: ["\\right"],
             props: {
               numArgs: 1,
-              primitive: true
+              primitive: true,
             },
             handler: (context, args) => {
               const color = context.parser.gullet.macros.get("\\current@color");
@@ -7748,17 +8468,17 @@ function requireKatex() {
                 type: "leftright-right",
                 mode: context.parser.mode,
                 delim: checkDelimiter(args[0], context).text,
-                color
+                color,
                 // undefined if not set via \color
               };
-            }
+            },
           });
           defineFunction({
             type: "leftright",
             names: ["\\left"],
             props: {
               numArgs: 1,
-              primitive: true
+              primitive: true,
             },
             handler: (context, args) => {
               const delim = checkDelimiter(args[0], context);
@@ -7774,7 +8494,7 @@ function requireKatex() {
                 body,
                 left: delim.text,
                 right: right.delim,
-                rightColor: right.color
+                rightColor: right.color,
               };
             },
             htmlBuilder: (group, options) => {
@@ -7798,7 +8518,14 @@ function requireKatex() {
               if (group.left === ".") {
                 leftDelim = makeNullDelimiter(options, ["mopen"]);
               } else {
-                leftDelim = makeLeftRightDelim(group.left, innerHeight, innerDepth, options, group.mode, ["mopen"]);
+                leftDelim = makeLeftRightDelim(
+                  group.left,
+                  innerHeight,
+                  innerDepth,
+                  options,
+                  group.mode,
+                  ["mopen"],
+                );
               }
               inner2.unshift(leftDelim);
               if (hadMiddle) {
@@ -7806,7 +8533,14 @@ function requireKatex() {
                   const middleDelim = inner2[i];
                   if (isMiddleDelimNode(middleDelim)) {
                     const isMiddle = middleDelim.isMiddle;
-                    inner2[i] = makeLeftRightDelim(isMiddle.delim, innerHeight, innerDepth, isMiddle.options, group.mode, []);
+                    inner2[i] = makeLeftRightDelim(
+                      isMiddle.delim,
+                      innerHeight,
+                      innerDepth,
+                      isMiddle.options,
+                      group.mode,
+                      [],
+                    );
                   }
                 }
               }
@@ -7814,8 +8548,17 @@ function requireKatex() {
               if (group.right === ".") {
                 rightDelim = makeNullDelimiter(options, ["mclose"]);
               } else {
-                const colorOptions = group.rightColor ? options.withColor(group.rightColor) : options;
-                rightDelim = makeLeftRightDelim(group.right, innerHeight, innerDepth, colorOptions, group.mode, ["mclose"]);
+                const colorOptions = group.rightColor
+                  ? options.withColor(group.rightColor)
+                  : options;
+                rightDelim = makeLeftRightDelim(
+                  group.right,
+                  innerHeight,
+                  innerDepth,
+                  colorOptions,
+                  group.mode,
+                  ["mclose"],
+                );
               }
               inner2.push(rightDelim);
               return makeSpan(["minner"], inner2, options);
@@ -7837,14 +8580,14 @@ function requireKatex() {
                 inner2.push(rightNode);
               }
               return makeRow(inner2);
-            }
+            },
           });
           defineFunction({
             type: "middle",
             names: ["\\middle"],
             props: {
               numArgs: 1,
-              primitive: true
+              primitive: true,
             },
             handler: (context, args) => {
               const delim = checkDelimiter(args[0], context);
@@ -7854,7 +8597,7 @@ function requireKatex() {
               return {
                 type: "middle",
                 mode: context.parser.mode,
-                delim: delim.text
+                delim: delim.text,
               };
             },
             htmlBuilder: (group, options) => {
@@ -7865,19 +8608,22 @@ function requireKatex() {
                 middleDelim = makeSizedDelim(group.delim, 1, options, group.mode, []);
                 middleDelim.isMiddle = {
                   delim: group.delim,
-                  options
+                  options,
                 };
               }
               return middleDelim;
             },
             mathmlBuilder: (group, options) => {
-              const textNode = group.delim === "\\vert" || group.delim === "|" ? makeText("|", "text") : makeText(group.delim, group.mode);
+              const textNode =
+                group.delim === "\\vert" || group.delim === "|"
+                  ? makeText("|", "text")
+                  : makeText(group.delim, group.mode);
               const middleNode = new MathNode("mo", [textNode]);
               middleNode.setAttribute("fence", "true");
               middleNode.setAttribute("lspace", "0.05em");
               middleNode.setAttribute("rspace", "0.05em");
               return middleNode;
-            }
+            },
           });
           const enclose_htmlBuilder = (group, options) => {
             const inner2 = wrapFragment(buildGroup(group.body, options), options);
@@ -7891,14 +8637,20 @@ function requireKatex() {
               img.height = options.fontMetrics().defaultRuleThickness / scale;
               imgShift = -0.5 * options.fontMetrics().xHeight;
             } else if (label === "phase") {
-              const lineWeight = calculateSize({
-                number: 0.6,
-                unit: "pt"
-              }, options);
-              const clearance = calculateSize({
-                number: 0.35,
-                unit: "ex"
-              }, options);
+              const lineWeight = calculateSize(
+                {
+                  number: 0.6,
+                  unit: "pt",
+                },
+                options,
+              );
+              const clearance = calculateSize(
+                {
+                  number: 0.35,
+                  unit: "ex",
+                },
+                options,
+              );
               const newOptions = options.havingBaseSizing();
               scale = scale / newOptions.sizeMultiplier;
               const angleHeight = inner2.height + inner2.depth + lineWeight + clearance;
@@ -7906,10 +8658,10 @@ function requireKatex() {
               const viewBoxHeight = Math.floor(1e3 * angleHeight * scale);
               const path2 = phasePath(viewBoxHeight);
               const svgNode = new SvgNode([new PathNode("phase", path2)], {
-                "width": "400em",
-                "height": makeEm(viewBoxHeight / 1e3),
-                "viewBox": "0 0 400000 " + viewBoxHeight,
-                "preserveAspectRatio": "xMinYMin slice"
+                width: "400em",
+                height: makeEm(viewBoxHeight / 1e3),
+                viewBox: "0 0 400000 " + viewBoxHeight,
+                preserveAspectRatio: "xMinYMin slice",
               });
               img = makeSvgSpan(["hide-tail"], [svgNode], options);
               img.style.height = makeEm(angleHeight);
@@ -7931,13 +8683,16 @@ function requireKatex() {
                 ruleThickness = Math.max(
                   options.fontMetrics().fboxrule,
                   // default
-                  options.minRuleThickness
+                  options.minRuleThickness,
                   // User override.
                 );
                 topPad = options.fontMetrics().fboxsep + (label === "colorbox" ? 0 : ruleThickness);
                 bottomPad = topPad;
               } else if (label === "angl") {
-                ruleThickness = Math.max(options.fontMetrics().defaultRuleThickness, options.minRuleThickness);
+                ruleThickness = Math.max(
+                  options.fontMetrics().defaultRuleThickness,
+                  options.minRuleThickness,
+                );
                 topPad = 4 * ruleThickness;
                 bottomPad = Math.max(0, 0.25 - inner2.depth);
               } else {
@@ -7969,14 +8724,14 @@ function requireKatex() {
                   {
                     type: "elem",
                     elem: img,
-                    shift: imgShift
+                    shift: imgShift,
                   },
                   {
                     type: "elem",
                     elem: inner2,
-                    shift: 0
-                  }
-                ]
+                    shift: 0,
+                  },
+                ],
               });
             } else {
               const classes = /cancel|phase/.test(label) ? ["svg-align"] : [];
@@ -7987,15 +8742,15 @@ function requireKatex() {
                   {
                     type: "elem",
                     elem: inner2,
-                    shift: 0
+                    shift: 0,
                   },
                   {
                     type: "elem",
                     elem: img,
                     shift: imgShift,
-                    wrapperClasses: classes
-                  }
-                ]
+                    wrapperClasses: classes,
+                  },
+                ],
               });
             }
             if (/cancel/.test(label)) {
@@ -8010,7 +8765,9 @@ function requireKatex() {
           };
           const enclose_mathmlBuilder = (group, options) => {
             let fboxsep;
-            const node = new MathNode(group.label.includes("colorbox") ? "mpadded" : "menclose", [buildMathML_buildGroup(group.body, options)]);
+            const node = new MathNode(group.label.includes("colorbox") ? "mpadded" : "menclose", [
+              buildMathML_buildGroup(group.body, options),
+            ]);
             switch (group.label) {
               case "\\cancel":
                 node.setAttribute("notation", "updiagonalstrike");
@@ -8041,10 +8798,13 @@ function requireKatex() {
                   const thk = Math.max(
                     options.fontMetrics().fboxrule,
                     // default
-                    options.minRuleThickness
+                    options.minRuleThickness,
                     // user override
                   );
-                  node.setAttribute("style", "border: " + makeEm(thk) + " solid " + group.borderColor);
+                  node.setAttribute(
+                    "style",
+                    "border: " + makeEm(thk) + " solid " + group.borderColor,
+                  );
                 }
                 break;
               case "\\xcancel":
@@ -8062,13 +8822,10 @@ function requireKatex() {
             props: {
               numArgs: 2,
               allowedInText: true,
-              argTypes: ["color", "hbox"]
+              argTypes: ["color", "hbox"],
             },
             handler(_ref, args, optArgs) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const color = assertNodeType(args[0], "color-token").color;
               const body = args[1];
               return {
@@ -8076,11 +8833,11 @@ function requireKatex() {
                 mode: parser.mode,
                 label: funcName,
                 backgroundColor: color,
-                body
+                body,
               };
             },
             htmlBuilder: enclose_htmlBuilder,
-            mathmlBuilder: enclose_mathmlBuilder
+            mathmlBuilder: enclose_mathmlBuilder,
           });
           defineFunction({
             type: "enclose",
@@ -8088,13 +8845,10 @@ function requireKatex() {
             props: {
               numArgs: 3,
               allowedInText: true,
-              argTypes: ["color", "color", "hbox"]
+              argTypes: ["color", "color", "hbox"],
             },
             handler(_ref2, args, optArgs) {
-              let {
-                parser,
-                funcName
-              } = _ref2;
+              let { parser, funcName } = _ref2;
               const borderColor = assertNodeType(args[0], "color-token").color;
               const backgroundColor = assertNodeType(args[1], "color-token").color;
               const body = args[2];
@@ -8104,11 +8858,11 @@ function requireKatex() {
                 label: funcName,
                 backgroundColor,
                 borderColor,
-                body
+                body,
               };
             },
             htmlBuilder: enclose_htmlBuilder,
-            mathmlBuilder: enclose_mathmlBuilder
+            mathmlBuilder: enclose_mathmlBuilder,
           });
           defineFunction({
             type: "enclose",
@@ -8116,67 +8870,62 @@ function requireKatex() {
             props: {
               numArgs: 1,
               argTypes: ["hbox"],
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref3, args) {
-              let {
-                parser
-              } = _ref3;
+              let { parser } = _ref3;
               return {
                 type: "enclose",
                 mode: parser.mode,
                 label: "\\fbox",
-                body: args[0]
+                body: args[0],
               };
-            }
+            },
           });
           defineFunction({
             type: "enclose",
             names: ["\\cancel", "\\bcancel", "\\xcancel", "\\phase"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(_ref4, args) {
-              let {
-                parser,
-                funcName
-              } = _ref4;
+              let { parser, funcName } = _ref4;
               const body = args[0];
               return {
                 type: "enclose",
                 mode: parser.mode,
                 label: funcName,
-                body
+                body,
               };
             },
             htmlBuilder: enclose_htmlBuilder,
-            mathmlBuilder: enclose_mathmlBuilder
+            mathmlBuilder: enclose_mathmlBuilder,
           });
           defineFunction({
             type: "enclose",
             names: ["\\sout"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref5, args) {
-              let {
-                parser,
-                funcName
-              } = _ref5;
+              let { parser, funcName } = _ref5;
               if (parser.mode === "math") {
-                parser.settings.reportNonstrict("mathVsSout", "LaTeX's \\sout works only in text mode");
+                parser.settings.reportNonstrict(
+                  "mathVsSout",
+                  "LaTeX's \\sout works only in text mode",
+                );
               }
               const body = args[0];
               return {
                 type: "enclose",
                 mode: parser.mode,
                 label: funcName,
-                body
+                body,
               };
             },
             htmlBuilder: enclose_htmlBuilder,
-            mathmlBuilder: enclose_mathmlBuilder
+            mathmlBuilder: enclose_mathmlBuilder,
           });
           defineFunction({
             type: "enclose",
@@ -8184,19 +8933,17 @@ function requireKatex() {
             props: {
               numArgs: 1,
               argTypes: ["hbox"],
-              allowedInText: false
+              allowedInText: false,
             },
             handler(_ref6, args) {
-              let {
-                parser
-              } = _ref6;
+              let { parser } = _ref6;
               return {
                 type: "enclose",
                 mode: parser.mode,
                 label: "\\angl",
-                body: args[0]
+                body: args[0],
               };
-            }
+            },
           });
           const _environments = {};
           function defineEnvironment(_ref) {
@@ -8206,14 +8953,14 @@ function requireKatex() {
               props,
               handler,
               htmlBuilder: htmlBuilder2,
-              mathmlBuilder: mathmlBuilder2
+              mathmlBuilder: mathmlBuilder2,
             } = _ref;
             const data = {
               type,
               numArgs: props.numArgs || 0,
               allowedInText: false,
               numOptionalArgs: 0,
-              handler
+              handler,
             };
             for (let i = 0; i < names.length; ++i) {
               _environments[names[i]] = data;
@@ -8250,7 +8997,12 @@ function requireKatex() {
             static range(first, second) {
               if (!second) {
                 return first && first.loc;
-              } else if (!first || !first.loc || !second.loc || first.loc.lexer !== second.loc.lexer) {
+              } else if (
+                !first ||
+                !first.loc ||
+                !second.loc ||
+                first.loc.lexer !== second.loc.lexer
+              ) {
                 return null;
               } else {
                 return new SourceLocation(first.loc.lexer, first.loc.start, second.loc.end);
@@ -8295,7 +9047,9 @@ function requireKatex() {
           const validateAmsEnvironmentContext = (context) => {
             const settings = context.parser.settings;
             if (!settings.displayMode) {
-              throw new src_ParseError("{" + context.envName + "} can be used only in display mode.");
+              throw new src_ParseError(
+                "{" + context.envName + "} can be used only in display mode.",
+              );
             }
           };
           const gatherEnvironments = /* @__PURE__ */ new Set(["gather", "gather*"]);
@@ -8315,7 +9069,7 @@ function requireKatex() {
               singleRow,
               emptySingleRow,
               maxNumCols,
-              leqno
+              leqno,
             } = _ref;
             parser.gullet.beginGroup();
             if (!singleRow) {
@@ -8362,7 +9116,7 @@ function requireKatex() {
               let cell = {
                 type: "ordgroup",
                 mode: parser.mode,
-                body: cellBody
+                body: cellBody,
               };
               if (style) {
                 cell = {
@@ -8370,7 +9124,7 @@ function requireKatex() {
                   mode: parser.mode,
                   style,
                   resetFont: true,
-                  body: [cell]
+                  body: [cell],
                 };
               }
               row.push(cell);
@@ -8380,13 +9134,23 @@ function requireKatex() {
                   if (singleRow || colSeparationType) {
                     throw new src_ParseError("Too many tab characters: &", parser.nextToken);
                   } else {
-                    parser.settings.reportNonstrict("textEnv", "Too few columns specified in the {array} column argument.");
+                    parser.settings.reportNonstrict(
+                      "textEnv",
+                      "Too few columns specified in the {array} column argument.",
+                    );
                   }
                 }
                 parser.consume();
               } else if (next === "\\end") {
                 endRow();
-                if (row.length === 1 && cell.type === "styling" && cell.body.length === 1 && cell.body[0].type === "ordgroup" && cell.body[0].body.length === 0 && (body.length > 1 || !emptySingleRow)) {
+                if (
+                  row.length === 1 &&
+                  cell.type === "styling" &&
+                  cell.body.length === 1 &&
+                  cell.body[0].type === "ordgroup" &&
+                  cell.body[0].body.length === 0 &&
+                  (body.length > 1 || !emptySingleRow)
+                ) {
                   body.pop();
                 }
                 if (hLinesBeforeRow.length < body.length + 1) {
@@ -8423,7 +9187,7 @@ function requireKatex() {
               hLinesBeforeRow,
               colSeparationType,
               tags,
-              leqno
+              leqno,
             };
           }
           function dCellStyle(envName) {
@@ -8433,7 +9197,7 @@ function requireKatex() {
               return "text";
             }
           }
-          const array_htmlBuilder = function(group, options) {
+          const array_htmlBuilder = function (group, options) {
             let r;
             let c;
             const nr = group.body.length;
@@ -8444,7 +9208,7 @@ function requireKatex() {
             const ruleThickness = Math.max(
               // From LaTeX \showthe\arrayrulewidth. Equals 0.04 em.
               options.fontMetrics().arrayRuleWidth,
-              options.minRuleThickness
+              options.minRuleThickness,
               // User override.
             );
             const pt = 1 / options.fontMetrics().ptPerEm;
@@ -8453,10 +9217,16 @@ function requireKatex() {
               const localMultiplier = options.havingStyle(src_Style.SCRIPT).sizeMultiplier;
               arraycolsep = 0.2778 * (localMultiplier / options.sizeMultiplier);
             }
-            const baselineskip = group.colSeparationType === "CD" ? calculateSize({
-              number: 3,
-              unit: "ex"
-            }, options) : 12 * pt;
+            const baselineskip =
+              group.colSeparationType === "CD"
+                ? calculateSize(
+                    {
+                      number: 3,
+                      unit: "ex",
+                    },
+                    options,
+                  )
+                : 12 * pt;
             const jot = 3 * pt;
             const arrayskip = group.arraystretch * baselineskip;
             const arstrutHeight = 0.7 * arrayskip;
@@ -8469,7 +9239,7 @@ function requireKatex() {
                 }
                 hlines.push({
                   pos: totalHeight,
-                  isDashed: hlinesInGap[i]
+                  isDashed: hlinesInGap[i],
                 });
               }
             }
@@ -8485,7 +9255,7 @@ function requireKatex() {
                 cells: new Array(inrow.length),
                 height: 0,
                 depth: 0,
-                pos: 0
+                pos: 0,
               };
               for (c = 0; c < inrow.length; ++c) {
                 const elt = buildGroup(inrow[c], options);
@@ -8544,7 +9314,7 @@ function requireKatex() {
                 tagSpans.push({
                   type: "elem",
                   elem: tagSpan,
-                  shift
+                  shift,
                 });
               }
             }
@@ -8590,7 +9360,11 @@ function requireKatex() {
               let sepwidth;
               if (c > 0 || group.hskipBeforeAndAfter) {
                 var _colDescr$pregap, _colDescr2;
-                sepwidth = (_colDescr$pregap = (_colDescr2 = colDescr) == null ? void 0 : _colDescr2.pregap) != null ? _colDescr$pregap : arraycolsep;
+                sepwidth =
+                  (_colDescr$pregap =
+                    (_colDescr2 = colDescr) == null ? void 0 : _colDescr2.pregap) != null
+                    ? _colDescr$pregap
+                    : arraycolsep;
                 if (sepwidth !== 0) {
                   colSep = makeSpan(["arraycolsep"], []);
                   colSep.style.width = makeEm(sepwidth);
@@ -8610,18 +9384,28 @@ function requireKatex() {
                 colElems.push({
                   type: "elem",
                   elem,
-                  shift
+                  shift,
                 });
               }
               const colVList = makeVList({
                 positionType: "individualShift",
-                children: colElems
+                children: colElems,
               });
-              const colSpan = makeSpan(["col-align-" + (((_colDescr3 = colDescr) == null ? void 0 : _colDescr3.align) || "c")], [colVList]);
+              const colSpan = makeSpan(
+                [
+                  "col-align-" +
+                    (((_colDescr3 = colDescr) == null ? void 0 : _colDescr3.align) || "c"),
+                ],
+                [colVList],
+              );
               cols.push(colSpan);
               if (c < nc - 1 || group.hskipBeforeAndAfter) {
                 var _colDescr$postgap, _colDescr4;
-                sepwidth = (_colDescr$postgap = (_colDescr4 = colDescr) == null ? void 0 : _colDescr4.postgap) != null ? _colDescr$postgap : arraycolsep;
+                sepwidth =
+                  (_colDescr$postgap =
+                    (_colDescr4 = colDescr) == null ? void 0 : _colDescr4.postgap) != null
+                    ? _colDescr$postgap
+                    : arraycolsep;
                 if (sepwidth !== 0) {
                   colSep = makeSpan(["arraycolsep"], []);
                   colSep.style.width = makeEm(sepwidth);
@@ -8633,11 +9417,13 @@ function requireKatex() {
             if (hlines.length > 0) {
               const line = makeLineSpan("hline", options, ruleThickness);
               const dashes = makeLineSpan("hdashline", options, ruleThickness);
-              const vListElems = [{
-                type: "elem",
-                elem: tableBody,
-                shift: 0
-              }];
+              const vListElems = [
+                {
+                  type: "elem",
+                  elem: tableBody,
+                  shift: 0,
+                },
+              ];
               while (hlines.length > 0) {
                 const hline = hlines.pop();
                 const lineShift = hline.pos - offset;
@@ -8645,19 +9431,19 @@ function requireKatex() {
                   vListElems.push({
                     type: "elem",
                     elem: dashes,
-                    shift: lineShift
+                    shift: lineShift,
                   });
                 } else {
                   vListElems.push({
                     type: "elem",
                     elem: line,
-                    shift: lineShift
+                    shift: lineShift,
                   });
                 }
               }
               tableBody = makeVList({
                 positionType: "individualShift",
-                children: vListElems
+                children: vListElems,
               });
             }
             if (tagSpans.length === 0) {
@@ -8665,7 +9451,7 @@ function requireKatex() {
             } else {
               const eqnNumCol = makeVList({
                 positionType: "individualShift",
-                children: tagSpans
+                children: tagSpans,
               });
               const tagCol = makeSpan(["tag"], [eqnNumCol], options);
               return makeFragment([tableBody, tagCol]);
@@ -8674,9 +9460,9 @@ function requireKatex() {
           const alignMap = {
             c: "center ",
             l: "left ",
-            r: "right "
+            r: "right ",
           };
-          const array_mathmlBuilder = function(group, options) {
+          const array_mathmlBuilder = function (group, options) {
             const tbl = [];
             const glue = new MathNode("mtd", [], ["mtr-glue"]);
             const tag = new MathNode("mtd", [], ["mml-eqn-num"]);
@@ -8698,7 +9484,10 @@ function requireKatex() {
               tbl.push(new MathNode("mtr", row));
             }
             let table = new MathNode("mtable", tbl);
-            const gap = group.arraystretch === 0.5 ? 0.1 : 0.16 + group.arraystretch - 1 + (group.addJot ? 0.09 : 0);
+            const gap =
+              group.arraystretch === 0.5
+                ? 0.1
+                : 0.16 + group.arraystretch - 1 + (group.addJot ? 0.09 : 0);
             table.setAttribute("rowspacing", makeEm(gap));
             let menclose = "";
             let align = "";
@@ -8743,7 +9532,10 @@ function requireKatex() {
                 spacing2 += i % 2 ? "0em " : "1em ";
               }
               table.setAttribute("columnspacing", spacing2.trim());
-            } else if (group.colSeparationType === "alignat" || group.colSeparationType === "gather") {
+            } else if (
+              group.colSeparationType === "alignat" ||
+              group.colSeparationType === "gather"
+            ) {
               table.setAttribute("columnspacing", "0em");
             } else if (group.colSeparationType === "small") {
               table.setAttribute("columnspacing", "0.2778em");
@@ -8772,28 +9564,32 @@ function requireKatex() {
             }
             return table;
           };
-          const alignedHandler = function(context, args) {
+          const alignedHandler = function (context, args) {
             if (!context.envName.includes("ed")) {
               validateAmsEnvironmentContext(context);
             }
             const cols = [];
             const separationType = context.envName.includes("at") ? "alignat" : "align";
             const isSplit = context.envName === "split";
-            const res = parseArray(context.parser, {
-              cols,
-              addJot: true,
-              autoTag: isSplit ? void 0 : getAutoTag(context.envName),
-              emptySingleRow: true,
-              colSeparationType: separationType,
-              maxNumCols: isSplit ? 2 : void 0,
-              leqno: context.parser.settings.leqno
-            }, "display");
+            const res = parseArray(
+              context.parser,
+              {
+                cols,
+                addJot: true,
+                autoTag: isSplit ? void 0 : getAutoTag(context.envName),
+                emptySingleRow: true,
+                colSeparationType: separationType,
+                maxNumCols: isSplit ? 2 : void 0,
+                leqno: context.parser.settings.leqno,
+              },
+              "display",
+            );
             let numMaths = 0;
             let numCols = 0;
             const emptyGroup = {
               type: "ordgroup",
               mode: context.mode,
-              body: []
+              body: [],
             };
             if (args[0] && args[0].type === "ordgroup") {
               let arg0 = "";
@@ -8805,7 +9601,7 @@ function requireKatex() {
               numCols = numMaths * 2;
             }
             const isAligned = !numCols;
-            res.body.forEach(function(row) {
+            res.body.forEach(function (row) {
               for (let i = 1; i < row.length; i += 2) {
                 const styling = assertNodeType(row[i], "styling");
                 const ordgroup = assertNodeType(styling.body[0], "ordgroup");
@@ -8814,7 +9610,10 @@ function requireKatex() {
               if (!isAligned) {
                 const curMaths = row.length / 2;
                 if (numMaths < curMaths) {
-                  throw new src_ParseError("Too many math in a row: " + ("expected " + numMaths + ", but got " + curMaths), row[0]);
+                  throw new src_ParseError(
+                    "Too many math in a row: " + ("expected " + numMaths + ", but got " + curMaths),
+                    row[0],
+                  );
                 }
               } else if (numCols < row.length) {
                 numCols = row.length;
@@ -8832,7 +9631,7 @@ function requireKatex() {
                 type: "align",
                 align,
                 pregap,
-                postgap: 0
+                postgap: 0,
               };
             }
             res.colSeparationType = isAligned ? "align" : "alignat";
@@ -8842,28 +9641,28 @@ function requireKatex() {
             type: "array",
             names: ["array", "darray"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(context, args) {
               const symNode = checkSymbolNodeType(args[0]);
               const colalign = symNode ? [args[0]] : assertNodeType(args[0], "ordgroup").body;
-              const cols = colalign.map(function(nde) {
+              const cols = colalign.map(function (nde) {
                 const node = assertSymbolNodeType(nde);
                 const ca = node.text;
                 if ("lcr".includes(ca)) {
                   return {
                     type: "align",
-                    align: ca
+                    align: ca,
                   };
                 } else if (ca === "|") {
                   return {
                     type: "separator",
-                    separator: "|"
+                    separator: "|",
                   };
                 } else if (ca === ":") {
                   return {
                     type: "separator",
-                    separator: ":"
+                    separator: ":",
                   };
                 }
                 throw new src_ParseError("Unknown column alignment: " + ca, nde);
@@ -8872,35 +9671,50 @@ function requireKatex() {
                 cols,
                 hskipBeforeAndAfter: true,
                 // \@preamble in lttab.dtx
-                maxNumCols: cols.length
+                maxNumCols: cols.length,
               };
               return parseArray(context.parser, res, dCellStyle(context.envName));
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
-            names: ["matrix", "pmatrix", "bmatrix", "Bmatrix", "vmatrix", "Vmatrix", "matrix*", "pmatrix*", "bmatrix*", "Bmatrix*", "vmatrix*", "Vmatrix*"],
+            names: [
+              "matrix",
+              "pmatrix",
+              "bmatrix",
+              "Bmatrix",
+              "vmatrix",
+              "Vmatrix",
+              "matrix*",
+              "pmatrix*",
+              "bmatrix*",
+              "Bmatrix*",
+              "vmatrix*",
+              "Vmatrix*",
+            ],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(context) {
               const delimiters2 = {
-                "matrix": null,
-                "pmatrix": ["(", ")"],
-                "bmatrix": ["[", "]"],
-                "Bmatrix": ["\\{", "\\}"],
-                "vmatrix": ["|", "|"],
-                "Vmatrix": ["\\Vert", "\\Vert"]
+                matrix: null,
+                pmatrix: ["(", ")"],
+                bmatrix: ["[", "]"],
+                Bmatrix: ["\\{", "\\}"],
+                vmatrix: ["|", "|"],
+                Vmatrix: ["\\Vert", "\\Vert"],
               }[context.envName.replace("*", "")];
               let colAlign = "c";
               const payload = {
                 hskipBeforeAndAfter: false,
-                cols: [{
-                  type: "align",
-                  align: colAlign
-                }]
+                cols: [
+                  {
+                    type: "align",
+                    align: colAlign,
+                  },
+                ],
               };
               if (context.envName.charAt(context.envName.length - 1) === "*") {
                 const parser = context.parser;
@@ -8916,64 +9730,68 @@ function requireKatex() {
                   parser.consumeSpaces();
                   parser.expect("]");
                   parser.consume();
-                  payload.cols = [{
-                    type: "align",
-                    align: colAlign
-                  }];
+                  payload.cols = [
+                    {
+                      type: "align",
+                      align: colAlign,
+                    },
+                  ];
                 }
               }
               const res = parseArray(context.parser, payload, dCellStyle(context.envName));
               const numCols = Math.max(0, ...res.body.map((row) => row.length));
               res.cols = new Array(numCols).fill({
                 type: "align",
-                align: colAlign
+                align: colAlign,
               });
-              return delimiters2 ? {
-                type: "leftright",
-                mode: context.mode,
-                body: [res],
-                left: delimiters2[0],
-                right: delimiters2[1],
-                rightColor: void 0
-                // \right uninfluenced by \color in array
-              } : res;
+              return delimiters2
+                ? {
+                    type: "leftright",
+                    mode: context.mode,
+                    body: [res],
+                    left: delimiters2[0],
+                    right: delimiters2[1],
+                    rightColor: void 0,
+                    // \right uninfluenced by \color in array
+                  }
+                : res;
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["smallmatrix"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(context) {
               const payload = {
-                arraystretch: 0.5
+                arraystretch: 0.5,
               };
               const res = parseArray(context.parser, payload, "script");
               res.colSeparationType = "small";
               return res;
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["subarray"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(context, args) {
               const symNode = checkSymbolNodeType(args[0]);
               const colalign = symNode ? [args[0]] : assertNodeType(args[0], "ordgroup").body;
-              const cols = colalign.map(function(nde) {
+              const cols = colalign.map(function (nde) {
                 const node = assertSymbolNodeType(nde);
                 const ca = node.text;
                 if ("lc".includes(ca)) {
                   return {
                     type: "align",
-                    align: ca
+                    align: ca,
                   };
                 }
                 throw new src_ParseError("Unknown column alignment: " + ca, nde);
@@ -8984,7 +9802,7 @@ function requireKatex() {
               const payload = {
                 cols,
                 hskipBeforeAndAfter: false,
-                arraystretch: 0.5
+                arraystretch: 0.5,
               };
               const res = parseArray(context.parser, payload, "script");
               if (res.body.length > 0 && res.body[0].length > 1) {
@@ -8993,33 +9811,36 @@ function requireKatex() {
               return res;
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["cases", "dcases", "rcases", "drcases"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(context) {
               const payload = {
                 arraystretch: 1.2,
-                cols: [{
-                  type: "align",
-                  align: "l",
-                  pregap: 0,
-                  // TODO(kevinb) get the current style.
-                  // For now we use the metrics for TEXT style which is what we were
-                  // doing before.  Before attempting to get the current style we
-                  // should look at TeX's behavior especially for \over and matrices.
-                  postgap: 1
-                  /* 1em quad */
-                }, {
-                  type: "align",
-                  align: "l",
-                  pregap: 0,
-                  postgap: 0
-                }]
+                cols: [
+                  {
+                    type: "align",
+                    align: "l",
+                    pregap: 0,
+                    // TODO(kevinb) get the current style.
+                    // For now we use the metrics for TEXT style which is what we were
+                    // doing before.  Before attempting to get the current style we
+                    // should look at TeX's behavior especially for \over and matrices.
+                    postgap: 1,
+                    /* 1em quad */
+                  },
+                  {
+                    type: "align",
+                    align: "l",
+                    pregap: 0,
+                    postgap: 0,
+                  },
+                ],
               };
               const res = parseArray(context.parser, payload, dCellStyle(context.envName));
               return {
@@ -9028,63 +9849,65 @@ function requireKatex() {
                 body: [res],
                 left: context.envName.includes("r") ? "." : "\\{",
                 right: context.envName.includes("r") ? "\\}" : ".",
-                rightColor: void 0
+                rightColor: void 0,
               };
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["align", "align*", "aligned", "split"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler: alignedHandler,
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["gathered", "gather", "gather*"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(context) {
               if (gatherEnvironments.has(context.envName)) {
                 validateAmsEnvironmentContext(context);
               }
               const res = {
-                cols: [{
-                  type: "align",
-                  align: "c"
-                }],
+                cols: [
+                  {
+                    type: "align",
+                    align: "c",
+                  },
+                ],
                 addJot: true,
                 colSeparationType: "gather",
                 autoTag: getAutoTag(context.envName),
                 emptySingleRow: true,
-                leqno: context.parser.settings.leqno
+                leqno: context.parser.settings.leqno,
               };
               return parseArray(context.parser, res, "display");
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["alignat", "alignat*", "alignedat"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler: alignedHandler,
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["equation", "equation*"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(context) {
               validateAmsEnvironmentContext(context);
@@ -9093,25 +9916,25 @@ function requireKatex() {
                 emptySingleRow: true,
                 singleRow: true,
                 maxNumCols: 1,
-                leqno: context.parser.settings.leqno
+                leqno: context.parser.settings.leqno,
               };
               return parseArray(context.parser, res, "display");
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineEnvironment({
             type: "array",
             names: ["CD"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(context) {
               validateAmsEnvironmentContext(context);
               return parseCD(context.parser);
             },
             htmlBuilder: array_htmlBuilder,
-            mathmlBuilder: array_mathmlBuilder
+            mathmlBuilder: array_mathmlBuilder,
           });
           defineMacro("\\nonumber", "\\gdef\\@eqnsw{0}");
           defineMacro("\\notag", "\\nonumber");
@@ -9122,11 +9945,11 @@ function requireKatex() {
             props: {
               numArgs: 0,
               allowedInText: true,
-              allowedInMath: true
+              allowedInMath: true,
             },
             handler(context, args) {
               throw new src_ParseError(context.funcName + " valid only within array environment");
-            }
+            },
           });
           const environments = _environments;
           var src_environments = environments;
@@ -9135,13 +9958,10 @@ function requireKatex() {
             names: ["\\begin", "\\end"],
             props: {
               numArgs: 1,
-              argTypes: ["text"]
+              argTypes: ["text"],
             },
             handler(_ref, args) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const nameGroup = args[0];
               if (nameGroup.type !== "ordgroup") {
                 throw new src_ParseError("Invalid environment name", nameGroup);
@@ -9155,21 +9975,24 @@ function requireKatex() {
                   throw new src_ParseError("No such environment: " + envName, nameGroup);
                 }
                 const env = src_environments[envName];
-                const {
-                  args: args2,
-                  optArgs
-                } = parser.parseArguments("\\begin{" + envName + "}", env);
+                const { args: args2, optArgs } = parser.parseArguments(
+                  "\\begin{" + envName + "}",
+                  env,
+                );
                 const context = {
                   mode: parser.mode,
                   envName,
-                  parser
+                  parser,
                 };
                 const result = env.handler(context, args2, optArgs);
                 parser.expect("\\end", false);
                 const endNameToken = parser.nextToken;
                 const end = assertNodeType(parser.parseFunction(), "environment");
                 if (end.name !== envName) {
-                  throw new src_ParseError("Mismatch: \\begin{" + envName + "} matched by \\end{" + end.name + "}", endNameToken);
+                  throw new src_ParseError(
+                    "Mismatch: \\begin{" + envName + "} matched by \\end{" + end.name + "}",
+                    endNameToken,
+                  );
                 }
                 return result;
               }
@@ -9177,9 +10000,9 @@ function requireKatex() {
                 type: "environment",
                 mode: parser.mode,
                 name: envName,
-                nameGroup
+                nameGroup,
               };
-            }
+            },
           });
           const font_htmlBuilder = (group, options) => {
             const font = group.font;
@@ -9194,7 +10017,7 @@ function requireKatex() {
           const fontAliases = {
             "\\Bbb": "\\mathbb",
             "\\bold": "\\mathbf",
-            "\\frak": "\\mathfrak"
+            "\\frak": "\\mathfrak",
           };
           defineFunction({
             type: "font",
@@ -9215,17 +10038,14 @@ function requireKatex() {
               // aliases, except \bm defined below
               "\\Bbb",
               "\\bold",
-              "\\frak"
+              "\\frak",
             ],
             props: {
               numArgs: 1,
-              allowedInArgument: true
+              allowedInArgument: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const body = normalizeArgument(args[0]);
               let func = funcName;
               if (func in fontAliases) {
@@ -9235,53 +10055,47 @@ function requireKatex() {
                 type: "font",
                 mode: parser.mode,
                 font: func.slice(1),
-                body
+                body,
               };
             },
             htmlBuilder: font_htmlBuilder,
-            mathmlBuilder: font_mathmlBuilder
+            mathmlBuilder: font_mathmlBuilder,
           });
           defineFunction({
             type: "mclass",
             names: ["\\boldsymbol", "\\bm"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler: (_ref2, args) => {
-              let {
-                parser
-              } = _ref2;
+              let { parser } = _ref2;
               const body = args[0];
               return {
                 type: "mclass",
                 mode: parser.mode,
                 mclass: binrelClass(body),
-                body: [{
-                  type: "font",
-                  mode: parser.mode,
-                  font: "boldsymbol",
-                  body
-                }],
-                isCharacterBox: isCharacterBox(body)
+                body: [
+                  {
+                    type: "font",
+                    mode: parser.mode,
+                    font: "boldsymbol",
+                    body,
+                  },
+                ],
+                isCharacterBox: isCharacterBox(body),
               };
-            }
+            },
           });
           defineFunction({
             type: "font",
             names: ["\\rm", "\\sf", "\\tt", "\\bf", "\\it", "\\cal"],
             props: {
               numArgs: 0,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref3, args) => {
-              let {
-                parser,
-                funcName,
-                breakOnTokenText
-              } = _ref3;
-              const {
-                mode
-              } = parser;
+              let { parser, funcName, breakOnTokenText } = _ref3;
+              const { mode } = parser;
               const body = parser.parseExpression(true, breakOnTokenText);
               return {
                 type: "font",
@@ -9290,12 +10104,12 @@ function requireKatex() {
                 body: {
                   type: "ordgroup",
                   mode: parser.mode,
-                  body
-                }
+                  body,
+                },
               };
             },
             htmlBuilder: font_htmlBuilder,
-            mathmlBuilder: font_mathmlBuilder
+            mathmlBuilder: font_mathmlBuilder,
           });
           const genfrac_htmlBuilder = (group, options) => {
             const style = options.style;
@@ -9359,15 +10173,18 @@ function requireKatex() {
               }
               frac = makeVList({
                 positionType: "individualShift",
-                children: [{
-                  type: "elem",
-                  elem: denomm,
-                  shift: denomShift
-                }, {
-                  type: "elem",
-                  elem: numerm,
-                  shift: -numShift
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: denomm,
+                    shift: denomShift,
+                  },
+                  {
+                    type: "elem",
+                    elem: numerm,
+                    shift: -numShift,
+                  },
+                ],
               });
             } else {
               const axisHeight = options.fontMetrics().axisHeight;
@@ -9375,24 +10192,29 @@ function requireKatex() {
                 numShift += clearance - (numShift - numerm.depth - (axisHeight + 0.5 * ruleWidth));
               }
               if (axisHeight - 0.5 * ruleWidth - (denomm.height - denomShift) < clearance) {
-                denomShift += clearance - (axisHeight - 0.5 * ruleWidth - (denomm.height - denomShift));
+                denomShift +=
+                  clearance - (axisHeight - 0.5 * ruleWidth - (denomm.height - denomShift));
               }
               const midShift = -(axisHeight - 0.5 * ruleWidth);
               frac = makeVList({
                 positionType: "individualShift",
-                children: [{
-                  type: "elem",
-                  elem: denomm,
-                  shift: denomShift
-                }, {
-                  type: "elem",
-                  elem: rule,
-                  shift: midShift
-                }, {
-                  type: "elem",
-                  elem: numerm,
-                  shift: -numShift
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: denomm,
+                    shift: denomShift,
+                  },
+                  {
+                    type: "elem",
+                    elem: rule,
+                    shift: midShift,
+                  },
+                  {
+                    type: "elem",
+                    elem: numerm,
+                    shift: -numShift,
+                  },
+                ],
               });
             }
             newOptions = options.havingStyle(style);
@@ -9411,19 +10233,40 @@ function requireKatex() {
             if (group.leftDelim == null) {
               leftDelim = makeNullDelimiter(options, ["mopen"]);
             } else {
-              leftDelim = makeCustomSizedDelim(group.leftDelim, delimSize, true, options.havingStyle(style), group.mode, ["mopen"]);
+              leftDelim = makeCustomSizedDelim(
+                group.leftDelim,
+                delimSize,
+                true,
+                options.havingStyle(style),
+                group.mode,
+                ["mopen"],
+              );
             }
             if (group.continued) {
               rightDelim = makeSpan([]);
             } else if (group.rightDelim == null) {
               rightDelim = makeNullDelimiter(options, ["mclose"]);
             } else {
-              rightDelim = makeCustomSizedDelim(group.rightDelim, delimSize, true, options.havingStyle(style), group.mode, ["mclose"]);
+              rightDelim = makeCustomSizedDelim(
+                group.rightDelim,
+                delimSize,
+                true,
+                options.havingStyle(style),
+                group.mode,
+                ["mclose"],
+              );
             }
-            return makeSpan(["mord"].concat(newOptions.sizingClasses(options)), [leftDelim, makeSpan(["mfrac"], [frac]), rightDelim], options);
+            return makeSpan(
+              ["mord"].concat(newOptions.sizingClasses(options)),
+              [leftDelim, makeSpan(["mfrac"], [frac]), rightDelim],
+              options,
+            );
           };
           const genfrac_mathmlBuilder = (group, options) => {
-            const node = new MathNode("mfrac", [buildMathML_buildGroup(group.numer, options), buildMathML_buildGroup(group.denom, options)]);
+            const node = new MathNode("mfrac", [
+              buildMathML_buildGroup(group.numer, options),
+              buildMathML_buildGroup(group.denom, options),
+            ]);
             if (!group.hasBarLine) {
               node.setAttribute("linethickness", "0px");
             } else if (group.barSize) {
@@ -9433,13 +10276,17 @@ function requireKatex() {
             if (group.leftDelim != null || group.rightDelim != null) {
               const withDelims = [];
               if (group.leftDelim != null) {
-                const leftOp = new MathNode("mo", [new TextNode(group.leftDelim.replace("\\", ""))]);
+                const leftOp = new MathNode("mo", [
+                  new TextNode(group.leftDelim.replace("\\", "")),
+                ]);
                 leftOp.setAttribute("fence", "true");
                 withDelims.push(leftOp);
               }
               withDelims.push(node);
               if (group.rightDelim != null) {
-                const rightOp = new MathNode("mo", [new TextNode(group.rightDelim.replace("\\", ""))]);
+                const rightOp = new MathNode("mo", [
+                  new TextNode(group.rightDelim.replace("\\", "")),
+                ]);
                 rightOp.setAttribute("fence", "true");
                 withDelims.push(rightOp);
               }
@@ -9455,7 +10302,7 @@ function requireKatex() {
               type: "styling",
               mode: frac.mode,
               style,
-              body: [frac]
+              body: [frac],
             };
             return wrapper;
           };
@@ -9472,18 +10319,15 @@ function requireKatex() {
               "\\\\atopfrac",
               // can’t be entered directly
               "\\\\bracefrac",
-              "\\\\brackfrac"
+              "\\\\brackfrac",
               // ditto
             ],
             props: {
               numArgs: 2,
-              allowedInArgument: true
+              allowedInArgument: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const numer = args[0];
               const denom = args[1];
               let hasBarLine;
@@ -9526,34 +10370,33 @@ function requireKatex() {
               } else if (funcName.startsWith("\\t")) {
                 style = "text";
               }
-              return wrapWithStyle({
-                type: "genfrac",
-                mode: parser.mode,
-                numer,
-                denom,
-                continued,
-                hasBarLine,
-                leftDelim,
-                rightDelim,
-                barSize: null
-              }, style);
+              return wrapWithStyle(
+                {
+                  type: "genfrac",
+                  mode: parser.mode,
+                  numer,
+                  denom,
+                  continued,
+                  hasBarLine,
+                  leftDelim,
+                  rightDelim,
+                  barSize: null,
+                },
+                style,
+              );
             },
             htmlBuilder: genfrac_htmlBuilder,
-            mathmlBuilder: genfrac_mathmlBuilder
+            mathmlBuilder: genfrac_mathmlBuilder,
           });
           defineFunction({
             type: "infix",
             names: ["\\over", "\\choose", "\\atop", "\\brace", "\\brack"],
             props: {
               numArgs: 0,
-              infix: true
+              infix: true,
             },
             handler(_ref2) {
-              let {
-                parser,
-                funcName,
-                token
-              } = _ref2;
+              let { parser, funcName, token } = _ref2;
               let replaceWith;
               switch (funcName) {
                 case "\\over":
@@ -9578,12 +10421,12 @@ function requireKatex() {
                 type: "infix",
                 mode: parser.mode,
                 replaceWith,
-                token
+                token,
               };
-            }
+            },
           });
           const stylArray = ["display", "text", "script", "scriptscript"];
-          const delimFromValue = function(delimString) {
+          const delimFromValue = function (delimString) {
             let delim = null;
             if (delimString.length > 0) {
               delim = delimString;
@@ -9597,18 +10440,22 @@ function requireKatex() {
             props: {
               numArgs: 6,
               allowedInArgument: true,
-              argTypes: ["math", "math", "size", "text", "math", "math"]
+              argTypes: ["math", "math", "size", "text", "math", "math"],
             },
             handler(_ref3, args) {
-              let {
-                parser
-              } = _ref3;
+              let { parser } = _ref3;
               const numer = args[4];
               const denom = args[5];
               const leftNode = normalizeArgument(args[0]);
-              const leftDelim = leftNode.type === "atom" && leftNode.family === "open" ? delimFromValue(leftNode.text) : null;
+              const leftDelim =
+                leftNode.type === "atom" && leftNode.family === "open"
+                  ? delimFromValue(leftNode.text)
+                  : null;
               const rightNode = normalizeArgument(args[1]);
-              const rightDelim = rightNode.type === "atom" && rightNode.family === "close" ? delimFromValue(rightNode.text) : null;
+              const rightDelim =
+                rightNode.type === "atom" && rightNode.family === "close"
+                  ? delimFromValue(rightNode.text)
+                  : null;
               const barNode = assertNodeType(args[2], "size");
               let hasBarLine;
               let barSize = null;
@@ -9629,18 +10476,21 @@ function requireKatex() {
                 styl = assertNodeType(styl, "textord");
                 size = stylArray[Number(styl.text)];
               }
-              return wrapWithStyle({
-                type: "genfrac",
-                mode: parser.mode,
-                numer,
-                denom,
-                continued: false,
-                hasBarLine,
-                barSize,
-                leftDelim,
-                rightDelim
-              }, size);
-            }
+              return wrapWithStyle(
+                {
+                  type: "genfrac",
+                  mode: parser.mode,
+                  numer,
+                  denom,
+                  continued: false,
+                  hasBarLine,
+                  barSize,
+                  leftDelim,
+                  rightDelim,
+                },
+                size,
+              );
+            },
           });
           defineFunction({
             type: "infix",
@@ -9648,35 +10498,28 @@ function requireKatex() {
             props: {
               numArgs: 1,
               argTypes: ["size"],
-              infix: true
+              infix: true,
             },
             handler(_ref4, args) {
-              let {
-                parser,
-                funcName,
-                token
-              } = _ref4;
+              let { parser, funcName, token } = _ref4;
               return {
                 type: "infix",
                 mode: parser.mode,
                 replaceWith: "\\\\abovefrac",
                 size: assertNodeType(args[0], "size").value,
-                token
+                token,
               };
-            }
+            },
           });
           defineFunction({
             type: "genfrac",
             names: ["\\\\abovefrac"],
             props: {
               numArgs: 3,
-              argTypes: ["math", "size", "math"]
+              argTypes: ["math", "size", "math"],
             },
             handler: (_ref5, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref5;
+              let { parser, funcName } = _ref5;
               const numer = args[0];
               const barSize = assertNodeType(args[1], "infix").size;
               if (!barSize) {
@@ -9693,16 +10536,18 @@ function requireKatex() {
                 hasBarLine,
                 barSize,
                 leftDelim: null,
-                rightDelim: null
+                rightDelim: null,
               };
-            }
+            },
           });
           const horizBrace_htmlBuilder = (grp, options) => {
             const style = options.style;
             let supSubGroup;
             let group;
             if (grp.type === "supsub") {
-              supSubGroup = grp.sup ? buildGroup(grp.sup, options.havingStyle(style.sup()), options) : buildGroup(grp.sub, options.havingStyle(style.sub()), options);
+              supSubGroup = grp.sup
+                ? buildGroup(grp.sup, options.havingStyle(style.sup()), options)
+                : buildGroup(grp.sub, options.havingStyle(style.sub()), options);
               group = assertNodeType(grp.base, "horizBrace");
             } else {
               group = assertNodeType(grp, "horizBrace");
@@ -9713,65 +10558,85 @@ function requireKatex() {
             if (group.isOver) {
               vlist = makeVList({
                 positionType: "firstBaseline",
-                children: [{
-                  type: "elem",
-                  elem: body
-                }, {
-                  type: "kern",
-                  size: 0.1
-                }, {
-                  type: "elem",
-                  elem: braceBody,
-                  wrapperClasses: ["svg-align"]
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: body,
+                  },
+                  {
+                    type: "kern",
+                    size: 0.1,
+                  },
+                  {
+                    type: "elem",
+                    elem: braceBody,
+                    wrapperClasses: ["svg-align"],
+                  },
+                ],
               });
             } else {
               vlist = makeVList({
                 positionType: "bottom",
                 positionData: body.depth + 0.1 + braceBody.height,
-                children: [{
-                  type: "elem",
-                  elem: braceBody,
-                  wrapperClasses: ["svg-align"]
-                }, {
-                  type: "kern",
-                  size: 0.1
-                }, {
-                  type: "elem",
-                  elem: body
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: braceBody,
+                    wrapperClasses: ["svg-align"],
+                  },
+                  {
+                    type: "kern",
+                    size: 0.1,
+                  },
+                  {
+                    type: "elem",
+                    elem: body,
+                  },
+                ],
               });
             }
             if (supSubGroup) {
-              const vSpan = makeSpan(["minner", group.isOver ? "mover" : "munder"], [vlist], options);
+              const vSpan = makeSpan(
+                ["minner", group.isOver ? "mover" : "munder"],
+                [vlist],
+                options,
+              );
               if (group.isOver) {
                 vlist = makeVList({
                   positionType: "firstBaseline",
-                  children: [{
-                    type: "elem",
-                    elem: vSpan
-                  }, {
-                    type: "kern",
-                    size: 0.2
-                  }, {
-                    type: "elem",
-                    elem: supSubGroup
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: vSpan,
+                    },
+                    {
+                      type: "kern",
+                      size: 0.2,
+                    },
+                    {
+                      type: "elem",
+                      elem: supSubGroup,
+                    },
+                  ],
                 });
               } else {
                 vlist = makeVList({
                   positionType: "bottom",
                   positionData: vSpan.depth + 0.2 + supSubGroup.height + supSubGroup.depth,
-                  children: [{
-                    type: "elem",
-                    elem: supSubGroup
-                  }, {
-                    type: "kern",
-                    size: 0.2
-                  }, {
-                    type: "elem",
-                    elem: vSpan
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: supSubGroup,
+                    },
+                    {
+                      type: "kern",
+                      size: 0.2,
+                    },
+                    {
+                      type: "elem",
+                      elem: vSpan,
+                    },
+                  ],
                 });
               }
             }
@@ -9779,29 +10644,29 @@ function requireKatex() {
           };
           const horizBrace_mathmlBuilder = (group, options) => {
             const accentNode = stretchyMathML(group.label);
-            return new MathNode(group.isOver ? "mover" : "munder", [buildMathML_buildGroup(group.base, options), accentNode]);
+            return new MathNode(group.isOver ? "mover" : "munder", [
+              buildMathML_buildGroup(group.base, options),
+              accentNode,
+            ]);
           };
           defineFunction({
             type: "horizBrace",
             names: ["\\overbrace", "\\underbrace", "\\overbracket", "\\underbracket"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(_ref, args) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               return {
                 type: "horizBrace",
                 mode: parser.mode,
                 label: funcName,
                 isOver: funcName.includes("\\over"),
-                base: args[0]
+                base: args[0],
               };
             },
             htmlBuilder: horizBrace_htmlBuilder,
-            mathmlBuilder: horizBrace_mathmlBuilder
+            mathmlBuilder: horizBrace_mathmlBuilder,
           });
           defineFunction({
             type: "href",
@@ -9809,25 +10674,25 @@ function requireKatex() {
             props: {
               numArgs: 2,
               argTypes: ["url", "original"],
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const body = args[1];
               const href = assertNodeType(args[0], "url").url;
-              if (!parser.settings.isTrusted({
-                command: "\\href",
-                url: href
-              })) {
+              if (
+                !parser.settings.isTrusted({
+                  command: "\\href",
+                  url: href,
+                })
+              ) {
                 return parser.formatUnsupportedCmd("\\href");
               }
               return {
                 type: "href",
                 mode: parser.mode,
                 href,
-                body: ordargument(body)
+                body: ordargument(body),
               };
             },
             htmlBuilder: (group, options) => {
@@ -9841,7 +10706,7 @@ function requireKatex() {
               }
               math2.setAttribute("href", group.href);
               return math2;
-            }
+            },
           });
           defineFunction({
             type: "href",
@@ -9849,17 +10714,17 @@ function requireKatex() {
             props: {
               numArgs: 1,
               argTypes: ["url"],
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref2, args) => {
-              let {
-                parser
-              } = _ref2;
+              let { parser } = _ref2;
               const href = assertNodeType(args[0], "url").url;
-              if (!parser.settings.isTrusted({
-                command: "\\url",
-                url: href
-              })) {
+              if (
+                !parser.settings.isTrusted({
+                  command: "\\url",
+                  url: href,
+                })
+              ) {
                 return parser.formatUnsupportedCmd("\\url");
               }
               const chars = [];
@@ -9871,22 +10736,22 @@ function requireKatex() {
                 chars.push({
                   type: "textord",
                   mode: "text",
-                  text: c
+                  text: c,
                 });
               }
               const body = {
                 type: "text",
                 mode: parser.mode,
                 font: "\\texttt",
-                body: chars
+                body: chars,
               };
               return {
                 type: "href",
                 mode: parser.mode,
                 href,
-                body: ordargument(body)
+                body: ordargument(body),
               };
-            }
+            },
           });
           defineFunction({
             type: "hbox",
@@ -9895,16 +10760,14 @@ function requireKatex() {
               numArgs: 1,
               argTypes: ["text"],
               allowedInText: true,
-              primitive: true
+              primitive: true,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "hbox",
                 mode: parser.mode,
-                body: ordargument(args[0])
+                body: ordargument(args[0]),
               };
             },
             htmlBuilder(group, options) {
@@ -9912,8 +10775,11 @@ function requireKatex() {
               return makeFragment(elements);
             },
             mathmlBuilder(group, options) {
-              return new MathNode("mrow", buildMathML_buildExpression(group.body, options.withFont("")));
-            }
+              return new MathNode(
+                "mrow",
+                buildMathML_buildExpression(group.body, options.withFont("")),
+              );
+            },
           });
           defineFunction({
             type: "html",
@@ -9921,18 +10787,17 @@ function requireKatex() {
             props: {
               numArgs: 2,
               argTypes: ["raw", "original"],
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName,
-                token
-              } = _ref;
+              let { parser, funcName, token } = _ref;
               const value = assertNodeType(args[0], "raw").string;
               const body = args[1];
               if (parser.settings.strict) {
-                parser.settings.reportNonstrict("htmlExtension", "HTML extension is disabled on strict mode");
+                parser.settings.reportNonstrict(
+                  "htmlExtension",
+                  "HTML extension is disabled on strict mode",
+                );
               }
               let trustContext;
               const attributes = {};
@@ -9941,21 +10806,21 @@ function requireKatex() {
                   attributes.class = value;
                   trustContext = {
                     command: "\\htmlClass",
-                    class: value
+                    class: value,
                   };
                   break;
                 case "\\htmlId":
                   attributes.id = value;
                   trustContext = {
                     command: "\\htmlId",
-                    id: value
+                    id: value,
                   };
                   break;
                 case "\\htmlStyle":
                   attributes.style = value;
                   trustContext = {
                     command: "\\htmlStyle",
-                    style: value
+                    style: value,
                   };
                   break;
                 case "\\htmlData": {
@@ -9964,7 +10829,9 @@ function requireKatex() {
                     const item = data[i];
                     const firstEquals = item.indexOf("=");
                     if (firstEquals < 0) {
-                      throw new src_ParseError("\\htmlData key/value '" + item + "' missing equals sign");
+                      throw new src_ParseError(
+                        "\\htmlData key/value '" + item + "' missing equals sign",
+                      );
                     }
                     const key = item.slice(0, firstEquals);
                     const value2 = item.slice(firstEquals + 1);
@@ -9972,7 +10839,7 @@ function requireKatex() {
                   }
                   trustContext = {
                     command: "\\htmlData",
-                    attributes
+                    attributes,
                   };
                   break;
                 }
@@ -9986,7 +10853,7 @@ function requireKatex() {
                 type: "html",
                 mode: parser.mode,
                 attributes,
-                body: ordargument(body)
+                body: ordargument(body),
               };
             },
             htmlBuilder: (group, options) => {
@@ -10005,7 +10872,7 @@ function requireKatex() {
             },
             mathmlBuilder: (group, options) => {
               return buildExpressionRow(group.body, options);
-            }
+            },
           });
           defineFunction({
             type: "htmlmathml",
@@ -10013,17 +10880,15 @@ function requireKatex() {
             props: {
               numArgs: 2,
               allowedInArgument: true,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "htmlmathml",
                 mode: parser.mode,
                 html: ordargument(args[0]),
-                mathml: ordargument(args[1])
+                mathml: ordargument(args[1]),
               };
             },
             htmlBuilder: (group, options) => {
@@ -10032,13 +10897,13 @@ function requireKatex() {
             },
             mathmlBuilder: (group, options) => {
               return buildExpressionRow(group.mathml, options);
-            }
+            },
           });
-          const sizeData = function(str) {
+          const sizeData = function (str) {
             if (/^[-+]? *(\d+(\.\d*)?|\.\d+)$/.test(str)) {
               return {
                 number: +str,
-                unit: "bp"
+                unit: "bp",
               };
             } else {
               const match = /([-+]?) *(\d+(?:\.\d*)?|\.\d+) *([a-z]{2})/.exec(str);
@@ -10048,7 +10913,7 @@ function requireKatex() {
               const data = {
                 number: +(match[1] + match[2]),
                 // sign + magnitude, cast to number
-                unit: match[3]
+                unit: match[3],
               };
               if (!validUnit(data)) {
                 throw new src_ParseError("Invalid unit: '" + data.unit + "' in \\includegraphics.");
@@ -10063,23 +10928,21 @@ function requireKatex() {
               numArgs: 1,
               numOptionalArgs: 1,
               argTypes: ["raw", "url"],
-              allowedInText: false
+              allowedInText: false,
             },
             handler: (_ref, args, optArgs) => {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               let width = {
                 number: 0,
-                unit: "em"
+                unit: "em",
               };
               let height = {
                 number: 0.9,
-                unit: "em"
+                unit: "em",
               };
               let totalheight = {
                 number: 0,
-                unit: "em"
+                unit: "em",
               };
               let alt = "";
               if (optArgs[0]) {
@@ -10103,7 +10966,9 @@ function requireKatex() {
                         totalheight = sizeData(str);
                         break;
                       default:
-                        throw new src_ParseError("Invalid key: '" + keyVal[0] + "' in \\includegraphics.");
+                        throw new src_ParseError(
+                          "Invalid key: '" + keyVal[0] + "' in \\includegraphics.",
+                        );
                     }
                   }
                 }
@@ -10114,10 +10979,12 @@ function requireKatex() {
                 alt = alt.replace(/^.*[\\/]/, "");
                 alt = alt.substring(0, alt.lastIndexOf("."));
               }
-              if (!parser.settings.isTrusted({
-                command: "\\includegraphics",
-                url: src
-              })) {
+              if (
+                !parser.settings.isTrusted({
+                  command: "\\includegraphics",
+                  url: src,
+                })
+              ) {
                 return parser.formatUnsupportedCmd("\\includegraphics");
               }
               return {
@@ -10127,7 +10994,7 @@ function requireKatex() {
                 width,
                 height,
                 totalheight,
-                src
+                src,
               };
             },
             htmlBuilder: (group, options) => {
@@ -10141,7 +11008,7 @@ function requireKatex() {
                 width = calculateSize(group.width, options);
               }
               const style = {
-                height: makeEm(height + depth)
+                height: makeEm(height + depth),
               };
               if (width > 0) {
                 style.width = makeEm(width);
@@ -10170,7 +11037,7 @@ function requireKatex() {
               }
               node.setAttribute("src", group.src);
               return node;
-            }
+            },
           });
           defineFunction({
             type: "kern",
@@ -10179,34 +11046,43 @@ function requireKatex() {
               numArgs: 1,
               argTypes: ["size"],
               primitive: true,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const size = assertNodeType(args[0], "size");
               if (parser.settings.strict) {
                 const mathFunction = funcName[1] === "m";
                 const muUnit = size.value.unit === "mu";
                 if (mathFunction) {
                   if (!muUnit) {
-                    parser.settings.reportNonstrict("mathVsTextUnits", "LaTeX's " + funcName + " supports only mu units, " + ("not " + size.value.unit + " units"));
+                    parser.settings.reportNonstrict(
+                      "mathVsTextUnits",
+                      "LaTeX's " +
+                        funcName +
+                        " supports only mu units, " +
+                        ("not " + size.value.unit + " units"),
+                    );
                   }
                   if (parser.mode !== "math") {
-                    parser.settings.reportNonstrict("mathVsTextUnits", "LaTeX's " + funcName + " works only in math mode");
+                    parser.settings.reportNonstrict(
+                      "mathVsTextUnits",
+                      "LaTeX's " + funcName + " works only in math mode",
+                    );
                   }
                 } else {
                   if (muUnit) {
-                    parser.settings.reportNonstrict("mathVsTextUnits", "LaTeX's " + funcName + " doesn't support mu units");
+                    parser.settings.reportNonstrict(
+                      "mathVsTextUnits",
+                      "LaTeX's " + funcName + " doesn't support mu units",
+                    );
                   }
                 }
               }
               return {
                 type: "kern",
                 mode: parser.mode,
-                dimension: size.value
+                dimension: size.value,
               };
             },
             htmlBuilder(group, options) {
@@ -10215,26 +11091,23 @@ function requireKatex() {
             mathmlBuilder(group, options) {
               const dimension = calculateSize(group.dimension, options);
               return new SpaceNode(dimension);
-            }
+            },
           });
           defineFunction({
             type: "lap",
             names: ["\\mathllap", "\\mathrlap", "\\mathclap"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const body = args[0];
               return {
                 type: "lap",
                 mode: parser.mode,
                 alignment: funcName.slice(5),
-                body
+                body,
               };
             },
             htmlBuilder: (group, options) => {
@@ -10264,7 +11137,7 @@ function requireKatex() {
               }
               node.setAttribute("width", "0px");
               return node;
-            }
+            },
           });
           defineFunction({
             type: "styling",
@@ -10272,13 +11145,10 @@ function requireKatex() {
             props: {
               numArgs: 0,
               allowedInText: true,
-              allowedInMath: false
+              allowedInMath: false,
             },
             handler(_ref, args) {
-              let {
-                funcName,
-                parser
-              } = _ref;
+              let { funcName, parser } = _ref;
               const outerMode = parser.mode;
               parser.switchMode("math");
               const close = funcName === "\\(" ? "\\)" : "$";
@@ -10290,9 +11160,9 @@ function requireKatex() {
                 mode: parser.mode,
                 style: "text",
                 resetFont: true,
-                body
+                body,
               };
-            }
+            },
           });
           defineFunction({
             type: "text",
@@ -10301,11 +11171,11 @@ function requireKatex() {
             props: {
               numArgs: 0,
               allowedInText: true,
-              allowedInMath: false
+              allowedInMath: false,
             },
             handler(context, args) {
               throw new src_ParseError("Mismatched " + context.funcName);
-            }
+            },
           });
           const chooseMathStyle = (group, options) => {
             switch (options.style.size) {
@@ -10326,19 +11196,17 @@ function requireKatex() {
             names: ["\\mathchoice"],
             props: {
               numArgs: 4,
-              primitive: true
+              primitive: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "mathchoice",
                 mode: parser.mode,
                 display: ordargument(args[0]),
                 text: ordargument(args[1]),
                 script: ordargument(args[2]),
-                scriptscript: ordargument(args[3])
+                scriptscript: ordargument(args[3]),
               };
             },
             htmlBuilder: (group, options) => {
@@ -10349,7 +11217,7 @@ function requireKatex() {
             mathmlBuilder: (group, options) => {
               const body = chooseMathStyle(group, options);
               return buildExpressionRow(body, options);
-            }
+            },
           });
           const assembleSupSub = (base, supGroup, subGroup, options, style, slant, baseShift) => {
             base = makeSpan([], [base]);
@@ -10360,86 +11228,116 @@ function requireKatex() {
               const elem = buildGroup(supGroup, options.havingStyle(style.sup()), options);
               sup2 = {
                 elem,
-                kern: Math.max(options.fontMetrics().bigOpSpacing1, options.fontMetrics().bigOpSpacing3 - elem.depth)
+                kern: Math.max(
+                  options.fontMetrics().bigOpSpacing1,
+                  options.fontMetrics().bigOpSpacing3 - elem.depth,
+                ),
               };
             }
             if (subGroup) {
               const elem = buildGroup(subGroup, options.havingStyle(style.sub()), options);
               sub2 = {
                 elem,
-                kern: Math.max(options.fontMetrics().bigOpSpacing2, options.fontMetrics().bigOpSpacing4 - elem.height)
+                kern: Math.max(
+                  options.fontMetrics().bigOpSpacing2,
+                  options.fontMetrics().bigOpSpacing4 - elem.height,
+                ),
               };
             }
             let finalGroup;
             if (sup2 && sub2) {
-              const bottom = options.fontMetrics().bigOpSpacing5 + sub2.elem.height + sub2.elem.depth + sub2.kern + base.depth + baseShift;
+              const bottom =
+                options.fontMetrics().bigOpSpacing5 +
+                sub2.elem.height +
+                sub2.elem.depth +
+                sub2.kern +
+                base.depth +
+                baseShift;
               finalGroup = makeVList({
                 positionType: "bottom",
                 positionData: bottom,
-                children: [{
-                  type: "kern",
-                  size: options.fontMetrics().bigOpSpacing5
-                }, {
-                  type: "elem",
-                  elem: sub2.elem,
-                  marginLeft: makeEm(-slant)
-                }, {
-                  type: "kern",
-                  size: sub2.kern
-                }, {
-                  type: "elem",
-                  elem: base
-                }, {
-                  type: "kern",
-                  size: sup2.kern
-                }, {
-                  type: "elem",
-                  elem: sup2.elem,
-                  marginLeft: makeEm(slant)
-                }, {
-                  type: "kern",
-                  size: options.fontMetrics().bigOpSpacing5
-                }]
+                children: [
+                  {
+                    type: "kern",
+                    size: options.fontMetrics().bigOpSpacing5,
+                  },
+                  {
+                    type: "elem",
+                    elem: sub2.elem,
+                    marginLeft: makeEm(-slant),
+                  },
+                  {
+                    type: "kern",
+                    size: sub2.kern,
+                  },
+                  {
+                    type: "elem",
+                    elem: base,
+                  },
+                  {
+                    type: "kern",
+                    size: sup2.kern,
+                  },
+                  {
+                    type: "elem",
+                    elem: sup2.elem,
+                    marginLeft: makeEm(slant),
+                  },
+                  {
+                    type: "kern",
+                    size: options.fontMetrics().bigOpSpacing5,
+                  },
+                ],
               });
             } else if (sub2) {
               const top = base.height - baseShift;
               finalGroup = makeVList({
                 positionType: "top",
                 positionData: top,
-                children: [{
-                  type: "kern",
-                  size: options.fontMetrics().bigOpSpacing5
-                }, {
-                  type: "elem",
-                  elem: sub2.elem,
-                  marginLeft: makeEm(-slant)
-                }, {
-                  type: "kern",
-                  size: sub2.kern
-                }, {
-                  type: "elem",
-                  elem: base
-                }]
+                children: [
+                  {
+                    type: "kern",
+                    size: options.fontMetrics().bigOpSpacing5,
+                  },
+                  {
+                    type: "elem",
+                    elem: sub2.elem,
+                    marginLeft: makeEm(-slant),
+                  },
+                  {
+                    type: "kern",
+                    size: sub2.kern,
+                  },
+                  {
+                    type: "elem",
+                    elem: base,
+                  },
+                ],
               });
             } else if (sup2) {
               const bottom = base.depth + baseShift;
               finalGroup = makeVList({
                 positionType: "bottom",
                 positionData: bottom,
-                children: [{
-                  type: "elem",
-                  elem: base
-                }, {
-                  type: "kern",
-                  size: sup2.kern
-                }, {
-                  type: "elem",
-                  elem: sup2.elem,
-                  marginLeft: makeEm(slant)
-                }, {
-                  type: "kern",
-                  size: options.fontMetrics().bigOpSpacing5
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: base,
+                  },
+                  {
+                    type: "kern",
+                    size: sup2.kern,
+                  },
+                  {
+                    type: "elem",
+                    elem: sup2.elem,
+                    marginLeft: makeEm(slant),
+                  },
+                  {
+                    type: "kern",
+                    size: options.fontMetrics().bigOpSpacing5,
+                  },
+                ],
               });
             } else {
               return base;
@@ -10468,7 +11366,11 @@ function requireKatex() {
             }
             const style = options.style;
             let large = false;
-            if (style.size === src_Style.DISPLAY.size && group.symbol && !noSuccessor.has(group.name)) {
+            if (
+              style.size === src_Style.DISPLAY.size &&
+              group.symbol &&
+              !noSuccessor.has(group.name)
+            ) {
               large = true;
             }
             let base;
@@ -10480,21 +11382,28 @@ function requireKatex() {
                 stash = group.name.slice(1);
                 group.name = stash === "oiint" ? "\\iint" : "\\iiint";
               }
-              base = makeSymbol(group.name, fontName, "math", options, ["mop", "op-symbol", large ? "large-op" : "small-op"]);
+              base = makeSymbol(group.name, fontName, "math", options, [
+                "mop",
+                "op-symbol",
+                large ? "large-op" : "small-op",
+              ]);
               symbolItalic = base.italic;
               if (stash.length > 0) {
                 const oval = staticSvg(stash + "Size" + (large ? "2" : "1"), options);
                 base = makeVList({
                   positionType: "individualShift",
-                  children: [{
-                    type: "elem",
-                    elem: base,
-                    shift: 0
-                  }, {
-                    type: "elem",
-                    elem: oval,
-                    shift: large ? 0.08 : 0
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: base,
+                      shift: 0,
+                    },
+                    {
+                      type: "elem",
+                      elem: oval,
+                      shift: large ? 0.08 : 0,
+                    },
+                  ],
                 });
                 group.name = "\\" + stash;
                 base.classes.unshift("mop");
@@ -10517,7 +11426,12 @@ function requireKatex() {
             }
             let baseShift = 0;
             let slant = 0;
-            if ((base instanceof SymbolNode || group.name === "\\oiint" || group.name === "\\oiiint") && !group.suppressBaseShift) {
+            if (
+              (base instanceof SymbolNode ||
+                group.name === "\\oiint" ||
+                group.name === "\\oiiint") &&
+              !group.suppressBaseShift
+            ) {
               var _base$italic;
               baseShift = (base.height - base.depth) / 2 - options.fontMetrics().axisHeight;
               slant = (_base$italic = base.italic) != null ? _base$italic : 0;
@@ -10564,19 +11478,43 @@ function requireKatex() {
             "⨁": "\\bigoplus",
             "⨂": "\\bigotimes",
             "⨄": "\\biguplus",
-            "⨆": "\\bigsqcup"
+            "⨆": "\\bigsqcup",
           };
           defineFunction({
             type: "op",
-            names: ["\\coprod", "\\bigvee", "\\bigwedge", "\\biguplus", "\\bigcap", "\\bigcup", "\\intop", "\\prod", "\\sum", "\\bigotimes", "\\bigoplus", "\\bigodot", "\\bigsqcup", "\\smallint", "∏", "∐", "∑", "⋀", "⋁", "⋂", "⋃", "⨀", "⨁", "⨂", "⨄", "⨆"],
+            names: [
+              "\\coprod",
+              "\\bigvee",
+              "\\bigwedge",
+              "\\biguplus",
+              "\\bigcap",
+              "\\bigcup",
+              "\\intop",
+              "\\prod",
+              "\\sum",
+              "\\bigotimes",
+              "\\bigoplus",
+              "\\bigodot",
+              "\\bigsqcup",
+              "\\smallint",
+              "∏",
+              "∐",
+              "∑",
+              "⋀",
+              "⋁",
+              "⋂",
+              "⋃",
+              "⨀",
+              "⨁",
+              "⨂",
+              "⨄",
+              "⨆",
+            ],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               let fName = funcName;
               if (fName.length === 1) {
                 fName = singleCharBigOps[fName];
@@ -10587,23 +11525,21 @@ function requireKatex() {
                 limits: true,
                 parentIsSupSub: false,
                 symbol: true,
-                name: fName
+                name: fName,
               };
             },
             htmlBuilder: op_htmlBuilder,
-            mathmlBuilder: op_mathmlBuilder
+            mathmlBuilder: op_mathmlBuilder,
           });
           defineFunction({
             type: "op",
             names: ["\\mathop"],
             props: {
               numArgs: 1,
-              primitive: true
+              primitive: true,
             },
             handler: (_ref2, args) => {
-              let {
-                parser
-              } = _ref2;
+              let { parser } = _ref2;
               const body = args[0];
               return {
                 type: "op",
@@ -10611,11 +11547,11 @@ function requireKatex() {
                 limits: false,
                 parentIsSupSub: false,
                 symbol: false,
-                body: ordargument(body)
+                body: ordargument(body),
               };
             },
             htmlBuilder: op_htmlBuilder,
-            mathmlBuilder: op_mathmlBuilder
+            mathmlBuilder: op_mathmlBuilder,
           });
           const singleCharIntegrals = {
             "∫": "\\int",
@@ -10623,66 +11559,103 @@ function requireKatex() {
             "∭": "\\iiint",
             "∮": "\\oint",
             "∯": "\\oiint",
-            "∰": "\\oiiint"
+            "∰": "\\oiiint",
           };
           defineFunction({
             type: "op",
-            names: ["\\arcsin", "\\arccos", "\\arctan", "\\arctg", "\\arcctg", "\\arg", "\\ch", "\\cos", "\\cosec", "\\cosh", "\\cot", "\\cotg", "\\coth", "\\csc", "\\ctg", "\\cth", "\\deg", "\\dim", "\\exp", "\\hom", "\\ker", "\\lg", "\\ln", "\\log", "\\sec", "\\sin", "\\sinh", "\\sh", "\\tan", "\\tanh", "\\tg", "\\th"],
+            names: [
+              "\\arcsin",
+              "\\arccos",
+              "\\arctan",
+              "\\arctg",
+              "\\arcctg",
+              "\\arg",
+              "\\ch",
+              "\\cos",
+              "\\cosec",
+              "\\cosh",
+              "\\cot",
+              "\\cotg",
+              "\\coth",
+              "\\csc",
+              "\\ctg",
+              "\\cth",
+              "\\deg",
+              "\\dim",
+              "\\exp",
+              "\\hom",
+              "\\ker",
+              "\\lg",
+              "\\ln",
+              "\\log",
+              "\\sec",
+              "\\sin",
+              "\\sinh",
+              "\\sh",
+              "\\tan",
+              "\\tanh",
+              "\\tg",
+              "\\th",
+            ],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(_ref3) {
-              let {
-                parser,
-                funcName
-              } = _ref3;
+              let { parser, funcName } = _ref3;
               return {
                 type: "op",
                 mode: parser.mode,
                 limits: false,
                 parentIsSupSub: false,
                 symbol: false,
-                name: funcName
+                name: funcName,
               };
             },
             htmlBuilder: op_htmlBuilder,
-            mathmlBuilder: op_mathmlBuilder
+            mathmlBuilder: op_mathmlBuilder,
           });
           defineFunction({
             type: "op",
             names: ["\\det", "\\gcd", "\\inf", "\\lim", "\\max", "\\min", "\\Pr", "\\sup"],
             props: {
-              numArgs: 0
+              numArgs: 0,
             },
             handler(_ref4) {
-              let {
-                parser,
-                funcName
-              } = _ref4;
+              let { parser, funcName } = _ref4;
               return {
                 type: "op",
                 mode: parser.mode,
                 limits: true,
                 parentIsSupSub: false,
                 symbol: false,
-                name: funcName
+                name: funcName,
               };
             },
             htmlBuilder: op_htmlBuilder,
-            mathmlBuilder: op_mathmlBuilder
+            mathmlBuilder: op_mathmlBuilder,
           });
           defineFunction({
             type: "op",
-            names: ["\\int", "\\iint", "\\iiint", "\\oint", "\\oiint", "\\oiiint", "∫", "∬", "∭", "∮", "∯", "∰"],
+            names: [
+              "\\int",
+              "\\iint",
+              "\\iiint",
+              "\\oint",
+              "\\oiint",
+              "\\oiiint",
+              "∫",
+              "∬",
+              "∭",
+              "∮",
+              "∯",
+              "∰",
+            ],
             props: {
               numArgs: 0,
-              allowedInArgument: true
+              allowedInArgument: true,
             },
             handler(_ref5) {
-              let {
-                parser,
-                funcName
-              } = _ref5;
+              let { parser, funcName } = _ref5;
               let fName = funcName;
               if (fName.length === 1) {
                 fName = singleCharIntegrals[fName];
@@ -10693,11 +11666,11 @@ function requireKatex() {
                 limits: false,
                 parentIsSupSub: false,
                 symbol: true,
-                name: fName
+                name: fName,
               };
             },
             htmlBuilder: op_htmlBuilder,
-            mathmlBuilder: op_mathmlBuilder
+            mathmlBuilder: op_mathmlBuilder,
           });
           const operatorname_htmlBuilder = (grp, options) => {
             let supGroup;
@@ -10720,7 +11693,7 @@ function requireKatex() {
                   return {
                     type: "textord",
                     mode: child.mode,
-                    text: childText
+                    text: childText,
                   };
                 } else {
                   return child;
@@ -10748,7 +11721,7 @@ function requireKatex() {
             let isAllString = true;
             for (let i = 0; i < expression.length; i++) {
               const node = expression[i];
-              if (node instanceof SpaceNode) ;
+              if (node instanceof SpaceNode);
               else if (node instanceof MathNode) {
                 switch (node.type) {
                   case "mi":
@@ -10790,13 +11763,10 @@ function requireKatex() {
             type: "operatorname",
             names: ["\\operatorname@", "\\operatornamewithlimits"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler: (_ref, args) => {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const body = args[0];
               return {
                 type: "operatorname",
@@ -10804,11 +11774,11 @@ function requireKatex() {
                 body: ordargument(body),
                 alwaysHandleSupSub: funcName === "\\operatornamewithlimits",
                 limits: false,
-                parentIsSupSub: false
+                parentIsSupSub: false,
               };
             },
             htmlBuilder: operatorname_htmlBuilder,
-            mathmlBuilder: operatorname_mathmlBuilder
+            mathmlBuilder: operatorname_mathmlBuilder,
           });
           defineMacro("\\operatorname", "\\@ifstar\\operatornamewithlimits\\operatorname@");
           defineFunctionBuilders({
@@ -10821,23 +11791,21 @@ function requireKatex() {
             },
             mathmlBuilder(group, options) {
               return buildExpressionRow(group.body, options, true);
-            }
+            },
           });
           defineFunction({
             type: "overline",
             names: ["\\overline"],
             props: {
-              numArgs: 1
+              numArgs: 1,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const body = args[0];
               return {
                 type: "overline",
                 mode: parser.mode,
-                body
+                body,
               };
             },
             htmlBuilder(group, options) {
@@ -10846,46 +11814,52 @@ function requireKatex() {
               const defaultRuleThickness = options.fontMetrics().defaultRuleThickness;
               const vlist = makeVList({
                 positionType: "firstBaseline",
-                children: [{
-                  type: "elem",
-                  elem: innerGroup
-                }, {
-                  type: "kern",
-                  size: 3 * defaultRuleThickness
-                }, {
-                  type: "elem",
-                  elem: line
-                }, {
-                  type: "kern",
-                  size: defaultRuleThickness
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: innerGroup,
+                  },
+                  {
+                    type: "kern",
+                    size: 3 * defaultRuleThickness,
+                  },
+                  {
+                    type: "elem",
+                    elem: line,
+                  },
+                  {
+                    type: "kern",
+                    size: defaultRuleThickness,
+                  },
+                ],
               });
               return makeSpan(["mord", "overline"], [vlist], options);
             },
             mathmlBuilder(group, options) {
               const operator = new MathNode("mo", [new TextNode("‾")]);
               operator.setAttribute("stretchy", "true");
-              const node = new MathNode("mover", [buildMathML_buildGroup(group.body, options), operator]);
+              const node = new MathNode("mover", [
+                buildMathML_buildGroup(group.body, options),
+                operator,
+              ]);
               node.setAttribute("accent", "true");
               return node;
-            }
+            },
           });
           defineFunction({
             type: "phantom",
             names: ["\\phantom"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args) => {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const body = args[0];
               return {
                 type: "phantom",
                 mode: parser.mode,
-                body: ordargument(body)
+                body: ordargument(body),
               };
             },
             htmlBuilder: (group, options) => {
@@ -10895,7 +11869,7 @@ function requireKatex() {
             mathmlBuilder: (group, options) => {
               const inner2 = buildMathML_buildExpression(group.body, options);
               return new MathNode("mphantom", inner2);
-            }
+            },
           });
           defineMacro("\\hphantom", "\\smash{\\phantom{#1}}");
           defineFunction({
@@ -10903,17 +11877,15 @@ function requireKatex() {
             names: ["\\vphantom"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref2, args) => {
-              let {
-                parser
-              } = _ref2;
+              let { parser } = _ref2;
               const body = args[0];
               return {
                 type: "vphantom",
                 mode: parser.mode,
-                body
+                body,
               };
             },
             htmlBuilder: (group, options) => {
@@ -10927,7 +11899,7 @@ function requireKatex() {
               const node = new MathNode("mpadded", [phantom]);
               node.setAttribute("width", "0px");
               return node;
-            }
+            },
           });
           defineFunction({
             type: "raisebox",
@@ -10935,19 +11907,17 @@ function requireKatex() {
             props: {
               numArgs: 2,
               argTypes: ["size", "hbox"],
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const amount = assertNodeType(args[0], "size").value;
               const body = args[1];
               return {
                 type: "raisebox",
                 mode: parser.mode,
                 dy: amount,
-                body
+                body,
               };
             },
             htmlBuilder(group, options) {
@@ -10956,10 +11926,12 @@ function requireKatex() {
               return makeVList({
                 positionType: "shift",
                 positionData: -dy,
-                children: [{
-                  type: "elem",
-                  elem: body
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: body,
+                  },
+                ],
               });
             },
             mathmlBuilder(group, options) {
@@ -10967,7 +11939,7 @@ function requireKatex() {
               const dy = group.dy.number + group.dy.unit;
               node.setAttribute("voffset", dy);
               return node;
-            }
+            },
           });
           defineFunction({
             type: "internal",
@@ -10975,17 +11947,15 @@ function requireKatex() {
             props: {
               numArgs: 0,
               allowedInText: true,
-              allowedInArgument: true
+              allowedInArgument: true,
             },
             handler(_ref) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "internal",
-                mode: parser.mode
+                mode: parser.mode,
               };
-            }
+            },
           });
           defineFunction({
             type: "rule",
@@ -10995,12 +11965,10 @@ function requireKatex() {
               numOptionalArgs: 1,
               allowedInText: true,
               allowedInMath: true,
-              argTypes: ["size", "size", "size"]
+              argTypes: ["size", "size", "size"],
             },
             handler(_ref, args, optArgs) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const shift = optArgs[0];
               const width = assertNodeType(args[0], "size");
               const height = assertNodeType(args[1], "size");
@@ -11009,7 +11977,7 @@ function requireKatex() {
                 mode: parser.mode,
                 shift: shift && assertNodeType(shift, "size").value,
                 width: width.value,
-                height: height.value
+                height: height.value,
               };
             },
             htmlBuilder(group, options) {
@@ -11030,7 +11998,7 @@ function requireKatex() {
               const width = calculateSize(group.width, options);
               const height = calculateSize(group.height, options);
               const shift = group.shift ? calculateSize(group.shift, options) : 0;
-              const color = options.color && options.getColor() || "black";
+              const color = (options.color && options.getColor()) || "black";
               const rule = new MathNode("mspace");
               rule.setAttribute("mathbackground", color);
               rule.setAttribute("width", makeEm(width));
@@ -11044,7 +12012,7 @@ function requireKatex() {
               }
               wrapper.setAttribute("voffset", makeEm(shift));
               return wrapper;
-            }
+            },
           });
           function sizingGroup(value, options, baseOptions) {
             const inner2 = buildExpression(value, options, false);
@@ -11061,7 +12029,19 @@ function requireKatex() {
             }
             return makeFragment(inner2);
           }
-          const sizeFuncs = ["\\tiny", "\\sixptsize", "\\scriptsize", "\\footnotesize", "\\small", "\\normalsize", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge"];
+          const sizeFuncs = [
+            "\\tiny",
+            "\\sixptsize",
+            "\\scriptsize",
+            "\\footnotesize",
+            "\\small",
+            "\\normalsize",
+            "\\large",
+            "\\Large",
+            "\\LARGE",
+            "\\huge",
+            "\\Huge",
+          ];
           const sizing_htmlBuilder = (group, options) => {
             const newOptions = options.havingSize(group.size);
             return sizingGroup(group.body, newOptions, options);
@@ -11071,21 +12051,17 @@ function requireKatex() {
             names: sizeFuncs,
             props: {
               numArgs: 0,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args) => {
-              let {
-                breakOnTokenText,
-                funcName,
-                parser
-              } = _ref;
+              let { breakOnTokenText, funcName, parser } = _ref;
               const body = parser.parseExpression(false, breakOnTokenText);
               return {
                 type: "sizing",
                 mode: parser.mode,
                 // Figure out what size to use based on the list of functions above
                 size: sizeFuncs.indexOf(funcName) + 1,
-                body
+                body,
               };
             },
             htmlBuilder: sizing_htmlBuilder,
@@ -11095,7 +12071,7 @@ function requireKatex() {
               const node = new MathNode("mstyle", inner2);
               node.setAttribute("mathsize", makeEm(newOptions.sizeMultiplier));
               return node;
-            }
+            },
           });
           defineFunction({
             type: "smash",
@@ -11103,12 +12079,10 @@ function requireKatex() {
             props: {
               numArgs: 1,
               numOptionalArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler: (_ref, args, optArgs) => {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               let smashHeight = false;
               let smashDepth = false;
               const tbArg = optArgs[0] && assertNodeType(optArgs[0], "ordgroup");
@@ -11137,7 +12111,7 @@ function requireKatex() {
                 mode: parser.mode,
                 body,
                 smashHeight,
-                smashDepth
+                smashDepth,
               };
             },
             htmlBuilder: (group, options) => {
@@ -11166,10 +12140,12 @@ function requireKatex() {
               }
               const smashedNode = makeVList({
                 positionType: "firstBaseline",
-                children: [{
-                  type: "elem",
-                  elem: node
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: node,
+                  },
+                ],
               });
               return makeSpan(["mord"], [smashedNode], options);
             },
@@ -11182,26 +12158,24 @@ function requireKatex() {
                 node.setAttribute("depth", "0px");
               }
               return node;
-            }
+            },
           });
           defineFunction({
             type: "sqrt",
             names: ["\\sqrt"],
             props: {
               numArgs: 1,
-              numOptionalArgs: 1
+              numOptionalArgs: 1,
             },
             handler(_ref, args, optArgs) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               const index = optArgs[0];
               const body = args[0];
               return {
                 type: "sqrt",
                 mode: parser.mode,
                 body,
-                index
+                index,
               };
             },
             htmlBuilder(group, options) {
@@ -11221,7 +12195,7 @@ function requireKatex() {
               const {
                 span: img,
                 ruleWidth,
-                advanceWidth
+                advanceWidth,
               } = makeSqrtImage(minDelimiterHeight, options);
               const delimDepth = img.height - ruleWidth;
               if (delimDepth > inner2.height + inner2.depth + lineClearance) {
@@ -11231,20 +12205,25 @@ function requireKatex() {
               inner2.style.paddingLeft = makeEm(advanceWidth);
               const body = makeVList({
                 positionType: "firstBaseline",
-                children: [{
-                  type: "elem",
-                  elem: inner2,
-                  wrapperClasses: ["svg-align"]
-                }, {
-                  type: "kern",
-                  size: -(inner2.height + imgShift)
-                }, {
-                  type: "elem",
-                  elem: img
-                }, {
-                  type: "kern",
-                  size: ruleWidth
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: inner2,
+                    wrapperClasses: ["svg-align"],
+                  },
+                  {
+                    type: "kern",
+                    size: -(inner2.height + imgShift),
+                  },
+                  {
+                    type: "elem",
+                    elem: img,
+                  },
+                  {
+                    type: "kern",
+                    size: ruleWidth,
+                  },
+                ],
               });
               if (!group.index) {
                 return makeSpan(["mord", "sqrt"], [body], options);
@@ -11255,28 +12234,32 @@ function requireKatex() {
                 const rootVList = makeVList({
                   positionType: "shift",
                   positionData: -toShift,
-                  children: [{
-                    type: "elem",
-                    elem: rootm
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: rootm,
+                    },
+                  ],
                 });
                 const rootVListWrap = makeSpan(["root"], [rootVList]);
                 return makeSpan(["mord", "sqrt"], [rootVListWrap, body], options);
               }
             },
             mathmlBuilder(group, options) {
-              const {
-                body,
-                index
-              } = group;
-              return index ? new MathNode("mroot", [buildMathML_buildGroup(body, options), buildMathML_buildGroup(index, options)]) : new MathNode("msqrt", [buildMathML_buildGroup(body, options)]);
-            }
+              const { body, index } = group;
+              return index
+                ? new MathNode("mroot", [
+                    buildMathML_buildGroup(body, options),
+                    buildMathML_buildGroup(index, options),
+                  ])
+                : new MathNode("msqrt", [buildMathML_buildGroup(body, options)]);
+            },
           });
           const styling_styleMap = {
-            "display": src_Style.DISPLAY,
-            "text": src_Style.TEXT,
-            "script": src_Style.SCRIPT,
-            "scriptscript": src_Style.SCRIPTSCRIPT
+            display: src_Style.DISPLAY,
+            text: src_Style.TEXT,
+            script: src_Style.SCRIPT,
+            scriptscript: src_Style.SCRIPTSCRIPT,
           };
           function isStyleStr(s) {
             return s in styling_styleMap;
@@ -11287,14 +12270,10 @@ function requireKatex() {
             props: {
               numArgs: 0,
               allowedInText: true,
-              primitive: true
+              primitive: true,
             },
             handler(_ref, args) {
-              let {
-                breakOnTokenText,
-                funcName,
-                parser
-              } = _ref;
+              let { breakOnTokenText, funcName, parser } = _ref;
               const body = parser.parseExpression(true, breakOnTokenText);
               const style = funcName.slice(1, funcName.length - 5);
               if (!isStyleStr(style)) {
@@ -11306,7 +12285,7 @@ function requireKatex() {
                 // Figure out what style to use by pulling out the style from
                 // the function name
                 style,
-                body
+                body,
               };
             },
             htmlBuilder(group, options) {
@@ -11326,26 +12305,30 @@ function requireKatex() {
               const inner2 = buildMathML_buildExpression(group.body, newOptions);
               const node = new MathNode("mstyle", inner2);
               const styleAttributes = {
-                "display": ["0", "true"],
-                "text": ["0", "false"],
-                "script": ["1", "false"],
-                "scriptscript": ["2", "false"]
+                display: ["0", "true"],
+                text: ["0", "false"],
+                script: ["1", "false"],
+                scriptscript: ["2", "false"],
               };
               const attr = styleAttributes[group.style];
               node.setAttribute("scriptlevel", attr[0]);
               node.setAttribute("displaystyle", attr[1]);
               return node;
-            }
+            },
           });
-          const htmlBuilderDelegate = function(group, options) {
+          const htmlBuilderDelegate = function (group, options) {
             const base = group.base;
             if (!base) {
               return null;
             } else if (base.type === "op") {
-              const delegate = base.limits && (options.style.size === src_Style.DISPLAY.size || base.alwaysHandleSupSub);
+              const delegate =
+                base.limits &&
+                (options.style.size === src_Style.DISPLAY.size || base.alwaysHandleSupSub);
               return delegate ? op_htmlBuilder : null;
             } else if (base.type === "operatorname") {
-              const delegate = base.alwaysHandleSupSub && (options.style.size === src_Style.DISPLAY.size || base.limits);
+              const delegate =
+                base.alwaysHandleSupSub &&
+                (options.style.size === src_Style.DISPLAY.size || base.limits);
               return delegate ? operatorname_htmlBuilder : null;
             } else if (base.type === "accent") {
               return isCharacterBox(base.base) ? htmlBuilder : null;
@@ -11363,11 +12346,7 @@ function requireKatex() {
               if (builderDelegate) {
                 return builderDelegate(group, options);
               }
-              const {
-                base: valueBase,
-                sup: valueSup,
-                sub: valueSub
-              } = group;
+              const { base: valueBase, sup: valueSup, sub: valueSub } = group;
               const base = buildGroup(valueBase, options);
               let supm;
               let subm;
@@ -11379,14 +12358,20 @@ function requireKatex() {
                 const newOptions = options.havingStyle(options.style.sup());
                 supm = buildGroup(valueSup, newOptions, options);
                 if (!isCharBox) {
-                  supShift = base.height - newOptions.fontMetrics().supDrop * newOptions.sizeMultiplier / options.sizeMultiplier;
+                  supShift =
+                    base.height -
+                    (newOptions.fontMetrics().supDrop * newOptions.sizeMultiplier) /
+                      options.sizeMultiplier;
                 }
               }
               if (valueSub) {
                 const newOptions = options.havingStyle(options.style.sub());
                 subm = buildGroup(valueSub, newOptions, options);
                 if (!isCharBox) {
-                  subShift = base.depth + newOptions.fontMetrics().subDrop * newOptions.sizeMultiplier / options.sizeMultiplier;
+                  subShift =
+                    base.depth +
+                    (newOptions.fontMetrics().subDrop * newOptions.sizeMultiplier) /
+                      options.sizeMultiplier;
                 }
               }
               let minSupShift;
@@ -11401,7 +12386,11 @@ function requireKatex() {
               const marginRight = makeEm(0.5 / metrics.ptPerEm / multiplier);
               let marginLeft = null;
               if (subm) {
-                const isOiint = group.base && group.base.type === "op" && group.base.name && (group.base.name === "\\oiint" || group.base.name === "\\oiiint");
+                const isOiint =
+                  group.base &&
+                  group.base.type === "op" &&
+                  group.base.name &&
+                  (group.base.name === "\\oiint" || group.base.name === "\\oiiint");
                 if (base instanceof SymbolNode || isOiint) {
                   var _italic;
                   marginLeft = makeEm(-((_italic = base.italic) != null ? _italic : 0));
@@ -11421,45 +12410,52 @@ function requireKatex() {
                     subShift -= psi;
                   }
                 }
-                const vlistElem = [{
-                  type: "elem",
-                  elem: subm,
-                  shift: subShift,
-                  marginRight,
-                  marginLeft
-                }, {
-                  type: "elem",
-                  elem: supm,
-                  shift: -supShift,
-                  marginRight
-                }];
+                const vlistElem = [
+                  {
+                    type: "elem",
+                    elem: subm,
+                    shift: subShift,
+                    marginRight,
+                    marginLeft,
+                  },
+                  {
+                    type: "elem",
+                    elem: supm,
+                    shift: -supShift,
+                    marginRight,
+                  },
+                ];
                 supsub = makeVList({
                   positionType: "individualShift",
-                  children: vlistElem
+                  children: vlistElem,
                 });
               } else if (subm) {
                 subShift = Math.max(subShift, metrics.sub1, subm.height - 0.8 * metrics.xHeight);
-                const vlistElem = [{
-                  type: "elem",
-                  elem: subm,
-                  marginLeft,
-                  marginRight
-                }];
+                const vlistElem = [
+                  {
+                    type: "elem",
+                    elem: subm,
+                    marginLeft,
+                    marginRight,
+                  },
+                ];
                 supsub = makeVList({
                   positionType: "shift",
                   positionData: subShift,
-                  children: vlistElem
+                  children: vlistElem,
                 });
               } else if (supm) {
                 supShift = Math.max(supShift, minSupShift, supm.depth + 0.25 * metrics.xHeight);
                 supsub = makeVList({
                   positionType: "shift",
                   positionData: -supShift,
-                  children: [{
-                    type: "elem",
-                    elem: supm,
-                    marginRight
-                  }]
+                  children: [
+                    {
+                      type: "elem",
+                      elem: supm,
+                      marginRight,
+                    },
+                  ],
                 });
               } else {
                 throw new Error("supsub must have either sup or sub.");
@@ -11493,34 +12489,64 @@ function requireKatex() {
                 nodeType = isOver ? "mover" : "munder";
               } else if (!group.sub) {
                 const base = group.base;
-                if (base && base.type === "op" && base.limits && (options.style === src_Style.DISPLAY || base.alwaysHandleSupSub)) {
+                if (
+                  base &&
+                  base.type === "op" &&
+                  base.limits &&
+                  (options.style === src_Style.DISPLAY || base.alwaysHandleSupSub)
+                ) {
                   nodeType = "mover";
-                } else if (base && base.type === "operatorname" && base.alwaysHandleSupSub && (base.limits || options.style === src_Style.DISPLAY)) {
+                } else if (
+                  base &&
+                  base.type === "operatorname" &&
+                  base.alwaysHandleSupSub &&
+                  (base.limits || options.style === src_Style.DISPLAY)
+                ) {
                   nodeType = "mover";
                 } else {
                   nodeType = "msup";
                 }
               } else if (!group.sup) {
                 const base = group.base;
-                if (base && base.type === "op" && base.limits && (options.style === src_Style.DISPLAY || base.alwaysHandleSupSub)) {
+                if (
+                  base &&
+                  base.type === "op" &&
+                  base.limits &&
+                  (options.style === src_Style.DISPLAY || base.alwaysHandleSupSub)
+                ) {
                   nodeType = "munder";
-                } else if (base && base.type === "operatorname" && base.alwaysHandleSupSub && (base.limits || options.style === src_Style.DISPLAY)) {
+                } else if (
+                  base &&
+                  base.type === "operatorname" &&
+                  base.alwaysHandleSupSub &&
+                  (base.limits || options.style === src_Style.DISPLAY)
+                ) {
                   nodeType = "munder";
                 } else {
                   nodeType = "msub";
                 }
               } else {
                 const base = group.base;
-                if (base && base.type === "op" && base.limits && options.style === src_Style.DISPLAY) {
+                if (
+                  base &&
+                  base.type === "op" &&
+                  base.limits &&
+                  options.style === src_Style.DISPLAY
+                ) {
                   nodeType = "munderover";
-                } else if (base && base.type === "operatorname" && base.alwaysHandleSupSub && (options.style === src_Style.DISPLAY || base.limits)) {
+                } else if (
+                  base &&
+                  base.type === "operatorname" &&
+                  base.alwaysHandleSupSub &&
+                  (options.style === src_Style.DISPLAY || base.limits)
+                ) {
                   nodeType = "munderover";
                 } else {
                   nodeType = "msubsup";
                 }
               }
               return new MathNode(nodeType, children);
-            }
+            },
           });
           defineFunctionBuilders({
             type: "atom",
@@ -11540,12 +12566,12 @@ function requireKatex() {
                 node.setAttribute("stretchy", "false");
               }
               return node;
-            }
+            },
           });
           const defaultVariant = {
-            "mi": "italic",
-            "mn": "normal",
-            "mtext": "normal"
+            mi: "italic",
+            mn: "normal",
+            mtext: "normal",
           };
           defineFunctionBuilders({
             type: "mathord",
@@ -11559,7 +12585,7 @@ function requireKatex() {
                 node.setAttribute("mathvariant", variant);
               }
               return node;
-            }
+            },
           });
           defineFunctionBuilders({
             type: "textord",
@@ -11583,22 +12609,22 @@ function requireKatex() {
                 node.setAttribute("mathvariant", variant);
               }
               return node;
-            }
+            },
           });
           const cssSpace = {
             "\\nobreak": "nobreak",
-            "\\allowbreak": "allowbreak"
+            "\\allowbreak": "allowbreak",
           };
           const regularSpace = {
             " ": {},
             "\\ ": {},
             "~": {
-              className: "nobreak"
+              className: "nobreak",
             },
             "\\space": {},
             "\\nobreakspace": {
-              className: "nobreak"
-            }
+              className: "nobreak",
+            },
           };
           defineFunctionBuilders({
             type: "spacing",
@@ -11610,7 +12636,11 @@ function requireKatex() {
                   ord.classes.push(className);
                   return ord;
                 } else {
-                  return makeSpan(["mspace", className], [mathsym(group.text, group.mode, options)], options);
+                  return makeSpan(
+                    ["mspace", className],
+                    [mathsym(group.text, group.mode, options)],
+                    options,
+                  );
                 }
               } else if (cssSpace.hasOwnProperty(group.text)) {
                 return makeSpan(["mspace", cssSpace[group.text]], [], options);
@@ -11628,7 +12658,7 @@ function requireKatex() {
                 throw new src_ParseError('Unknown type of space "' + group.text + '"');
               }
               return node;
-            }
+            },
           });
           const pad = () => {
             const padNode = new MathNode("mtd", []);
@@ -11638,25 +12668,32 @@ function requireKatex() {
           defineFunctionBuilders({
             type: "tag",
             mathmlBuilder(group, options) {
-              const table = new MathNode("mtable", [new MathNode("mtr", [pad(), new MathNode("mtd", [buildExpressionRow(group.body, options)]), pad(), new MathNode("mtd", [buildExpressionRow(group.tag, options)])])]);
+              const table = new MathNode("mtable", [
+                new MathNode("mtr", [
+                  pad(),
+                  new MathNode("mtd", [buildExpressionRow(group.body, options)]),
+                  pad(),
+                  new MathNode("mtd", [buildExpressionRow(group.tag, options)]),
+                ]),
+              ]);
               table.setAttribute("width", "100%");
               return table;
-            }
+            },
           });
           const textFontFamilies = {
             "\\text": void 0,
             "\\textrm": "textrm",
             "\\textsf": "textsf",
             "\\texttt": "texttt",
-            "\\textnormal": "textrm"
+            "\\textnormal": "textrm",
           };
           const textFontWeights = {
             "\\textbf": "textbf",
-            "\\textmd": "textmd"
+            "\\textmd": "textmd",
           };
           const textFontShapes = {
             "\\textit": "textit",
-            "\\textup": "textup"
+            "\\textup": "textup",
           };
           const optionsWithFont = (group, options) => {
             const font = group.font;
@@ -11667,7 +12704,9 @@ function requireKatex() {
             } else if (textFontWeights[font]) {
               return options.withTextFontWeight(textFontWeights[font]);
             } else if (font === "\\emph") {
-              return options.fontShape === "textit" ? options.withTextFontShape("textup") : options.withTextFontShape("textit");
+              return options.fontShape === "textit"
+                ? options.withTextFontShape("textup")
+                : options.withTextFontShape("textit");
             }
             return options.withTextFontShape(textFontShapes[font]);
           };
@@ -11686,25 +12725,22 @@ function requireKatex() {
               // Font Shapes
               "\\textit",
               "\\textup",
-              "\\emph"
+              "\\emph",
             ],
             props: {
               numArgs: 1,
               argTypes: ["text"],
               allowedInArgument: true,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args) {
-              let {
-                parser,
-                funcName
-              } = _ref;
+              let { parser, funcName } = _ref;
               const body = args[0];
               return {
                 type: "text",
                 mode: parser.mode,
                 body: ordargument(body),
-                font: funcName
+                font: funcName,
               };
             },
             htmlBuilder(group, options) {
@@ -11715,23 +12751,21 @@ function requireKatex() {
             mathmlBuilder(group, options) {
               const newOptions = optionsWithFont(group, options);
               return buildExpressionRow(group.body, newOptions);
-            }
+            },
           });
           defineFunction({
             type: "underline",
             names: ["\\underline"],
             props: {
               numArgs: 1,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "underline",
                 mode: parser.mode,
-                body: args[0]
+                body: args[0],
               };
             },
             htmlBuilder(group, options) {
@@ -11741,29 +12775,37 @@ function requireKatex() {
               const vlist = makeVList({
                 positionType: "top",
                 positionData: innerGroup.height,
-                children: [{
-                  type: "kern",
-                  size: defaultRuleThickness
-                }, {
-                  type: "elem",
-                  elem: line
-                }, {
-                  type: "kern",
-                  size: 3 * defaultRuleThickness
-                }, {
-                  type: "elem",
-                  elem: innerGroup
-                }]
+                children: [
+                  {
+                    type: "kern",
+                    size: defaultRuleThickness,
+                  },
+                  {
+                    type: "elem",
+                    elem: line,
+                  },
+                  {
+                    type: "kern",
+                    size: 3 * defaultRuleThickness,
+                  },
+                  {
+                    type: "elem",
+                    elem: innerGroup,
+                  },
+                ],
               });
               return makeSpan(["mord", "underline"], [vlist], options);
             },
             mathmlBuilder(group, options) {
               const operator = new MathNode("mo", [new TextNode("‾")]);
               operator.setAttribute("stretchy", "true");
-              const node = new MathNode("munder", [buildMathML_buildGroup(group.body, options), operator]);
+              const node = new MathNode("munder", [
+                buildMathML_buildGroup(group.body, options),
+                operator,
+              ]);
               node.setAttribute("accentunder", "true");
               return node;
-            }
+            },
           });
           defineFunction({
             type: "vcenter",
@@ -11772,16 +12814,14 @@ function requireKatex() {
               numArgs: 1,
               argTypes: ["original"],
               // In LaTeX, \vcenter can act only on a box.
-              allowedInText: false
+              allowedInText: false,
             },
             handler(_ref, args) {
-              let {
-                parser
-              } = _ref;
+              let { parser } = _ref;
               return {
                 type: "vcenter",
                 mode: parser.mode,
-                body: args[0]
+                body: args[0],
               };
             },
             htmlBuilder(group, options) {
@@ -11791,23 +12831,29 @@ function requireKatex() {
               return makeVList({
                 positionType: "shift",
                 positionData: dy,
-                children: [{
-                  type: "elem",
-                  elem: body
-                }]
+                children: [
+                  {
+                    type: "elem",
+                    elem: body,
+                  },
+                ],
               });
             },
             mathmlBuilder(group, options) {
-              const mpadded = new MathNode("mpadded", [buildMathML_buildGroup(group.body, options)], ["vcenter"]);
+              const mpadded = new MathNode(
+                "mpadded",
+                [buildMathML_buildGroup(group.body, options)],
+                ["vcenter"],
+              );
               return new MathNode("mrow", [mpadded]);
-            }
+            },
           });
           defineFunction({
             type: "verb",
             names: ["\\verb"],
             props: {
               numArgs: 0,
-              allowedInText: true
+              allowedInText: true,
             },
             handler(context, args, optArgs) {
               throw new src_ParseError("\\verb ended by end of line instead of matching delimiter");
@@ -11821,16 +12867,22 @@ function requireKatex() {
                 if (c === "~") {
                   c = "\\textasciitilde";
                 }
-                body.push(makeSymbol(c, "Typewriter-Regular", group.mode, newOptions, ["mord", "texttt"]));
+                body.push(
+                  makeSymbol(c, "Typewriter-Regular", group.mode, newOptions, ["mord", "texttt"]),
+                );
               }
-              return makeSpan(["mord", "text"].concat(newOptions.sizingClasses(options)), tryCombineChars(body), newOptions);
+              return makeSpan(
+                ["mord", "text"].concat(newOptions.sizingClasses(options)),
+                tryCombineChars(body),
+                newOptions,
+              );
             },
             mathmlBuilder(group, options) {
               const text = new TextNode(makeVerb(group));
               const node = new MathNode("mtext", [text]);
               node.setAttribute("mathvariant", "monospace");
               return node;
-            }
+            },
           });
           const makeVerb = (group) => group.body.replace(/ /g, group.star ? "␣" : " ");
           const functions = _functions;
@@ -11838,19 +12890,25 @@ function requireKatex() {
           const spaceRegexString = "[ \r\n	]";
           const controlWordRegexString = "\\\\[a-zA-Z@]+";
           const controlSymbolRegexString = "\\\\[^\uD800-\uDFFF]";
-          const controlWordWhitespaceRegexString = "(" + controlWordRegexString + ")" + spaceRegexString + "*";
+          const controlWordWhitespaceRegexString =
+            "(" + controlWordRegexString + ")" + spaceRegexString + "*";
           const controlSpaceRegexString = "\\\\(\n|[ \r	]+\n?)[ \r	]*";
           const combiningDiacriticalMarkString = "[̀-ͯ]";
-          const combiningDiacriticalMarksEndRegex = new RegExp(combiningDiacriticalMarkString + "+$");
-          const tokenRegexString = "(" + spaceRegexString + "+)|" + // whitespace
-          (controlSpaceRegexString + "|") + // \whitespace
-          "([!-\\[\\]-‧‪-퟿豈-￿]" + // single codepoint
-          (combiningDiacriticalMarkString + "*") + // ...plus accents
-          "|[\uD800-\uDBFF][\uDC00-\uDFFF]" + // surrogate pair
-          (combiningDiacriticalMarkString + "*") + // ...plus accents
-          "|\\\\verb\\*([^]).*?\\4|\\\\verb([^*a-zA-Z]).*?\\5" + // \verb unstarred
-          ("|" + controlWordWhitespaceRegexString) + // \macroName + spaces
-          ("|" + controlSymbolRegexString + ")");
+          const combiningDiacriticalMarksEndRegex = new RegExp(
+            combiningDiacriticalMarkString + "+$",
+          );
+          const tokenRegexString =
+            "(" +
+            spaceRegexString +
+            "+)|" + // whitespace
+            (controlSpaceRegexString + "|") + // \whitespace
+            "([!-\\[\\]-‧‪-퟿豈-￿]" + // single codepoint
+            (combiningDiacriticalMarkString + "*") + // ...plus accents
+            "|[\uD800-\uDBFF][\uDC00-\uDFFF]" + // surrogate pair
+            (combiningDiacriticalMarkString + "*") + // ...plus accents
+            "|\\\\verb\\*([^]).*?\\4|\\\\verb([^*a-zA-Z]).*?\\5" + // \verb unstarred
+            ("|" + controlWordWhitespaceRegexString) + // \macroName + spaces
+            ("|" + controlSymbolRegexString + ")");
           class Lexer {
             constructor(input, settings) {
               this.input = void 0;
@@ -11863,7 +12921,7 @@ function requireKatex() {
               this.catcodes = {
                 "%": 14,
                 // comment character
-                "~": 13
+                "~": 13,
                 // active character
               };
             }
@@ -11881,14 +12939,20 @@ function requireKatex() {
               }
               const match = this.tokenRegex.exec(input);
               if (match === null || match.index !== pos) {
-                throw new src_ParseError("Unexpected character: '" + input[pos] + "'", new Token(input[pos], new SourceLocation(this, pos, pos + 1)));
+                throw new src_ParseError(
+                  "Unexpected character: '" + input[pos] + "'",
+                  new Token(input[pos], new SourceLocation(this, pos, pos + 1)),
+                );
               }
               const text = match[6] || match[3] || (match[2] ? "\\ " : " ");
               if (this.catcodes[text] === 14) {
                 const nlIndex = input.indexOf("\n", this.tokenRegex.lastIndex);
                 if (nlIndex === -1) {
                   this.tokenRegex.lastIndex = input.length;
-                  this.settings.reportNonstrict("commentAtEnd", "% comment has no terminating newline; LaTeX would fail because of commenting the end of math mode (e.g. $)");
+                  this.settings.reportNonstrict(
+                    "commentAtEnd",
+                    "% comment has no terminating newline; LaTeX would fail because of commenting the end of math mode (e.g. $)",
+                  );
                 } else {
                   this.tokenRegex.lastIndex = nlIndex + 1;
                 }
@@ -11929,7 +12993,9 @@ function requireKatex() {
              */
             endGroup() {
               if (this.undefStack.length === 0) {
-                throw new src_ParseError("Unbalanced namespace destruction: attempt to pop global namespace; please report this as a bug");
+                throw new src_ParseError(
+                  "Unbalanced namespace destruction: attempt to pop global namespace; please report this as a bug",
+                );
               }
               const undefs = this.undefStack.pop();
               for (const undef in undefs) {
@@ -12006,7 +13072,7 @@ function requireKatex() {
           }
           const macros = _macros;
           var src_macros = macros;
-          defineMacro("\\noexpand", function(context) {
+          defineMacro("\\noexpand", function (context) {
             const t = context.popToken();
             if (context.isExpandable(t.text)) {
               t.noexpand = true;
@@ -12014,87 +13080,87 @@ function requireKatex() {
             }
             return {
               tokens: [t],
-              numArgs: 0
+              numArgs: 0,
             };
           });
-          defineMacro("\\expandafter", function(context) {
+          defineMacro("\\expandafter", function (context) {
             const t = context.popToken();
             context.expandOnce(true);
             return {
               tokens: [t],
-              numArgs: 0
+              numArgs: 0,
             };
           });
-          defineMacro("\\@firstoftwo", function(context) {
+          defineMacro("\\@firstoftwo", function (context) {
             const args = context.consumeArgs(2);
             return {
               tokens: args[0],
-              numArgs: 0
+              numArgs: 0,
             };
           });
-          defineMacro("\\@secondoftwo", function(context) {
+          defineMacro("\\@secondoftwo", function (context) {
             const args = context.consumeArgs(2);
             return {
               tokens: args[1],
-              numArgs: 0
+              numArgs: 0,
             };
           });
-          defineMacro("\\@ifnextchar", function(context) {
+          defineMacro("\\@ifnextchar", function (context) {
             const args = context.consumeArgs(3);
             context.consumeSpaces();
             const nextToken = context.future();
             if (args[0].length === 1 && args[0][0].text === nextToken.text) {
               return {
                 tokens: args[1],
-                numArgs: 0
+                numArgs: 0,
               };
             } else {
               return {
                 tokens: args[2],
-                numArgs: 0
+                numArgs: 0,
               };
             }
           });
           defineMacro("\\@ifstar", "\\@ifnextchar *{\\@firstoftwo{#1}}");
-          defineMacro("\\TextOrMath", function(context) {
+          defineMacro("\\TextOrMath", function (context) {
             const args = context.consumeArgs(2);
             if (context.mode === "text") {
               return {
                 tokens: args[0],
-                numArgs: 0
+                numArgs: 0,
               };
             } else {
               return {
                 tokens: args[1],
-                numArgs: 0
+                numArgs: 0,
               };
             }
           });
           const digitToNumber = {
-            "0": 0,
-            "1": 1,
-            "2": 2,
-            "3": 3,
-            "4": 4,
-            "5": 5,
-            "6": 6,
-            "7": 7,
-            "8": 8,
-            "9": 9,
-            "a": 10,
-            "A": 10,
-            "b": 11,
-            "B": 11,
-            "c": 12,
-            "C": 12,
-            "d": 13,
-            "D": 13,
-            "e": 14,
-            "E": 14,
-            "f": 15,
-            "F": 15
+            0: 0,
+            1: 1,
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5,
+            6: 6,
+            7: 7,
+            8: 8,
+            9: 9,
+            a: 10,
+            A: 10,
+            b: 11,
+            B: 11,
+            c: 12,
+            C: 12,
+            d: 13,
+            D: 13,
+            e: 14,
+            E: 14,
+            f: 15,
+            F: 15,
           };
-          defineMacro("\\char", function(context) {
+          defineMacro("\\char", function (context) {
             let token = context.popToken();
             let base;
             let number = 0;
@@ -12138,10 +13204,21 @@ function requireKatex() {
             const name = arg[0].text;
             const exists = context.isDefined(name);
             if (exists && !existsOK) {
-              throw new src_ParseError("\\newcommand{" + name + "} attempting to redefine " + (name + "; use \\renewcommand"));
+              throw new src_ParseError(
+                "\\newcommand{" +
+                  name +
+                  "} attempting to redefine " +
+                  (name + "; use \\renewcommand"),
+              );
             }
             if (!exists && !nonexistsOK) {
-              throw new src_ParseError("\\renewcommand{" + name + "} when command " + name + " does not yet exist; use \\newcommand");
+              throw new src_ParseError(
+                "\\renewcommand{" +
+                  name +
+                  "} when command " +
+                  name +
+                  " does not yet exist; use \\newcommand",
+              );
             }
             let numArgs = 0;
             arg = context.consumeArg().tokens;
@@ -12161,7 +13238,7 @@ function requireKatex() {
             if (!(exists && skipIfExists)) {
               context.macros.set(name, {
                 tokens: arg,
-                numArgs
+                numArgs,
               });
             }
             return "";
@@ -12171,18 +13248,34 @@ function requireKatex() {
           defineMacro("\\providecommand", (context) => newcommand(context, true, true, true));
           defineMacro("\\message", (context) => {
             const arg = context.consumeArgs(1)[0];
-            console.log(arg.reverse().map((token) => token.text).join(""));
+            console.log(
+              arg
+                .reverse()
+                .map((token) => token.text)
+                .join(""),
+            );
             return "";
           });
           defineMacro("\\errmessage", (context) => {
             const arg = context.consumeArgs(1)[0];
-            console.error(arg.reverse().map((token) => token.text).join(""));
+            console.error(
+              arg
+                .reverse()
+                .map((token) => token.text)
+                .join(""),
+            );
             return "";
           });
           defineMacro("\\show", (context) => {
             const tok = context.popToken();
             const name = tok.text;
-            console.log(tok, context.macros.get(name), src_functions[name], src_symbols.math[name], src_symbols.text[name]);
+            console.log(
+              tok,
+              context.macros.get(name),
+              src_functions[name],
+              src_symbols.math[name],
+              src_symbols.text[name],
+            );
             return "";
           });
           defineMacro("\\bgroup", "{");
@@ -12216,13 +13309,22 @@ function requireKatex() {
           defineMacro("\\neq", "\\html@mathml{\\mathrel{\\not=}}{\\mathrel{\\char`≠}}");
           defineMacro("\\ne", "\\neq");
           defineMacro("≠", "\\neq");
-          defineMacro("\\notin", "\\html@mathml{\\mathrel{{\\in}\\mathllap{/\\mskip1mu}}}{\\mathrel{\\char`∉}}");
+          defineMacro(
+            "\\notin",
+            "\\html@mathml{\\mathrel{{\\in}\\mathllap{/\\mskip1mu}}}{\\mathrel{\\char`∉}}",
+          );
           defineMacro("∉", "\\notin");
-          defineMacro("≘", "\\html@mathml{\\mathrel{=\\kern{-1em}\\raisebox{0.4em}{$\\scriptsize\\frown$}}}{\\mathrel{\\char`≘}}");
+          defineMacro(
+            "≘",
+            "\\html@mathml{\\mathrel{=\\kern{-1em}\\raisebox{0.4em}{$\\scriptsize\\frown$}}}{\\mathrel{\\char`≘}}",
+          );
           defineMacro("≙", "\\html@mathml{\\stackrel{\\tiny\\wedge}{=}}{\\mathrel{\\char`≘}}");
           defineMacro("≚", "\\html@mathml{\\stackrel{\\tiny\\vee}{=}}{\\mathrel{\\char`≚}}");
           defineMacro("≛", "\\html@mathml{\\stackrel{\\scriptsize\\star}{=}}{\\mathrel{\\char`≛}}");
-          defineMacro("≝", "\\html@mathml{\\stackrel{\\tiny\\mathrm{def}}{=}}{\\mathrel{\\char`≝}}");
+          defineMacro(
+            "≝",
+            "\\html@mathml{\\stackrel{\\tiny\\mathrm{def}}{=}}{\\mathrel{\\char`≝}}",
+          );
           defineMacro("≞", "\\html@mathml{\\stackrel{\\tiny\\mathrm{m}}{=}}{\\mathrel{\\char`≞}}");
           defineMacro("≟", "\\html@mathml{\\stackrel{\\tiny?}{=}}{\\mathrel{\\char`≟}}");
           defineMacro("⟂", "\\perp");
@@ -12252,7 +13354,10 @@ function requireKatex() {
           defineMacro("\\varPsi", "\\mathit{\\Psi}");
           defineMacro("\\varOmega", "\\mathit{\\Omega}");
           defineMacro("\\substack", "\\begin{subarray}{c}#1\\end{subarray}");
-          defineMacro("\\colon", "\\nobreak\\mskip2mu\\mathpunct{}\\mathchoice{\\mkern-3mu}{\\mkern-3mu}{}{}{:}\\mskip6mu\\relax");
+          defineMacro(
+            "\\colon",
+            "\\nobreak\\mskip2mu\\mathpunct{}\\mathchoice{\\mkern-3mu}{\\mkern-3mu}{}{}{:}\\mskip6mu\\relax",
+          );
           defineMacro("\\boxed", "\\fbox{$\\displaystyle{#1}$}");
           defineMacro("\\iff", "\\DOTSB\\;\\Longleftrightarrow\\;");
           defineMacro("\\implies", "\\DOTSB\\;\\Longrightarrow\\;");
@@ -12312,10 +13417,10 @@ function requireKatex() {
             "\\iiiint": "\\dotsi",
             "\\idotsint": "\\dotsi",
             // Symbols whose definition starts with \DOTSX:
-            "\\DOTSX": "\\dotsx"
+            "\\DOTSX": "\\dotsx",
           };
           const dotsbGroups = /* @__PURE__ */ new Set(["bin", "rel"]);
-          defineMacro("\\dots", function(context) {
+          defineMacro("\\dots", function (context) {
             let thedots = "\\dotso";
             const next = context.expandAfterFuture().text;
             if (next in dotsByToken) {
@@ -12347,13 +13452,13 @@ function requireKatex() {
             "\\Bigr": true,
             "\\Biggr": true,
             // \extra@ also tests for the following:
-            "$": true,
+            $: true,
             // \extrap@ checks for the following:
             ";": true,
             ".": true,
-            ",": true
+            ",": true,
           };
-          defineMacro("\\dotso", function(context) {
+          defineMacro("\\dotso", function (context) {
             const next = context.future().text;
             if (next in spaceAfterDots) {
               return "\\ldots\\,";
@@ -12361,7 +13466,7 @@ function requireKatex() {
               return "\\ldots";
             }
           });
-          defineMacro("\\dotsc", function(context) {
+          defineMacro("\\dotsc", function (context) {
             const next = context.future().text;
             if (next in spaceAfterDots && next !== ",") {
               return "\\ldots\\,";
@@ -12369,7 +13474,7 @@ function requireKatex() {
               return "\\ldots";
             }
           });
-          defineMacro("\\cdots", function(context) {
+          defineMacro("\\cdots", function (context) {
             const next = context.future().text;
             if (next in spaceAfterDots) {
               return "\\@cdots\\,";
@@ -12408,33 +13513,97 @@ function requireKatex() {
             }
             return "\\gdef\\df@tag{\\text{#1}}";
           });
-          defineMacro("\\bmod", "\\mathchoice{\\mskip1mu}{\\mskip1mu}{\\mskip5mu}{\\mskip5mu}\\mathbin{\\rm mod}\\mathchoice{\\mskip1mu}{\\mskip1mu}{\\mskip5mu}{\\mskip5mu}");
-          defineMacro("\\pod", "\\allowbreak\\mathchoice{\\mkern18mu}{\\mkern8mu}{\\mkern8mu}{\\mkern8mu}(#1)");
+          defineMacro(
+            "\\bmod",
+            "\\mathchoice{\\mskip1mu}{\\mskip1mu}{\\mskip5mu}{\\mskip5mu}\\mathbin{\\rm mod}\\mathchoice{\\mskip1mu}{\\mskip1mu}{\\mskip5mu}{\\mskip5mu}",
+          );
+          defineMacro(
+            "\\pod",
+            "\\allowbreak\\mathchoice{\\mkern18mu}{\\mkern8mu}{\\mkern8mu}{\\mkern8mu}(#1)",
+          );
           defineMacro("\\pmod", "\\pod{{\\rm mod}\\mkern6mu#1}");
-          defineMacro("\\mod", "\\allowbreak\\mathchoice{\\mkern18mu}{\\mkern12mu}{\\mkern12mu}{\\mkern12mu}{\\rm mod}\\,\\,#1");
+          defineMacro(
+            "\\mod",
+            "\\allowbreak\\mathchoice{\\mkern18mu}{\\mkern12mu}{\\mkern12mu}{\\mkern12mu}{\\rm mod}\\,\\,#1",
+          );
           defineMacro("\\newline", "\\\\\\relax");
-          defineMacro("\\TeX", "\\textrm{\\html@mathml{T\\kern-.1667em\\raisebox{-.5ex}{E}\\kern-.125emX}{TeX}}");
-          const latexRaiseA = makeEm(fontMetricsData["Main-Regular"]["T".charCodeAt(0)][1] - 0.7 * fontMetricsData["Main-Regular"]["A".charCodeAt(0)][1]);
-          defineMacro("\\LaTeX", "\\textrm{\\html@mathml{" + ("L\\kern-.36em\\raisebox{" + latexRaiseA + "}{\\scriptstyle A}") + "\\kern-.15em\\TeX}{LaTeX}}");
-          defineMacro("\\KaTeX", "\\textrm{\\html@mathml{" + ("K\\kern-.17em\\raisebox{" + latexRaiseA + "}{\\scriptstyle A}") + "\\kern-.15em\\TeX}{KaTeX}}");
+          defineMacro(
+            "\\TeX",
+            "\\textrm{\\html@mathml{T\\kern-.1667em\\raisebox{-.5ex}{E}\\kern-.125emX}{TeX}}",
+          );
+          const latexRaiseA = makeEm(
+            fontMetricsData["Main-Regular"]["T".charCodeAt(0)][1] -
+              0.7 * fontMetricsData["Main-Regular"]["A".charCodeAt(0)][1],
+          );
+          defineMacro(
+            "\\LaTeX",
+            "\\textrm{\\html@mathml{" +
+              ("L\\kern-.36em\\raisebox{" + latexRaiseA + "}{\\scriptstyle A}") +
+              "\\kern-.15em\\TeX}{LaTeX}}",
+          );
+          defineMacro(
+            "\\KaTeX",
+            "\\textrm{\\html@mathml{" +
+              ("K\\kern-.17em\\raisebox{" + latexRaiseA + "}{\\scriptstyle A}") +
+              "\\kern-.15em\\TeX}{KaTeX}}",
+          );
           defineMacro("\\hspace", "\\@ifstar\\@hspacer\\@hspace");
           defineMacro("\\@hspace", "\\hskip #1\\relax");
           defineMacro("\\@hspacer", "\\rule{0pt}{0pt}\\hskip #1\\relax");
           defineMacro("\\ordinarycolon", ":");
           defineMacro("\\vcentcolon", "\\mathrel{\\mathop\\ordinarycolon}");
-          defineMacro("\\dblcolon", '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-.9mu}\\vcentcolon}}{\\mathop{\\char"2237}}');
-          defineMacro("\\coloneqq", '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}=}}{\\mathop{\\char"2254}}');
-          defineMacro("\\Coloneqq", '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}=}}{\\mathop{\\char"2237\\char"3d}}');
-          defineMacro("\\coloneq", '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\mathrel{-}}}{\\mathop{\\char"3a\\char"2212}}');
-          defineMacro("\\Coloneq", '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\mathrel{-}}}{\\mathop{\\char"2237\\char"2212}}');
-          defineMacro("\\eqqcolon", '\\html@mathml{\\mathrel{=\\mathrel{\\mkern-1.2mu}\\vcentcolon}}{\\mathop{\\char"2255}}');
-          defineMacro("\\Eqqcolon", '\\html@mathml{\\mathrel{=\\mathrel{\\mkern-1.2mu}\\dblcolon}}{\\mathop{\\char"3d\\char"2237}}');
-          defineMacro("\\eqcolon", '\\html@mathml{\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\vcentcolon}}{\\mathop{\\char"2239}}');
-          defineMacro("\\Eqcolon", '\\html@mathml{\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\dblcolon}}{\\mathop{\\char"2212\\char"2237}}');
-          defineMacro("\\colonapprox", '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\approx}}{\\mathop{\\char"3a\\char"2248}}');
-          defineMacro("\\Colonapprox", '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\approx}}{\\mathop{\\char"2237\\char"2248}}');
-          defineMacro("\\colonsim", '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\sim}}{\\mathop{\\char"3a\\char"223c}}');
-          defineMacro("\\Colonsim", '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\sim}}{\\mathop{\\char"2237\\char"223c}}');
+          defineMacro(
+            "\\dblcolon",
+            '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-.9mu}\\vcentcolon}}{\\mathop{\\char"2237}}',
+          );
+          defineMacro(
+            "\\coloneqq",
+            '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}=}}{\\mathop{\\char"2254}}',
+          );
+          defineMacro(
+            "\\Coloneqq",
+            '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}=}}{\\mathop{\\char"2237\\char"3d}}',
+          );
+          defineMacro(
+            "\\coloneq",
+            '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\mathrel{-}}}{\\mathop{\\char"3a\\char"2212}}',
+          );
+          defineMacro(
+            "\\Coloneq",
+            '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\mathrel{-}}}{\\mathop{\\char"2237\\char"2212}}',
+          );
+          defineMacro(
+            "\\eqqcolon",
+            '\\html@mathml{\\mathrel{=\\mathrel{\\mkern-1.2mu}\\vcentcolon}}{\\mathop{\\char"2255}}',
+          );
+          defineMacro(
+            "\\Eqqcolon",
+            '\\html@mathml{\\mathrel{=\\mathrel{\\mkern-1.2mu}\\dblcolon}}{\\mathop{\\char"3d\\char"2237}}',
+          );
+          defineMacro(
+            "\\eqcolon",
+            '\\html@mathml{\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\vcentcolon}}{\\mathop{\\char"2239}}',
+          );
+          defineMacro(
+            "\\Eqcolon",
+            '\\html@mathml{\\mathrel{\\mathrel{-}\\mathrel{\\mkern-1.2mu}\\dblcolon}}{\\mathop{\\char"2212\\char"2237}}',
+          );
+          defineMacro(
+            "\\colonapprox",
+            '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\approx}}{\\mathop{\\char"3a\\char"2248}}',
+          );
+          defineMacro(
+            "\\Colonapprox",
+            '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\approx}}{\\mathop{\\char"2237\\char"2248}}',
+          );
+          defineMacro(
+            "\\colonsim",
+            '\\html@mathml{\\mathrel{\\vcentcolon\\mathrel{\\mkern-1.2mu}\\sim}}{\\mathop{\\char"3a\\char"223c}}',
+          );
+          defineMacro(
+            "\\Colonsim",
+            '\\html@mathml{\\mathrel{\\dblcolon\\mathrel{\\mkern-1.2mu}\\sim}}{\\mathop{\\char"2237\\char"223c}}',
+          );
           defineMacro("∷", "\\dblcolon");
           defineMacro("∹", "\\eqcolon");
           defineMacro("≔", "\\coloneqq");
@@ -12455,7 +13624,10 @@ function requireKatex() {
           defineMacro("\\simcolon", "\\mathrel{\\sim\\mathrel{\\mkern-1.2mu}\\vcentcolon}");
           defineMacro("\\simcoloncolon", "\\mathrel{\\sim\\mathrel{\\mkern-1.2mu}\\dblcolon}");
           defineMacro("\\approxcolon", "\\mathrel{\\approx\\mathrel{\\mkern-1.2mu}\\vcentcolon}");
-          defineMacro("\\approxcoloncolon", "\\mathrel{\\approx\\mathrel{\\mkern-1.2mu}\\dblcolon}");
+          defineMacro(
+            "\\approxcoloncolon",
+            "\\mathrel{\\approx\\mathrel{\\mkern-1.2mu}\\dblcolon}",
+          );
           defineMacro("\\notni", "\\html@mathml{\\not\\ni}{\\mathrel{\\char`∌}}");
           defineMacro("\\limsup", "\\DOTSB\\operatorname*{lim\\,sup}");
           defineMacro("\\liminf", "\\DOTSB\\operatorname*{lim\\,inf}");
@@ -12481,15 +13653,30 @@ function requireKatex() {
           defineMacro("\\varsupsetneqq", "\\html@mathml{\\@varsupsetneqq}{⫌}");
           defineMacro("\\imath", "\\html@mathml{\\@imath}{ı}");
           defineMacro("\\jmath", "\\html@mathml{\\@jmath}{ȷ}");
-          defineMacro("\\llbracket", "\\html@mathml{\\mathopen{[\\mkern-3.2mu[}}{\\mathopen{\\char`⟦}}");
-          defineMacro("\\rrbracket", "\\html@mathml{\\mathclose{]\\mkern-3.2mu]}}{\\mathclose{\\char`⟧}}");
+          defineMacro(
+            "\\llbracket",
+            "\\html@mathml{\\mathopen{[\\mkern-3.2mu[}}{\\mathopen{\\char`⟦}}",
+          );
+          defineMacro(
+            "\\rrbracket",
+            "\\html@mathml{\\mathclose{]\\mkern-3.2mu]}}{\\mathclose{\\char`⟧}}",
+          );
           defineMacro("⟦", "\\llbracket");
           defineMacro("⟧", "\\rrbracket");
-          defineMacro("\\lBrace", "\\html@mathml{\\mathopen{\\{\\mkern-3.2mu[}}{\\mathopen{\\char`⦃}}");
-          defineMacro("\\rBrace", "\\html@mathml{\\mathclose{]\\mkern-3.2mu\\}}}{\\mathclose{\\char`⦄}}");
+          defineMacro(
+            "\\lBrace",
+            "\\html@mathml{\\mathopen{\\{\\mkern-3.2mu[}}{\\mathopen{\\char`⦃}}",
+          );
+          defineMacro(
+            "\\rBrace",
+            "\\html@mathml{\\mathclose{]\\mkern-3.2mu\\}}}{\\mathclose{\\char`⦄}}",
+          );
           defineMacro("⦃", "\\lBrace");
           defineMacro("⦄", "\\rBrace");
-          defineMacro("\\minuso", "\\mathbin{\\html@mathml{{\\mathrlap{\\mathchoice{\\kern{0.145em}}{\\kern{0.145em}}{\\kern{0.1015em}}{\\kern{0.0725em}}\\circ}{-}}}{\\char`⦵}}");
+          defineMacro(
+            "\\minuso",
+            "\\mathbin{\\html@mathml{{\\mathrlap{\\mathchoice{\\kern{0.145em}}{\\kern{0.145em}}{\\kern{0.1015em}}{\\kern{0.0725em}}\\circ}{-}}}{\\char`⦵}}",
+          );
           defineMacro("⦵", "\\minuso");
           defineMacro("\\darr", "\\downarrow");
           defineMacro("\\dArr", "\\Downarrow");
@@ -12587,7 +13774,7 @@ function requireKatex() {
               }
               return {
                 tokens: doubled ? middleDouble : middle,
-                numArgs: 0
+                numArgs: 0,
               };
             };
             context.macros.set("|", midMacro(false));
@@ -12598,19 +13785,25 @@ function requireKatex() {
             const expanded = context.expandTokens([
               ...right,
               ...arg,
-              ...left
+              ...left,
               // reversed
             ]);
             context.macros.endGroup();
             return {
               tokens: expanded.reverse(),
-              numArgs: 0
+              numArgs: 0,
             };
           };
           defineMacro("\\bra@ket", braketHelper(false));
           defineMacro("\\bra@set", braketHelper(true));
-          defineMacro("\\Braket", "\\bra@ket{\\left\\langle}{\\,\\middle\\vert\\,}{\\,\\middle\\vert\\,}{\\right\\rangle}");
-          defineMacro("\\Set", "\\bra@set{\\left\\{\\:}{\\;\\middle\\vert\\;}{\\;\\middle\\Vert\\;}{\\:\\right\\}}");
+          defineMacro(
+            "\\Braket",
+            "\\bra@ket{\\left\\langle}{\\,\\middle\\vert\\,}{\\,\\middle\\vert\\,}{\\right\\rangle}",
+          );
+          defineMacro(
+            "\\Set",
+            "\\bra@set{\\left\\{\\:}{\\;\\middle\\vert\\;}{\\;\\middle\\Vert\\;}{\\:\\right\\}}",
+          );
           defineMacro("\\set", "\\bra@set{\\{\\,}{\\mid}{}{\\,\\}}");
           defineMacro("\\angln", "{\\angl n}");
           defineMacro("\\blue", "\\textcolor{##6495ed}{#1}");
@@ -12672,11 +13865,11 @@ function requireKatex() {
           const implicitCommands = {
             "^": true,
             // Parser.js
-            "_": true,
+            _: true,
             // Parser.js
             "\\limits": true,
             // Parser.js
-            "\\nolimits": true
+            "\\nolimits": true,
             // Parser.js
           };
           class MacroExpander {
@@ -12770,16 +13963,9 @@ function requireKatex() {
                   return null;
                 }
                 start = this.popToken();
-                ({
-                  tokens,
-                  end
-                } = this.consumeArg(["]"]));
+                ({ tokens, end } = this.consumeArg(["]"]));
               } else {
-                ({
-                  tokens,
-                  start,
-                  end
-                } = this.consumeArg());
+                ({ tokens, start, end } = this.consumeArg());
               }
               this.pushToken(new Token("EOF", end.loc));
               this.pushTokens(tokens);
@@ -12789,7 +13975,7 @@ function requireKatex() {
              * Consume all following space tokens, without expansion.
              */
             consumeSpaces() {
-              for (; ; ) {
+              for (;;) {
                 const token = this.future();
                 if (token.text === " ") {
                   this.stack.pop();
@@ -12823,10 +14009,18 @@ function requireKatex() {
                     throw new src_ParseError("Extra }", tok);
                   }
                 } else if (tok.text === "EOF") {
-                  throw new src_ParseError("Unexpected end of input in a macro argument, expected '" + (delims && isDelimited ? delims[match] : "}") + "'", tok);
+                  throw new src_ParseError(
+                    "Unexpected end of input in a macro argument, expected '" +
+                      (delims && isDelimited ? delims[match] : "}") +
+                      "'",
+                    tok,
+                  );
                 }
                 if (delims && isDelimited) {
-                  if ((depth === 0 || depth === 1 && delims[match] === "{") && tok.text === delims[match]) {
+                  if (
+                    (depth === 0 || (depth === 1 && delims[match] === "{")) &&
+                    tok.text === delims[match]
+                  ) {
                     ++match;
                     if (match === delims.length) {
                       tokens.splice(-match, match);
@@ -12845,7 +14039,7 @@ function requireKatex() {
               return {
                 tokens,
                 start,
-                end: tok
+                end: tok,
               };
             }
             /**
@@ -12855,7 +14049,9 @@ function requireKatex() {
             consumeArgs(numArgs, delimiters2) {
               if (delimiters2) {
                 if (delimiters2.length !== numArgs + 1) {
-                  throw new src_ParseError("The length of delimiters doesn't match the number of args!");
+                  throw new src_ParseError(
+                    "The length of delimiters doesn't match the number of args!",
+                  );
                 }
                 const delims = delimiters2[0];
                 for (let i = 0; i < delims.length; i++) {
@@ -12878,7 +14074,9 @@ function requireKatex() {
             countExpansion(amount) {
               this.expansionCount += amount;
               if (this.expansionCount > this.settings.maxExpand) {
-                throw new src_ParseError("Too many expansions: infinite loop or need to increase maxExpand setting");
+                throw new src_ParseError(
+                  "Too many expansions: infinite loop or need to increase maxExpand setting",
+                );
               }
             }
             /**
@@ -12904,8 +14102,13 @@ function requireKatex() {
               const topToken = this.popToken();
               const name = topToken.text;
               const expansion = !topToken.noexpand ? this._getExpansion(name) : null;
-              if (expansion == null || expandableOnly && expansion.unexpandable) {
-                if (expandableOnly && expansion == null && name[0] === "\\" && !this.isDefined(name)) {
+              if (expansion == null || (expandableOnly && expansion.unexpandable)) {
+                if (
+                  expandableOnly &&
+                  expansion == null &&
+                  name[0] === "\\" &&
+                  !this.isDefined(name)
+                ) {
                   throw new src_ParseError("Undefined control sequence: " + name);
                 }
                 this.pushToken(topToken);
@@ -12950,7 +14153,7 @@ function requireKatex() {
              * Recursively expand first token, then return first non-expandable token.
              */
             expandNextToken() {
-              for (; ; ) {
+              for (;;) {
                 if (this.expandOnce() === false) {
                   const token = this.stack.pop();
                   if (token.treatAsRelax) {
@@ -13035,7 +14238,7 @@ function requireKatex() {
                 tokens.reverse();
                 const expanded = {
                   tokens,
-                  numArgs
+                  numArgs,
                 };
                 return expanded;
               }
@@ -13048,14 +14251,22 @@ function requireKatex() {
              * `implicitCommands`.
              */
             isDefined(name) {
-              return this.macros.has(name) || src_functions.hasOwnProperty(name) || src_symbols.math.hasOwnProperty(name) || src_symbols.text.hasOwnProperty(name) || implicitCommands.hasOwnProperty(name);
+              return (
+                this.macros.has(name) ||
+                src_functions.hasOwnProperty(name) ||
+                src_symbols.math.hasOwnProperty(name) ||
+                src_symbols.text.hasOwnProperty(name) ||
+                implicitCommands.hasOwnProperty(name)
+              );
             }
             /**
              * Determine whether a command is expandable.
              */
             isExpandable(name) {
               const macro = this.macros.get(name);
-              return macro != null ? typeof macro === "string" || typeof macro === "function" || !macro.unexpandable : src_functions.hasOwnProperty(name) && !src_functions[name].primitive;
+              return macro != null
+                ? typeof macro === "string" || typeof macro === "function" || !macro.unexpandable
+                : src_functions.hasOwnProperty(name) && !src_functions[name].primitive;
             }
           }
           const unicodeSubRegEx = /^[₊₋₌₍₎₀₁₂₃₄₅₆₇₈₉ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓᵦᵧᵨᵩᵪ]/;
@@ -13075,28 +14286,28 @@ function requireKatex() {
             "₇": "7",
             "₈": "8",
             "₉": "9",
-            "ₐ": "a",
-            "ₑ": "e",
-            "ₕ": "h",
-            "ᵢ": "i",
-            "ⱼ": "j",
-            "ₖ": "k",
-            "ₗ": "l",
-            "ₘ": "m",
-            "ₙ": "n",
-            "ₒ": "o",
-            "ₚ": "p",
-            "ᵣ": "r",
-            "ₛ": "s",
-            "ₜ": "t",
-            "ᵤ": "u",
-            "ᵥ": "v",
-            "ₓ": "x",
-            "ᵦ": "β",
-            "ᵧ": "γ",
-            "ᵨ": "ρ",
-            "ᵩ": "ϕ",
-            "ᵪ": "χ",
+            ₐ: "a",
+            ₑ: "e",
+            ₕ: "h",
+            ᵢ: "i",
+            ⱼ: "j",
+            ₖ: "k",
+            ₗ: "l",
+            ₘ: "m",
+            ₙ: "n",
+            ₒ: "o",
+            ₚ: "p",
+            ᵣ: "r",
+            ₛ: "s",
+            ₜ: "t",
+            ᵤ: "u",
+            ᵥ: "v",
+            ₓ: "x",
+            ᵦ: "β",
+            ᵧ: "γ",
+            ᵨ: "ρ",
+            ᵩ: "ϕ",
+            ᵪ: "χ",
             "⁺": "+",
             "⁻": "-",
             "⁼": "=",
@@ -13112,450 +14323,450 @@ function requireKatex() {
             "⁷": "7",
             "⁸": "8",
             "⁹": "9",
-            "ᴬ": "A",
-            "ᴮ": "B",
-            "ᴰ": "D",
-            "ᴱ": "E",
-            "ᴳ": "G",
-            "ᴴ": "H",
-            "ᴵ": "I",
-            "ᴶ": "J",
-            "ᴷ": "K",
-            "ᴸ": "L",
-            "ᴹ": "M",
-            "ᴺ": "N",
-            "ᴼ": "O",
-            "ᴾ": "P",
-            "ᴿ": "R",
-            "ᵀ": "T",
-            "ᵁ": "U",
-            "ⱽ": "V",
-            "ᵂ": "W",
-            "ᵃ": "a",
-            "ᵇ": "b",
-            "ᶜ": "c",
-            "ᵈ": "d",
-            "ᵉ": "e",
-            "ᶠ": "f",
-            "ᵍ": "g",
-            "ʰ": "h",
-            "ⁱ": "i",
-            "ʲ": "j",
-            "ᵏ": "k",
-            "ˡ": "l",
-            "ᵐ": "m",
-            "ⁿ": "n",
-            "ᵒ": "o",
-            "ᵖ": "p",
-            "ʳ": "r",
-            "ˢ": "s",
-            "ᵗ": "t",
-            "ᵘ": "u",
-            "ᵛ": "v",
-            "ʷ": "w",
-            "ˣ": "x",
-            "ʸ": "y",
-            "ᶻ": "z",
-            "ᵝ": "β",
-            "ᵞ": "γ",
-            "ᵟ": "δ",
-            "ᵠ": "ϕ",
-            "ᵡ": "χ",
-            "ᶿ": "θ"
+            ᴬ: "A",
+            ᴮ: "B",
+            ᴰ: "D",
+            ᴱ: "E",
+            ᴳ: "G",
+            ᴴ: "H",
+            ᴵ: "I",
+            ᴶ: "J",
+            ᴷ: "K",
+            ᴸ: "L",
+            ᴹ: "M",
+            ᴺ: "N",
+            ᴼ: "O",
+            ᴾ: "P",
+            ᴿ: "R",
+            ᵀ: "T",
+            ᵁ: "U",
+            ⱽ: "V",
+            ᵂ: "W",
+            ᵃ: "a",
+            ᵇ: "b",
+            ᶜ: "c",
+            ᵈ: "d",
+            ᵉ: "e",
+            ᶠ: "f",
+            ᵍ: "g",
+            ʰ: "h",
+            ⁱ: "i",
+            ʲ: "j",
+            ᵏ: "k",
+            ˡ: "l",
+            ᵐ: "m",
+            ⁿ: "n",
+            ᵒ: "o",
+            ᵖ: "p",
+            ʳ: "r",
+            ˢ: "s",
+            ᵗ: "t",
+            ᵘ: "u",
+            ᵛ: "v",
+            ʷ: "w",
+            ˣ: "x",
+            ʸ: "y",
+            ᶻ: "z",
+            ᵝ: "β",
+            ᵞ: "γ",
+            ᵟ: "δ",
+            ᵠ: "ϕ",
+            ᵡ: "χ",
+            ᶿ: "θ",
           });
           const unicodeAccents = {
             "́": {
-              "text": "\\'",
-              "math": "\\acute"
+              text: "\\'",
+              math: "\\acute",
             },
             "̀": {
-              "text": "\\`",
-              "math": "\\grave"
+              text: "\\`",
+              math: "\\grave",
             },
             "̈": {
-              "text": '\\"',
-              "math": "\\ddot"
+              text: '\\"',
+              math: "\\ddot",
             },
             "̃": {
-              "text": "\\~",
-              "math": "\\tilde"
+              text: "\\~",
+              math: "\\tilde",
             },
             "̄": {
-              "text": "\\=",
-              "math": "\\bar"
+              text: "\\=",
+              math: "\\bar",
             },
             "̆": {
-              "text": "\\u",
-              "math": "\\breve"
+              text: "\\u",
+              math: "\\breve",
             },
             "̌": {
-              "text": "\\v",
-              "math": "\\check"
+              text: "\\v",
+              math: "\\check",
             },
             "̂": {
-              "text": "\\^",
-              "math": "\\hat"
+              text: "\\^",
+              math: "\\hat",
             },
             "̇": {
-              "text": "\\.",
-              "math": "\\dot"
+              text: "\\.",
+              math: "\\dot",
             },
             "̊": {
-              "text": "\\r",
-              "math": "\\mathring"
+              text: "\\r",
+              math: "\\mathring",
             },
             "̋": {
-              "text": "\\H"
+              text: "\\H",
             },
             "̧": {
-              "text": "\\c"
-            }
+              text: "\\c",
+            },
           };
           const unicodeSymbols = {
-            "á": "á",
-            "à": "à",
-            "ä": "ä",
-            "ǟ": "ǟ",
-            "ã": "ã",
-            "ā": "ā",
-            "ă": "ă",
-            "ắ": "ắ",
-            "ằ": "ằ",
-            "ẵ": "ẵ",
-            "ǎ": "ǎ",
-            "â": "â",
-            "ấ": "ấ",
-            "ầ": "ầ",
-            "ẫ": "ẫ",
-            "ȧ": "ȧ",
-            "ǡ": "ǡ",
-            "å": "å",
-            "ǻ": "ǻ",
-            "ḃ": "ḃ",
-            "ć": "ć",
-            "ḉ": "ḉ",
-            "č": "č",
-            "ĉ": "ĉ",
-            "ċ": "ċ",
-            "ç": "ç",
-            "ď": "ď",
-            "ḋ": "ḋ",
-            "ḑ": "ḑ",
-            "é": "é",
-            "è": "è",
-            "ë": "ë",
-            "ẽ": "ẽ",
-            "ē": "ē",
-            "ḗ": "ḗ",
-            "ḕ": "ḕ",
-            "ĕ": "ĕ",
-            "ḝ": "ḝ",
-            "ě": "ě",
-            "ê": "ê",
-            "ế": "ế",
-            "ề": "ề",
-            "ễ": "ễ",
-            "ė": "ė",
-            "ȩ": "ȩ",
-            "ḟ": "ḟ",
-            "ǵ": "ǵ",
-            "ḡ": "ḡ",
-            "ğ": "ğ",
-            "ǧ": "ǧ",
-            "ĝ": "ĝ",
-            "ġ": "ġ",
-            "ģ": "ģ",
-            "ḧ": "ḧ",
-            "ȟ": "ȟ",
-            "ĥ": "ĥ",
-            "ḣ": "ḣ",
-            "ḩ": "ḩ",
-            "í": "í",
-            "ì": "ì",
-            "ï": "ï",
-            "ḯ": "ḯ",
-            "ĩ": "ĩ",
-            "ī": "ī",
-            "ĭ": "ĭ",
-            "ǐ": "ǐ",
-            "î": "î",
-            "ǰ": "ǰ",
-            "ĵ": "ĵ",
-            "ḱ": "ḱ",
-            "ǩ": "ǩ",
-            "ķ": "ķ",
-            "ĺ": "ĺ",
-            "ľ": "ľ",
-            "ļ": "ļ",
-            "ḿ": "ḿ",
-            "ṁ": "ṁ",
-            "ń": "ń",
-            "ǹ": "ǹ",
-            "ñ": "ñ",
-            "ň": "ň",
-            "ṅ": "ṅ",
-            "ņ": "ņ",
-            "ó": "ó",
-            "ò": "ò",
-            "ö": "ö",
-            "ȫ": "ȫ",
-            "õ": "õ",
-            "ṍ": "ṍ",
-            "ṏ": "ṏ",
-            "ȭ": "ȭ",
-            "ō": "ō",
-            "ṓ": "ṓ",
-            "ṑ": "ṑ",
-            "ŏ": "ŏ",
-            "ǒ": "ǒ",
-            "ô": "ô",
-            "ố": "ố",
-            "ồ": "ồ",
-            "ỗ": "ỗ",
-            "ȯ": "ȯ",
-            "ȱ": "ȱ",
-            "ő": "ő",
-            "ṕ": "ṕ",
-            "ṗ": "ṗ",
-            "ŕ": "ŕ",
-            "ř": "ř",
-            "ṙ": "ṙ",
-            "ŗ": "ŗ",
-            "ś": "ś",
-            "ṥ": "ṥ",
-            "š": "š",
-            "ṧ": "ṧ",
-            "ŝ": "ŝ",
-            "ṡ": "ṡ",
-            "ş": "ş",
-            "ẗ": "ẗ",
-            "ť": "ť",
-            "ṫ": "ṫ",
-            "ţ": "ţ",
-            "ú": "ú",
-            "ù": "ù",
-            "ü": "ü",
-            "ǘ": "ǘ",
-            "ǜ": "ǜ",
-            "ǖ": "ǖ",
-            "ǚ": "ǚ",
-            "ũ": "ũ",
-            "ṹ": "ṹ",
-            "ū": "ū",
-            "ṻ": "ṻ",
-            "ŭ": "ŭ",
-            "ǔ": "ǔ",
-            "û": "û",
-            "ů": "ů",
-            "ű": "ű",
-            "ṽ": "ṽ",
-            "ẃ": "ẃ",
-            "ẁ": "ẁ",
-            "ẅ": "ẅ",
-            "ŵ": "ŵ",
-            "ẇ": "ẇ",
-            "ẘ": "ẘ",
-            "ẍ": "ẍ",
-            "ẋ": "ẋ",
-            "ý": "ý",
-            "ỳ": "ỳ",
-            "ÿ": "ÿ",
-            "ỹ": "ỹ",
-            "ȳ": "ȳ",
-            "ŷ": "ŷ",
-            "ẏ": "ẏ",
-            "ẙ": "ẙ",
-            "ź": "ź",
-            "ž": "ž",
-            "ẑ": "ẑ",
-            "ż": "ż",
-            "Á": "Á",
-            "À": "À",
-            "Ä": "Ä",
-            "Ǟ": "Ǟ",
-            "Ã": "Ã",
-            "Ā": "Ā",
-            "Ă": "Ă",
-            "Ắ": "Ắ",
-            "Ằ": "Ằ",
-            "Ẵ": "Ẵ",
-            "Ǎ": "Ǎ",
-            "Â": "Â",
-            "Ấ": "Ấ",
-            "Ầ": "Ầ",
-            "Ẫ": "Ẫ",
-            "Ȧ": "Ȧ",
-            "Ǡ": "Ǡ",
-            "Å": "Å",
-            "Ǻ": "Ǻ",
-            "Ḃ": "Ḃ",
-            "Ć": "Ć",
-            "Ḉ": "Ḉ",
-            "Č": "Č",
-            "Ĉ": "Ĉ",
-            "Ċ": "Ċ",
-            "Ç": "Ç",
-            "Ď": "Ď",
-            "Ḋ": "Ḋ",
-            "Ḑ": "Ḑ",
-            "É": "É",
-            "È": "È",
-            "Ë": "Ë",
-            "Ẽ": "Ẽ",
-            "Ē": "Ē",
-            "Ḗ": "Ḗ",
-            "Ḕ": "Ḕ",
-            "Ĕ": "Ĕ",
-            "Ḝ": "Ḝ",
-            "Ě": "Ě",
-            "Ê": "Ê",
-            "Ế": "Ế",
-            "Ề": "Ề",
-            "Ễ": "Ễ",
-            "Ė": "Ė",
-            "Ȩ": "Ȩ",
-            "Ḟ": "Ḟ",
-            "Ǵ": "Ǵ",
-            "Ḡ": "Ḡ",
-            "Ğ": "Ğ",
-            "Ǧ": "Ǧ",
-            "Ĝ": "Ĝ",
-            "Ġ": "Ġ",
-            "Ģ": "Ģ",
-            "Ḧ": "Ḧ",
-            "Ȟ": "Ȟ",
-            "Ĥ": "Ĥ",
-            "Ḣ": "Ḣ",
-            "Ḩ": "Ḩ",
-            "Í": "Í",
-            "Ì": "Ì",
-            "Ï": "Ï",
-            "Ḯ": "Ḯ",
-            "Ĩ": "Ĩ",
-            "Ī": "Ī",
-            "Ĭ": "Ĭ",
-            "Ǐ": "Ǐ",
-            "Î": "Î",
-            "İ": "İ",
-            "Ĵ": "Ĵ",
-            "Ḱ": "Ḱ",
-            "Ǩ": "Ǩ",
-            "Ķ": "Ķ",
-            "Ĺ": "Ĺ",
-            "Ľ": "Ľ",
-            "Ļ": "Ļ",
-            "Ḿ": "Ḿ",
-            "Ṁ": "Ṁ",
-            "Ń": "Ń",
-            "Ǹ": "Ǹ",
-            "Ñ": "Ñ",
-            "Ň": "Ň",
-            "Ṅ": "Ṅ",
-            "Ņ": "Ņ",
-            "Ó": "Ó",
-            "Ò": "Ò",
-            "Ö": "Ö",
-            "Ȫ": "Ȫ",
-            "Õ": "Õ",
-            "Ṍ": "Ṍ",
-            "Ṏ": "Ṏ",
-            "Ȭ": "Ȭ",
-            "Ō": "Ō",
-            "Ṓ": "Ṓ",
-            "Ṑ": "Ṑ",
-            "Ŏ": "Ŏ",
-            "Ǒ": "Ǒ",
-            "Ô": "Ô",
-            "Ố": "Ố",
-            "Ồ": "Ồ",
-            "Ỗ": "Ỗ",
-            "Ȯ": "Ȯ",
-            "Ȱ": "Ȱ",
-            "Ő": "Ő",
-            "Ṕ": "Ṕ",
-            "Ṗ": "Ṗ",
-            "Ŕ": "Ŕ",
-            "Ř": "Ř",
-            "Ṙ": "Ṙ",
-            "Ŗ": "Ŗ",
-            "Ś": "Ś",
-            "Ṥ": "Ṥ",
-            "Š": "Š",
-            "Ṧ": "Ṧ",
-            "Ŝ": "Ŝ",
-            "Ṡ": "Ṡ",
-            "Ş": "Ş",
-            "Ť": "Ť",
-            "Ṫ": "Ṫ",
-            "Ţ": "Ţ",
-            "Ú": "Ú",
-            "Ù": "Ù",
-            "Ü": "Ü",
-            "Ǘ": "Ǘ",
-            "Ǜ": "Ǜ",
-            "Ǖ": "Ǖ",
-            "Ǚ": "Ǚ",
-            "Ũ": "Ũ",
-            "Ṹ": "Ṹ",
-            "Ū": "Ū",
-            "Ṻ": "Ṻ",
-            "Ŭ": "Ŭ",
-            "Ǔ": "Ǔ",
-            "Û": "Û",
-            "Ů": "Ů",
-            "Ű": "Ű",
-            "Ṽ": "Ṽ",
-            "Ẃ": "Ẃ",
-            "Ẁ": "Ẁ",
-            "Ẅ": "Ẅ",
-            "Ŵ": "Ŵ",
-            "Ẇ": "Ẇ",
-            "Ẍ": "Ẍ",
-            "Ẋ": "Ẋ",
-            "Ý": "Ý",
-            "Ỳ": "Ỳ",
-            "Ÿ": "Ÿ",
-            "Ỹ": "Ỹ",
-            "Ȳ": "Ȳ",
-            "Ŷ": "Ŷ",
-            "Ẏ": "Ẏ",
-            "Ź": "Ź",
-            "Ž": "Ž",
-            "Ẑ": "Ẑ",
-            "Ż": "Ż",
-            "ά": "ά",
-            "ὰ": "ὰ",
-            "ᾱ": "ᾱ",
-            "ᾰ": "ᾰ",
-            "έ": "έ",
-            "ὲ": "ὲ",
-            "ή": "ή",
-            "ὴ": "ὴ",
-            "ί": "ί",
-            "ὶ": "ὶ",
-            "ϊ": "ϊ",
-            "ΐ": "ΐ",
-            "ῒ": "ῒ",
-            "ῑ": "ῑ",
-            "ῐ": "ῐ",
-            "ό": "ό",
-            "ὸ": "ὸ",
-            "ύ": "ύ",
-            "ὺ": "ὺ",
-            "ϋ": "ϋ",
-            "ΰ": "ΰ",
-            "ῢ": "ῢ",
-            "ῡ": "ῡ",
-            "ῠ": "ῠ",
-            "ώ": "ώ",
-            "ὼ": "ὼ",
-            "Ύ": "Ύ",
-            "Ὺ": "Ὺ",
-            "Ϋ": "Ϋ",
-            "Ῡ": "Ῡ",
-            "Ῠ": "Ῠ",
-            "Ώ": "Ώ",
-            "Ὼ": "Ὼ"
+            á: "á",
+            à: "à",
+            ä: "ä",
+            ǟ: "ǟ",
+            ã: "ã",
+            ā: "ā",
+            ă: "ă",
+            ắ: "ắ",
+            ằ: "ằ",
+            ẵ: "ẵ",
+            ǎ: "ǎ",
+            â: "â",
+            ấ: "ấ",
+            ầ: "ầ",
+            ẫ: "ẫ",
+            ȧ: "ȧ",
+            ǡ: "ǡ",
+            å: "å",
+            ǻ: "ǻ",
+            ḃ: "ḃ",
+            ć: "ć",
+            ḉ: "ḉ",
+            č: "č",
+            ĉ: "ĉ",
+            ċ: "ċ",
+            ç: "ç",
+            ď: "ď",
+            ḋ: "ḋ",
+            ḑ: "ḑ",
+            é: "é",
+            è: "è",
+            ë: "ë",
+            ẽ: "ẽ",
+            ē: "ē",
+            ḗ: "ḗ",
+            ḕ: "ḕ",
+            ĕ: "ĕ",
+            ḝ: "ḝ",
+            ě: "ě",
+            ê: "ê",
+            ế: "ế",
+            ề: "ề",
+            ễ: "ễ",
+            ė: "ė",
+            ȩ: "ȩ",
+            ḟ: "ḟ",
+            ǵ: "ǵ",
+            ḡ: "ḡ",
+            ğ: "ğ",
+            ǧ: "ǧ",
+            ĝ: "ĝ",
+            ġ: "ġ",
+            ģ: "ģ",
+            ḧ: "ḧ",
+            ȟ: "ȟ",
+            ĥ: "ĥ",
+            ḣ: "ḣ",
+            ḩ: "ḩ",
+            í: "í",
+            ì: "ì",
+            ï: "ï",
+            ḯ: "ḯ",
+            ĩ: "ĩ",
+            ī: "ī",
+            ĭ: "ĭ",
+            ǐ: "ǐ",
+            î: "î",
+            ǰ: "ǰ",
+            ĵ: "ĵ",
+            ḱ: "ḱ",
+            ǩ: "ǩ",
+            ķ: "ķ",
+            ĺ: "ĺ",
+            ľ: "ľ",
+            ļ: "ļ",
+            ḿ: "ḿ",
+            ṁ: "ṁ",
+            ń: "ń",
+            ǹ: "ǹ",
+            ñ: "ñ",
+            ň: "ň",
+            ṅ: "ṅ",
+            ņ: "ņ",
+            ó: "ó",
+            ò: "ò",
+            ö: "ö",
+            ȫ: "ȫ",
+            õ: "õ",
+            ṍ: "ṍ",
+            ṏ: "ṏ",
+            ȭ: "ȭ",
+            ō: "ō",
+            ṓ: "ṓ",
+            ṑ: "ṑ",
+            ŏ: "ŏ",
+            ǒ: "ǒ",
+            ô: "ô",
+            ố: "ố",
+            ồ: "ồ",
+            ỗ: "ỗ",
+            ȯ: "ȯ",
+            ȱ: "ȱ",
+            ő: "ő",
+            ṕ: "ṕ",
+            ṗ: "ṗ",
+            ŕ: "ŕ",
+            ř: "ř",
+            ṙ: "ṙ",
+            ŗ: "ŗ",
+            ś: "ś",
+            ṥ: "ṥ",
+            š: "š",
+            ṧ: "ṧ",
+            ŝ: "ŝ",
+            ṡ: "ṡ",
+            ş: "ş",
+            ẗ: "ẗ",
+            ť: "ť",
+            ṫ: "ṫ",
+            ţ: "ţ",
+            ú: "ú",
+            ù: "ù",
+            ü: "ü",
+            ǘ: "ǘ",
+            ǜ: "ǜ",
+            ǖ: "ǖ",
+            ǚ: "ǚ",
+            ũ: "ũ",
+            ṹ: "ṹ",
+            ū: "ū",
+            ṻ: "ṻ",
+            ŭ: "ŭ",
+            ǔ: "ǔ",
+            û: "û",
+            ů: "ů",
+            ű: "ű",
+            ṽ: "ṽ",
+            ẃ: "ẃ",
+            ẁ: "ẁ",
+            ẅ: "ẅ",
+            ŵ: "ŵ",
+            ẇ: "ẇ",
+            ẘ: "ẘ",
+            ẍ: "ẍ",
+            ẋ: "ẋ",
+            ý: "ý",
+            ỳ: "ỳ",
+            ÿ: "ÿ",
+            ỹ: "ỹ",
+            ȳ: "ȳ",
+            ŷ: "ŷ",
+            ẏ: "ẏ",
+            ẙ: "ẙ",
+            ź: "ź",
+            ž: "ž",
+            ẑ: "ẑ",
+            ż: "ż",
+            Á: "Á",
+            À: "À",
+            Ä: "Ä",
+            Ǟ: "Ǟ",
+            Ã: "Ã",
+            Ā: "Ā",
+            Ă: "Ă",
+            Ắ: "Ắ",
+            Ằ: "Ằ",
+            Ẵ: "Ẵ",
+            Ǎ: "Ǎ",
+            Â: "Â",
+            Ấ: "Ấ",
+            Ầ: "Ầ",
+            Ẫ: "Ẫ",
+            Ȧ: "Ȧ",
+            Ǡ: "Ǡ",
+            Å: "Å",
+            Ǻ: "Ǻ",
+            Ḃ: "Ḃ",
+            Ć: "Ć",
+            Ḉ: "Ḉ",
+            Č: "Č",
+            Ĉ: "Ĉ",
+            Ċ: "Ċ",
+            Ç: "Ç",
+            Ď: "Ď",
+            Ḋ: "Ḋ",
+            Ḑ: "Ḑ",
+            É: "É",
+            È: "È",
+            Ë: "Ë",
+            Ẽ: "Ẽ",
+            Ē: "Ē",
+            Ḗ: "Ḗ",
+            Ḕ: "Ḕ",
+            Ĕ: "Ĕ",
+            Ḝ: "Ḝ",
+            Ě: "Ě",
+            Ê: "Ê",
+            Ế: "Ế",
+            Ề: "Ề",
+            Ễ: "Ễ",
+            Ė: "Ė",
+            Ȩ: "Ȩ",
+            Ḟ: "Ḟ",
+            Ǵ: "Ǵ",
+            Ḡ: "Ḡ",
+            Ğ: "Ğ",
+            Ǧ: "Ǧ",
+            Ĝ: "Ĝ",
+            Ġ: "Ġ",
+            Ģ: "Ģ",
+            Ḧ: "Ḧ",
+            Ȟ: "Ȟ",
+            Ĥ: "Ĥ",
+            Ḣ: "Ḣ",
+            Ḩ: "Ḩ",
+            Í: "Í",
+            Ì: "Ì",
+            Ï: "Ï",
+            Ḯ: "Ḯ",
+            Ĩ: "Ĩ",
+            Ī: "Ī",
+            Ĭ: "Ĭ",
+            Ǐ: "Ǐ",
+            Î: "Î",
+            İ: "İ",
+            Ĵ: "Ĵ",
+            Ḱ: "Ḱ",
+            Ǩ: "Ǩ",
+            Ķ: "Ķ",
+            Ĺ: "Ĺ",
+            Ľ: "Ľ",
+            Ļ: "Ļ",
+            Ḿ: "Ḿ",
+            Ṁ: "Ṁ",
+            Ń: "Ń",
+            Ǹ: "Ǹ",
+            Ñ: "Ñ",
+            Ň: "Ň",
+            Ṅ: "Ṅ",
+            Ņ: "Ņ",
+            Ó: "Ó",
+            Ò: "Ò",
+            Ö: "Ö",
+            Ȫ: "Ȫ",
+            Õ: "Õ",
+            Ṍ: "Ṍ",
+            Ṏ: "Ṏ",
+            Ȭ: "Ȭ",
+            Ō: "Ō",
+            Ṓ: "Ṓ",
+            Ṑ: "Ṑ",
+            Ŏ: "Ŏ",
+            Ǒ: "Ǒ",
+            Ô: "Ô",
+            Ố: "Ố",
+            Ồ: "Ồ",
+            Ỗ: "Ỗ",
+            Ȯ: "Ȯ",
+            Ȱ: "Ȱ",
+            Ő: "Ő",
+            Ṕ: "Ṕ",
+            Ṗ: "Ṗ",
+            Ŕ: "Ŕ",
+            Ř: "Ř",
+            Ṙ: "Ṙ",
+            Ŗ: "Ŗ",
+            Ś: "Ś",
+            Ṥ: "Ṥ",
+            Š: "Š",
+            Ṧ: "Ṧ",
+            Ŝ: "Ŝ",
+            Ṡ: "Ṡ",
+            Ş: "Ş",
+            Ť: "Ť",
+            Ṫ: "Ṫ",
+            Ţ: "Ţ",
+            Ú: "Ú",
+            Ù: "Ù",
+            Ü: "Ü",
+            Ǘ: "Ǘ",
+            Ǜ: "Ǜ",
+            Ǖ: "Ǖ",
+            Ǚ: "Ǚ",
+            Ũ: "Ũ",
+            Ṹ: "Ṹ",
+            Ū: "Ū",
+            Ṻ: "Ṻ",
+            Ŭ: "Ŭ",
+            Ǔ: "Ǔ",
+            Û: "Û",
+            Ů: "Ů",
+            Ű: "Ű",
+            Ṽ: "Ṽ",
+            Ẃ: "Ẃ",
+            Ẁ: "Ẁ",
+            Ẅ: "Ẅ",
+            Ŵ: "Ŵ",
+            Ẇ: "Ẇ",
+            Ẍ: "Ẍ",
+            Ẋ: "Ẋ",
+            Ý: "Ý",
+            Ỳ: "Ỳ",
+            Ÿ: "Ÿ",
+            Ỹ: "Ỹ",
+            Ȳ: "Ȳ",
+            Ŷ: "Ŷ",
+            Ẏ: "Ẏ",
+            Ź: "Ź",
+            Ž: "Ž",
+            Ẑ: "Ẑ",
+            Ż: "Ż",
+            ά: "ά",
+            ὰ: "ὰ",
+            ᾱ: "ᾱ",
+            ᾰ: "ᾰ",
+            έ: "έ",
+            ὲ: "ὲ",
+            ή: "ή",
+            ὴ: "ὴ",
+            ί: "ί",
+            ὶ: "ὶ",
+            ϊ: "ϊ",
+            ΐ: "ΐ",
+            ῒ: "ῒ",
+            ῑ: "ῑ",
+            ῐ: "ῐ",
+            ό: "ό",
+            ὸ: "ὸ",
+            ύ: "ύ",
+            ὺ: "ὺ",
+            ϋ: "ϋ",
+            ΰ: "ΰ",
+            ῢ: "ῢ",
+            ῡ: "ῡ",
+            ῠ: "ῠ",
+            ώ: "ώ",
+            ὼ: "ὼ",
+            Ύ: "Ύ",
+            Ὺ: "Ὺ",
+            Ϋ: "Ϋ",
+            Ῡ: "Ῡ",
+            Ῠ: "Ῠ",
+            Ώ: "Ώ",
+            Ὼ: "Ὼ",
           };
           class Parser {
             constructor(input, settings) {
@@ -13579,7 +14790,10 @@ function requireKatex() {
                 consume = true;
               }
               if (this.fetch().text !== text) {
-                throw new src_ParseError("Expected '" + text + "', got '" + this.fetch().text + "'", this.fetch());
+                throw new src_ParseError(
+                  "Expected '" + text + "', got '" + this.fetch().text + "'",
+                  this.fetch(),
+                );
               }
               if (consume) {
                 this.consume();
@@ -13715,7 +14929,7 @@ function requireKatex() {
                   numerNode = {
                     type: "ordgroup",
                     mode: this.mode,
-                    body: numerBody
+                    body: numerBody,
                   };
                 }
                 if (denomBody.length === 1 && denomBody[0].type === "ordgroup") {
@@ -13724,7 +14938,7 @@ function requireKatex() {
                   denomNode = {
                     type: "ordgroup",
                     mode: this.mode,
-                    body: denomBody
+                    body: denomBody,
                   };
                 }
                 let node;
@@ -13766,19 +14980,19 @@ function requireKatex() {
                 textordArray.push({
                   type: "textord",
                   mode: "text",
-                  text: text[i]
+                  text: text[i],
                 });
               }
               const textNode = {
                 type: "text",
                 mode: this.mode,
-                body: textordArray
+                body: textordArray,
               };
               const colorNode = {
                 type: "color",
                 mode: this.mode,
                 color: this.settings.errorColor,
-                body: [textNode]
+                body: [textNode],
               };
               return colorNode;
             }
@@ -13828,7 +15042,7 @@ function requireKatex() {
                   const prime = {
                     type: "textord",
                     mode: this.mode,
-                    text: "\\prime"
+                    text: "\\prime",
                   };
                   const primes = [prime];
                   this.consume();
@@ -13842,7 +15056,7 @@ function requireKatex() {
                   superscript = {
                     type: "ordgroup",
                     mode: this.mode,
-                    body: primes
+                    body: primes,
                   };
                 } else if (uSubsAndSups[lex.text]) {
                   const isSub = unicodeSubRegEx.test(lex.text);
@@ -13865,13 +15079,13 @@ function requireKatex() {
                     subscript = {
                       type: "ordgroup",
                       mode: "math",
-                      body
+                      body,
                     };
                   } else {
                     superscript = {
                       type: "ordgroup",
                       mode: "math",
-                      body
+                      body,
                     };
                   }
                 } else {
@@ -13884,7 +15098,7 @@ function requireKatex() {
                   mode: this.mode,
                   base,
                   sup: superscript,
-                  sub: subscript
+                  sub: subscript,
                 };
               } else {
                 return base;
@@ -13902,16 +15116,16 @@ function requireKatex() {
               }
               this.consume();
               if (name && name !== "atom" && !funcData.allowedInArgument) {
-                throw new src_ParseError("Got function '" + func + "' with no arguments" + (name ? " as " + name : ""), token);
+                throw new src_ParseError(
+                  "Got function '" + func + "' with no arguments" + (name ? " as " + name : ""),
+                  token,
+                );
               } else if (this.mode === "text" && !funcData.allowedInText) {
                 throw new src_ParseError("Can't use function '" + func + "' in text mode", token);
               } else if (this.mode === "math" && funcData.allowedInMath === false) {
                 throw new src_ParseError("Can't use function '" + func + "' in math mode", token);
               }
-              const {
-                args,
-                optArgs
-              } = this.parseArguments(func, funcData);
+              const { args, optArgs } = this.parseArguments(func, funcData);
               return this.callFunction(func, args, optArgs, token, breakOnTokenText);
             }
             /**
@@ -13922,7 +15136,7 @@ function requireKatex() {
                 funcName: name,
                 parser: this,
                 token,
-                breakOnTokenText
+                breakOnTokenText,
               };
               const func = src_functions[name];
               if (func && func.handler) {
@@ -13939,7 +15153,7 @@ function requireKatex() {
               if (totalArgs === 0) {
                 return {
                   args: [],
-                  optArgs: []
+                  optArgs: [],
                 };
               }
               const args = [];
@@ -13947,11 +15161,17 @@ function requireKatex() {
               for (let i = 0; i < totalArgs; i++) {
                 let argType = funcData.argTypes && funcData.argTypes[i];
                 const isOptional = i < funcData.numOptionalArgs;
-                if ("primitive" in funcData && funcData.primitive && argType == null || // \sqrt expands into primitive if optional argument doesn't exist
-                funcData.type === "sqrt" && i === 1 && optArgs[0] == null) {
+                if (
+                  ("primitive" in funcData && funcData.primitive && argType == null) || // \sqrt expands into primitive if optional argument doesn't exist
+                  (funcData.type === "sqrt" && i === 1 && optArgs[0] == null)
+                ) {
                   argType = "primitive";
                 }
-                const arg = this.parseGroupOfType("argument to '" + func + "'", argType, isOptional);
+                const arg = this.parseGroupOfType(
+                  "argument to '" + func + "'",
+                  argType,
+                  isOptional,
+                );
                 if (isOptional) {
                   optArgs.push(arg);
                 } else if (arg != null) {
@@ -13962,7 +15182,7 @@ function requireKatex() {
               }
               return {
                 args,
-                optArgs
+                optArgs,
               };
             }
             /**
@@ -13981,22 +15201,26 @@ function requireKatex() {
                   return this.parseArgumentGroup(optional, type);
                 case "hbox": {
                   const group = this.parseArgumentGroup(optional, "text");
-                  return group != null ? {
-                    type: "styling",
-                    mode: group.mode,
-                    body: [group],
-                    style: "text",
-                    // simulate \textstyle
-                    resetFont: true
-                  } : null;
+                  return group != null
+                    ? {
+                        type: "styling",
+                        mode: group.mode,
+                        body: [group],
+                        style: "text",
+                        // simulate \textstyle
+                        resetFont: true,
+                      }
+                    : null;
                 }
                 case "raw": {
                   const token = this.parseStringGroup("raw", optional);
-                  return token != null ? {
-                    type: "raw",
-                    mode: "text",
-                    string: token.text
-                  } : null;
+                  return token != null
+                    ? {
+                        type: "raw",
+                        mode: "text",
+                        string: token.text,
+                      }
+                    : null;
                 }
                 case "primitive": {
                   if (optional) {
@@ -14053,13 +15277,19 @@ function requireKatex() {
               let lastToken = firstToken;
               let str = "";
               let nextToken;
-              while ((nextToken = this.fetch()).text !== "EOF" && regex.test(str + nextToken.text)) {
+              while (
+                (nextToken = this.fetch()).text !== "EOF" &&
+                regex.test(str + nextToken.text)
+              ) {
                 lastToken = nextToken;
                 str += lastToken.text;
                 this.consume();
               }
               if (str === "") {
-                throw new src_ParseError("Invalid " + modeName + ": '" + firstToken.text + "'", firstToken);
+                throw new src_ParseError(
+                  "Invalid " + modeName + ": '" + firstToken.text + "'",
+                  firstToken,
+                );
               }
               return firstToken.range(lastToken, str);
             }
@@ -14071,7 +15301,9 @@ function requireKatex() {
               if (res == null) {
                 return null;
               }
-              const match = /^(#[a-f0-9]{3,4}|#[a-f0-9]{6}|#[a-f0-9]{8}|[a-f0-9]{6}|[a-z]+)$/i.exec(res.text);
+              const match = /^(#[a-f0-9]{3,4}|#[a-f0-9]{6}|#[a-f0-9]{8}|[a-f0-9]{6}|[a-z]+)$/i.exec(
+                res.text,
+              );
               if (!match) {
                 throw new src_ParseError("Invalid color: '" + res.text + "'", res);
               }
@@ -14082,7 +15314,7 @@ function requireKatex() {
               return {
                 type: "color-token",
                 mode: this.mode,
-                color
+                color,
               };
             }
             /**
@@ -14093,7 +15325,10 @@ function requireKatex() {
               let isBlank = false;
               this.gullet.consumeSpaces();
               if (!optional && this.gullet.future().text !== "{") {
-                res = this.parseRegexGroup(/^[-+]? *(?:$|\d+|\d+\.\d*|\.\d*) *[a-z]{0,2} *$/, "size");
+                res = this.parseRegexGroup(
+                  /^[-+]? *(?:$|\d+|\d+\.\d*|\.\d*) *[a-z]{0,2} *$/,
+                  "size",
+                );
               } else {
                 res = this.parseStringGroup("size", optional);
               }
@@ -14111,7 +15346,7 @@ function requireKatex() {
               const data = {
                 number: +(match[1] + match[2]),
                 // sign + magnitude, cast to number
-                unit: match[3]
+                unit: match[3],
               };
               if (!validUnit(data)) {
                 throw new src_ParseError("Invalid unit: '" + data.unit + "'", res);
@@ -14120,7 +15355,7 @@ function requireKatex() {
                 type: "size",
                 mode: this.mode,
                 value: data,
-                isBlank
+                isBlank,
               };
             }
             /**
@@ -14140,7 +15375,7 @@ function requireKatex() {
               return {
                 type: "url",
                 mode: this.mode,
-                url
+                url,
               };
             }
             /**
@@ -14163,7 +15398,7 @@ function requireKatex() {
                 type: "ordgroup",
                 mode: this.mode,
                 loc: argToken.loc,
-                body: expression
+                body: expression,
               };
               if (mode) {
                 this.switchMode(outerMode);
@@ -14197,7 +15432,7 @@ function requireKatex() {
                   // which doesn't affect spacing in math mode, i.e., is transparent.
                   // https://tex.stackexchange.com/questions/1930/when-should-one-
                   // use-begingroup-instead-of-bgroup
-                  semisimple: text === "\\begingroup" || void 0
+                  semisimple: text === "\\begingroup" || void 0,
                 };
               } else {
                 result = this.parseFunction(breakOnTokenText, name) || this.parseSymbol();
@@ -14233,12 +15468,17 @@ function requireKatex() {
                 }
                 if (v === "-" && next.text === "-") {
                   const afterNext = group[i + 2];
-                  if (i + 1 < n && afterNext && afterNext.type === "textord" && afterNext.text === "-") {
+                  if (
+                    i + 1 < n &&
+                    afterNext &&
+                    afterNext.type === "textord" &&
+                    afterNext.text === "-"
+                  ) {
                     group.splice(i, 3, {
                       type: "textord",
                       mode: "text",
                       loc: SourceLocation.range(a, afterNext),
-                      text: "---"
+                      text: "---",
                     });
                     n -= 2;
                   } else {
@@ -14246,7 +15486,7 @@ function requireKatex() {
                       type: "textord",
                       mode: "text",
                       loc: SourceLocation.range(a, next),
-                      text: "--"
+                      text: "--",
                     });
                     n -= 1;
                   }
@@ -14256,7 +15496,7 @@ function requireKatex() {
                     type: "textord",
                     mode: "text",
                     loc: SourceLocation.range(a, next),
-                    text: v + v
+                    text: v + v,
                   });
                   n -= 1;
                 }
@@ -14277,19 +15517,25 @@ function requireKatex() {
                   arg = arg.slice(1);
                 }
                 if (arg.length < 2 || arg.charAt(0) !== arg.slice(-1)) {
-                  throw new src_ParseError("\\verb assertion failed --\n                    please report what input caused this bug");
+                  throw new src_ParseError(
+                    "\\verb assertion failed --\n                    please report what input caused this bug",
+                  );
                 }
                 arg = arg.slice(1, -1);
                 return {
                   type: "verb",
                   mode: "text",
                   body: arg,
-                  star
+                  star,
                 };
               }
               if (unicodeSymbols.hasOwnProperty(text[0]) && !src_symbols[this.mode][text[0]]) {
                 if (this.settings.strict && this.mode === "math") {
-                  this.settings.reportNonstrict("unicodeTextInMathMode", 'Accented Unicode text character "' + text[0] + '" used in math mode', nucleus);
+                  this.settings.reportNonstrict(
+                    "unicodeTextInMathMode",
+                    'Accented Unicode text character "' + text[0] + '" used in math mode',
+                    nucleus,
+                  );
                 }
                 text = unicodeSymbols[text[0]] + text.slice(1);
               }
@@ -14305,7 +15551,11 @@ function requireKatex() {
               let symbol;
               if (src_symbols[this.mode][text]) {
                 if (this.settings.strict && this.mode === "math" && extraLatin.includes(text)) {
-                  this.settings.reportNonstrict("unicodeTextInMathMode", 'Latin-1/Unicode text character "' + text[0] + '" used in math mode', nucleus);
+                  this.settings.reportNonstrict(
+                    "unicodeTextInMathMode",
+                    'Latin-1/Unicode text character "' + text[0] + '" used in math mode',
+                    nucleus,
+                  );
                 }
                 const group = src_symbols[this.mode][text].group;
                 const loc = SourceLocation.range(nucleus);
@@ -14316,30 +15566,41 @@ function requireKatex() {
                     mode: this.mode,
                     family: group,
                     loc,
-                    text
+                    text,
                   };
                 } else {
                   s = {
                     type: group,
                     mode: this.mode,
                     loc,
-                    text
+                    text,
                   };
                 }
                 symbol = s;
               } else if (text.charCodeAt(0) >= 128) {
                 if (this.settings.strict) {
                   if (!supportedCodepoint(text.charCodeAt(0))) {
-                    this.settings.reportNonstrict("unknownSymbol", 'Unrecognized Unicode character "' + text[0] + '"' + (" (" + text.charCodeAt(0) + ")"), nucleus);
+                    this.settings.reportNonstrict(
+                      "unknownSymbol",
+                      'Unrecognized Unicode character "' +
+                        text[0] +
+                        '"' +
+                        (" (" + text.charCodeAt(0) + ")"),
+                      nucleus,
+                    );
                   } else if (this.mode === "math") {
-                    this.settings.reportNonstrict("unicodeTextInMathMode", 'Unicode text character "' + text[0] + '" used in math mode', nucleus);
+                    this.settings.reportNonstrict(
+                      "unicodeTextInMathMode",
+                      'Unicode text character "' + text[0] + '" used in math mode',
+                      nucleus,
+                    );
                   }
                 }
                 symbol = {
                   type: "textord",
                   mode: "text",
                   loc: SourceLocation.range(nucleus),
-                  text
+                  text,
                 };
               } else {
                 return null;
@@ -14351,9 +15612,13 @@ function requireKatex() {
                   if (!unicodeAccents[accent2]) {
                     throw new src_ParseError("Unknown accent ' " + accent2 + "'", nucleus);
                   }
-                  const command = unicodeAccents[accent2][this.mode] || unicodeAccents[accent2].text;
+                  const command =
+                    unicodeAccents[accent2][this.mode] || unicodeAccents[accent2].text;
                   if (!command) {
-                    throw new src_ParseError("Accent " + accent2 + " unsupported in " + this.mode + " mode", nucleus);
+                    throw new src_ParseError(
+                      "Accent " + accent2 + " unsupported in " + this.mode + " mode",
+                      nucleus,
+                    );
                   }
                   symbol = {
                     type: "accent",
@@ -14362,15 +15627,21 @@ function requireKatex() {
                     label: command,
                     isStretchy: false,
                     isShifty: true,
-                    base: symbol
+                    base: symbol,
                   };
                 }
               }
               return symbol;
             }
           }
-          Parser.endOfExpression = /* @__PURE__ */ new Set(["}", "\\endgroup", "\\end", "\\right", "&"]);
-          const parseTree = function(toParse, settings) {
+          Parser.endOfExpression = /* @__PURE__ */ new Set([
+            "}",
+            "\\endgroup",
+            "\\end",
+            "\\right",
+            "&",
+          ]);
+          const parseTree = function (toParse, settings) {
             if (!(typeof toParse === "string" || toParse instanceof String)) {
               throw new TypeError("KaTeX can only parse string typed expression");
             }
@@ -14383,38 +15654,43 @@ function requireKatex() {
               if (!settings.displayMode) {
                 throw new src_ParseError("\\tag works only in display equations");
               }
-              tree = [{
-                type: "tag",
-                mode: "text",
-                body: tree,
-                tag: parser.subparse([new Token("\\df@tag")])
-              }];
+              tree = [
+                {
+                  type: "tag",
+                  mode: "text",
+                  body: tree,
+                  tag: parser.subparse([new Token("\\df@tag")]),
+                },
+              ];
             }
             return tree;
           };
           var src_parseTree = parseTree;
-          let render = function(expression, baseNode, options) {
+          let render = function (expression, baseNode, options) {
             baseNode.textContent = "";
             const node = renderToDomTree(expression, options).toNode();
             baseNode.appendChild(node);
           };
           if (typeof document !== "undefined") {
             if (document.compatMode !== "CSS1Compat") {
-              typeof console !== "undefined" && console.warn("Warning: KaTeX doesn't work in quirks mode. Make sure your website has a suitable doctype.");
-              render = function() {
+              typeof console !== "undefined" &&
+                console.warn(
+                  "Warning: KaTeX doesn't work in quirks mode. Make sure your website has a suitable doctype.",
+                );
+              render = function () {
                 throw new src_ParseError("KaTeX doesn't work in quirks mode.");
               };
             }
           }
-          const renderToString = function(expression, options) {
+          const renderToString = function (expression, options) {
             const markup = renderToDomTree(expression, options).toMarkup();
             return markup;
           };
-          const generateParseTree = function(expression, options) {
+          const generateParseTree = function (expression, options) {
             const settings = new Settings(options);
             return src_parseTree(expression, settings);
           };
-          const renderError = function(error, expression, options) {
+          const renderError = function (error, expression, options) {
             if (options.throwOnError || !(error instanceof src_ParseError)) {
               throw error;
             }
@@ -14423,7 +15699,7 @@ function requireKatex() {
             node.setAttribute("style", "color:" + options.errorColor);
             return node;
           };
-          const renderToDomTree = function(expression, options) {
+          const renderToDomTree = function (expression, options) {
             const settings = new Settings(options);
             try {
               const tree = src_parseTree(expression, settings);
@@ -14432,7 +15708,7 @@ function requireKatex() {
               return renderError(error, expression, settings);
             }
           };
-          const renderToHTMLTree = function(expression, options) {
+          const renderToHTMLTree = function (expression, options) {
             const settings = new Settings(options);
             try {
               const tree = src_parseTree(expression, settings);
@@ -14448,7 +15724,7 @@ function requireKatex() {
             SymbolNode,
             SvgNode,
             PathNode,
-            LineNode
+            LineNode,
           };
           var katex2 = {
             /**
@@ -14503,7 +15779,7 @@ function requireKatex() {
             /**
              * extends internal font metrics object with a new object
              * each key in the new object represents a font name
-            */
+             */
             __setFontMetrics: setFontMetrics,
             /**
              * adds a new symbol to builtin symbols table
@@ -14526,7 +15802,7 @@ function requireKatex() {
              * The internal tree representation is unstable and is very likely
              * to change. Use at your own risk.
              */
-            __domTree
+            __domTree,
           };
           var katex_webpack = katex2;
           __webpack_exports__ = __webpack_exports__["default"];
@@ -14537,6 +15813,4 @@ function requireKatex() {
   })(katex$1);
   return katex$1.exports;
 }
-export {
-  requireKatex as r
-};
+export { requireKatex as r };
