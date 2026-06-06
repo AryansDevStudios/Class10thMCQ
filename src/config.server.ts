@@ -17,16 +17,20 @@ import process from "node:process";
 //     VITE_ prefix. Never put secrets here — they ship to the browser.
 
 export function getServerConfig() {
+  // Prevent bundlers like Vite/Rollup from statically replacing process.env.*
+  // with the build-time values by assigning it to a dynamic variable.
+  const env = process.env;
+  
   return {
-    nodeEnv: process.env.NODE_ENV,
+    nodeEnv: env.NODE_ENV,
     firebaseConfig: {
-      apiKey: process.env.FIREBASE_API_KEY,
-      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.FIREBASE_APP_ID,
+      apiKey: env.FIREBASE_API_KEY,
+      authDomain: env.FIREBASE_AUTH_DOMAIN,
+      projectId: env.FIREBASE_PROJECT_ID,
+      storageBucket: env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: env.FIREBASE_APP_ID,
     },
-    adminCode: process.env.ADMIN_CODE,
+    adminCode: env.ADMIN_CODE,
   };
 }
