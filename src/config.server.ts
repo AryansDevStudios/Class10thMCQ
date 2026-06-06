@@ -18,19 +18,19 @@ import process from "node:process";
 
 export function getServerConfig() {
   // Prevent bundlers like Vite/Rollup from statically replacing process.env.*
-  // with the build-time values by assigning it to a dynamic variable.
-  const env = process.env;
+  // with the build-time values by using a dynamic accessor function.
+  const getEnv = (key: string) => (process.env as any)[key];
   
   return {
-    nodeEnv: env.NODE_ENV,
+    nodeEnv: getEnv('NODE_ENV'),
     firebaseConfig: {
-      apiKey: env.FIREBASE_API_KEY,
-      authDomain: env.FIREBASE_AUTH_DOMAIN,
-      projectId: env.FIREBASE_PROJECT_ID,
-      storageBucket: env.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
-      appId: env.FIREBASE_APP_ID,
+      apiKey: getEnv('FIREBASE_API_KEY'),
+      authDomain: getEnv('FIREBASE_AUTH_DOMAIN'),
+      projectId: getEnv('FIREBASE_PROJECT_ID'),
+      storageBucket: getEnv('FIREBASE_STORAGE_BUCKET'),
+      messagingSenderId: getEnv('FIREBASE_MESSAGING_SENDER_ID'),
+      appId: getEnv('FIREBASE_APP_ID'),
     },
-    adminCode: env.ADMIN_CODE,
+    adminCode: getEnv('ADMIN_CODE'),
   };
 }
